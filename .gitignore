@@ -64,3 +64,14 @@ __recovery/
 
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
+
+Demos\Delphi10.2\Demo\Win32
+Demos\Delphi10.2\Demo\Win64
+Demos\Delphi10.2\DragDrop\Win32
+Demos\Delphi10.2\DragDrop\Win64
+Demos\Delphi10.2\NavEmpl\Win32
+Demos\Delphi10.2\NavEmpl\Win64
+Demos\Delphi10.2\PickDate\Win32
+Demos\Delphi10.2\PickDate\Win64
+Demos\Delphi10.2\Startday\Win32
+Demos\Delphi10.2\Startday\Win64
