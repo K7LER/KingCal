@@ -1,0 +1,8 @@
+King Calendar - Open Source Edition
+Version History
+===================================
+
+2.0.1 - Update - 6/30/2018
+- Converted DFM's from binary to text based for better source control tracking and general practice.
+
+2.0.0 - Initial Release 6/28/2018 
