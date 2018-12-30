@@ -2,6 +2,9 @@ King Calendar - Open Source Edition
 Version History
 ===================================
 
+2.0.2 - Update - 12/29/2018
+- Added support for Delphi 10.3 Rio
+
 2.0.1 - Update - 6/30/2018
 - Converted DFM's from binary to text based for better source control tracking and general practice.
 
