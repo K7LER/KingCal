@@ -64,8 +64,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>KingCalendar260</SanitizedProjectName>
-        <DCC_BplOutput>$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_Description>KingCalendar for Delphi XE10.3 Run Time</DCC_Description>
         <DCC_ImageBase>00400000</DCC_ImageBase>
@@ -81,8 +79,6 @@
         <EnabledSysJars>android-support-v4.dex.jar;cloud-messaging.dex.jar;fmx.dex.jar;google-analytics-v2.dex.jar;google-play-billing.dex.jar;google-play-licensing.dex.jar;google-play-services-ads-7.0.0.dex.jar;google-play-services-analytics-7.0.0.dex.jar;google-play-services-base-7.0.0.dex.jar;google-play-services-gcm-7.0.0.dex.jar;google-play-services-identity-7.0.0.dex.jar;google-play-services-maps-7.0.0.dex.jar;google-play-services-panorama-7.0.0.dex.jar;google-play-services-plus-7.0.0.dex.jar;google-play-services-wallet-7.0.0.dex.jar</EnabledSysJars>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIB32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIB32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIB32\$(Config)</DCC_DcuOutput>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UsePackage>xmlrtl;rtl;vclactnband;vclx;vcl;VclSmp;$(DCC_UsePackage)</DCC_UsePackage>
@@ -102,15 +98,11 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD26x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD26x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD26x32\$(Config)</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_BplOutput>..\..\LIBD26x64\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD26x64\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD26x64\$(Config)</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
@@ -121,15 +113,11 @@
         <DCC_Optimize>false</DCC_Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD26x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD26x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD26x32\$(Config)</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <DCC_BplOutput>..\..\LIBD26x64\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD26x64\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD26x64\$(Config)</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>

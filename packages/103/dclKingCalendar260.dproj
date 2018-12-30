@@ -47,8 +47,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>dclKingCalendar260</SanitizedProjectName>
-        <DCC_BplOutput>$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_Description>KingCalendar Delphi 10.3 Design Time</DCC_Description>
         <DCC_ImageBase>00400000</DCC_ImageBase>
@@ -78,8 +76,6 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD26x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD26x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD26x32\$(Config)</DCC_DcuOutput>
         <DCC_UnitSearchPath>..\..\LIBD26x32\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -91,8 +87,6 @@
         <DCC_Optimize>false</DCC_Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD26x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD26x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD26x32\$(Config)</DCC_DcuOutput>
         <DCC_UnitSearchPath>..\..\LIBD26x32\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>

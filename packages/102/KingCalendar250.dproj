@@ -59,8 +59,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>KingCalendar250</SanitizedProjectName>
-        <DCC_BplOutput>$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_Description>KingCalendar for Delphi XE10.2 Run Time</DCC_Description>
         <DCC_ImageBase>00400000</DCC_ImageBase>
@@ -73,8 +71,6 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIB32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIB32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIB32\$(Config)</DCC_DcuOutput>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UsePackage>xmlrtl;rtl;vclactnband;vclx;vcl;VclSmp;$(DCC_UsePackage)</DCC_UsePackage>
@@ -94,13 +90,9 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD25x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD25x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD25x32\$(Config)</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_BplOutput>..\..\LIBD25x64\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD25x64\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD25x64\$(Config)</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -109,13 +101,9 @@
         <DCC_Optimize>false</DCC_Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD25x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD25x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD25x32\$(Config)</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <DCC_BplOutput>..\..\LIBD25x64\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD25x64\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD25x64\$(Config)</DCC_DcuOutput>
     </PropertyGroup>
     <ItemGroup>

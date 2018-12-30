@@ -70,8 +70,6 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD25x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD25x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD25x32\$(Config)</DCC_DcuOutput>
         <DCC_Description>KingCalendar Delphi XE10.2 Design Time</DCC_Description>
         <DCC_UnitSearchPath>..\..\LIBD25x32\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
@@ -82,8 +80,6 @@
         <DCC_Optimize>false</DCC_Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DCC_BplOutput>..\..\LIBD25x32\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\LIBD25x32\$(Config)</DCC_DcpOutput>
         <DCC_DcuOutput>..\..\LIBD25x32\$(Config)</DCC_DcuOutput>
         <DCC_Description>KingCalendar Delphi XE4 Design Time</DCC_Description>
         <DCC_UnitSearchPath>..\..\LIBD25x32\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
