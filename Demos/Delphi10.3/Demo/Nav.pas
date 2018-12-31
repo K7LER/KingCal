@@ -34,6 +34,7 @@ type
     Label12: TLabel;
     procedure CheckBox1Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +52,19 @@ implementation
 procedure TFrmNavigate.CheckBox1Click(Sender: TObject);
 begin
   KingNavigator1.CaptionInToday := Checkbox1.Checked;
+end;
+
+procedure TFrmNavigate.FormCreate(Sender: TObject);
+var
+  s: string;
+begin
+   // Furnish the locale format settings record
+  {$WARN SYMBOL_PLATFORM OFF}
+  formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+  {$WARN SYMBOL_PLATFORM ON}
+
+  DateTimeToString( s, formatSettings.ShortDateFormat, now, formatSettings );
+  KingDateSpin1.StartDate := s;
 end;
 
 procedure TFrmNavigate.BitBtn1Click(Sender: TObject);

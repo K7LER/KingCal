@@ -15,6 +15,7 @@ object FrmNavigate: TFrmNavigate
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 16
   object KingLabel1: TKingLabel
@@ -24,7 +25,7 @@ object FrmNavigate: TFrmNavigate
     Height = 24
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June 30, 2018'
+    Caption = '30 December 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -16
@@ -62,7 +63,7 @@ object FrmNavigate: TFrmNavigate
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     TabOrder = 1
@@ -153,7 +154,7 @@ object FrmNavigate: TFrmNavigate
       CalendarSource = KingCalendar1
       Highlight = clBlue
       TabOrder = 0
-      TodayText = 'Today'
+      TodayText = '12/11/18'
       ParentShowHint = False
     end
   end
@@ -352,7 +353,7 @@ object FrmNavigate: TFrmNavigate
     end
     object KingDateSpin1: TKingDateSpin
       Left = 32
-      Top = 200
+      Top = 203
       Width = 105
       Height = 22
       DateFormat = 'M/d/yy'

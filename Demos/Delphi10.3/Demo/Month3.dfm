@@ -24,7 +24,7 @@ object Frm3Month: TFrm3Month
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June 30, 2018'
+    Caption = '30 December 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
@@ -41,7 +41,7 @@ object Frm3Month: TFrm3Month
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June 30, 2018'
+    Caption = '30 December 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
@@ -58,7 +58,7 @@ object Frm3Month: TFrm3Month
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June 30, 2018'
+    Caption = '30 December 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
@@ -195,7 +195,7 @@ object Frm3Month: TFrm3Month
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -237,7 +237,7 @@ object Frm3Month: TFrm3Month
     Width = 296
     Height = 128
     Day = 30
-    Month = 6
+    Month = 12
     Year = 2018
     IsActive = False
     TabOrder = 5
@@ -278,7 +278,7 @@ object Frm3Month: TFrm3Month
     Width = 296
     Height = 128
     Day = 30
-    Month = 6
+    Month = 12
     Year = 2018
     IsActive = False
     TabOrder = 6

@@ -42,13 +42,21 @@ implementation
 
 procedure TFrm3Month.FormCreate(Sender: TObject);
 var
-  nYear, nMonth, nDay: Word;
+//  nYear, nMonth, nDay: Word;
+  MyDate: TDateTime;
 begin
-  DecodeDate( Date, nYear, nMonth, nDay );
+//  DecodeDate( Date, nYear, nMonth, nDay );
 
-  Cal1.Month := nMonth;
-  Cal2.Month := ( nMonth + 1 );
-  Cal3.Month := ( nMonth + 2 );
+  MyDate := Now;
+  Cal1.Month := System.DateUtils.MonthOf(MyDate);
+  Cal2.Month := System.DateUtils.MonthOf(IncMonth(Now,1));
+  Cal1.Month := System.DateUtils.MonthOf(IncMonth(Now,2));
+
+
+//  Cal1.Month := nMonth;
+//  Cal2.Month := ( nMonth + 1 );
+//  Cal3.Month := ( nMonth + 2 );
+
 
 end;
 

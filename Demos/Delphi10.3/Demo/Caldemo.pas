@@ -56,7 +56,11 @@ var
 
 implementation
 
-uses Year, Month;
+uses
+  Math,
+  Year,
+  Month,
+  System.DateUtils;
 
 {$R *.DFM}
 
@@ -68,6 +72,7 @@ end;
 procedure TFrmCalendar.FormCreate(Sender: TObject);
 begin
   Combobox1.ItemIndex := 0;
+  Randomize;
 end;
 
 procedure TFrmCalendar.CheckBox1Click(Sender: TObject);
@@ -158,10 +163,10 @@ begin
   KingCalendar1.TextInCell    := False;
   KingCalendar1.ColorCellText := False;
   KingCalendar1.ColorCellDay  := True;
-  for x := 1 to 28 do
+  for x := 1 to DaysInAMonth(YearOf(KingCalendar1.CalendarDate),MonthOf(KingCalendar1.CalendarDate)) do
     begin
       Level := Random( 10 );
-      Day   := Random( 31 );
+      Day   := RandomRange(1, DaysInAMonth(YearOf(KingCalendar1.CalendarDate),MonthOf(KingCalendar1.CalendarDate)) );
       Flags[ Day ] := Level;
     end;
 
@@ -178,10 +183,10 @@ begin
   KingCalendar1.ColorCellText := True;
   KingCalendar1.ColorCellDay  := False;
   KingCalendar1.TextPlacement := ktTopLeft;
-  for x := 1 to 28 do
+  for x := 1 to DaysInAMonth(YearOf(KingCalendar1.CalendarDate),MonthOf(KingCalendar1.CalendarDate)) do
    begin
     Level := Random(10);
-    Day := Random(31);
+    Day   := RandomRange(1, DaysInAMonth(YearOf(KingCalendar1.CalendarDate),MonthOf(KingCalendar1.CalendarDate)) );
     KingCalendar1.SetDateFlag( Day, Level, 'Example Text' );
    end;
    KingCalendar1.UpdateCalendar;

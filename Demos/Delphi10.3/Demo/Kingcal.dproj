@@ -144,7 +144,7 @@
         <DCCReference Include="POPUP.PAS">
             <Form>FrmPopup</Form>
         </DCCReference>
-        <DCCReference Include="NAV.PAS">
+        <DCCReference Include="Nav.pas">
             <Form>FrmNavigate</Form>
         </DCCReference>
         <DCCReference Include="MISC.PAS">
