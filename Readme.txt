@@ -1,6 +1,6 @@
 
 KingCalendar Components for Delphi
-Release v2.02 12/29/2018
+Release v2.08 12/31/2018
 
 INTRODUCTION
 

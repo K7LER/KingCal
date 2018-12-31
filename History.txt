@@ -1,6 +1,17 @@
 King Calendar - Open Source Edition
 Version History
 ===================================
+
+2.0.8 - Update - 12/31/2018
+- Fixed some addition items reported by Ian Branch
+- Navigator was not properly repainting text when using VCL Styles.
+- Set default fonts to Segoe UI
+- Added TKingWeekLabel to display the week number of a date
+- Added property to TKingLabel to include week number of date shown
+- Cleaned up Uses and removed deprecated Uses.
+- Adjusted calls to DateUtils
+- Updated demos.
+
 2.0.6 - Update - 12/30/2018
 - Fixed some items reported by Ian Branch
 - Changed Date format usage to support International locales
