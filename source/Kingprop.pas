@@ -69,7 +69,7 @@ type
     Image1 : TImage;
     Label1 : TLabel;
     Label6 : TLabel;
-    Label2: TLabel;
+    Label2 : TLabel;
     procedure BitBtn1Click( Sender : TObject );
     private
       { Private declarations }

@@ -47,6 +47,7 @@ uses
   System.SysUtils,
   System.Variants,
   System.Classes,
+  System.DateUtils,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -55,7 +56,8 @@ uses
   Vcl.StdCtrls,
   Vcl.Buttons,
   Vcl.ExtCtrls,
-  Spin,
+  VCL.Samples.Spin,
+  Vcl.Themes,
   TheKing;
 
 type
@@ -81,9 +83,11 @@ type
       FAbout : String;
       FCalendarSource : TKingCalendar;
       FFormat : String;
+      FIncludeWeekNum: Boolean;
     protected
       procedure SetSource( Value : TKingCalendar );
       procedure SetFormat( Value : String );
+      procedure SetIncludeWeekNum ( Value : Boolean );
       procedure Notification(
         AComponent : TComponent;
         Operation  : TOperation ); override;
@@ -102,12 +106,58 @@ type
       property DateFormat : String
         read FFormat
         write SetFormat;
+      property IncludeWeekNum : Boolean
+        read FIncludeWeekNum
+        write SetIncludeWeekNum;
       property ParentShowHint;
       property ShowHint;
       property DragCursor;
       property DragMode;
       property Visible;
   end;
+
+  { TKingWeekLabel }
+  TKingWeekLabel = class( TLabel )
+    private
+      FAbout : String;
+      FCalendarSource : TKingCalendar;
+      FIncludeCaption: boolean;
+      FOnChange : TNotifyEvent;
+    protected
+      procedure SetSource( Value : TKingCalendar );
+      procedure SetFormat( Value : String );
+      procedure SetIncludeCaption (Value : Boolean );
+      procedure Notification(
+        AComponent : TComponent;
+        Operation  : TOperation ); override;
+      procedure Change;
+
+    public
+      constructor Create( AOwner : TComponent ); override;
+      procedure Loaded; override;
+      procedure DateChange( Sender : TObject );
+      procedure UpdateLabel;
+    published
+      property About : String
+        read FAbout
+        write FAbout;
+      property CalendarSource : TKingCalendar
+        read FCalendarSource
+        write SetSource;
+      property IncludeCaption : Boolean
+        read FIncludeCaption
+        write SetIncludeCaption;
+      property OnChange : TNotifyEvent
+        read FOnChange
+        write FOnChange;
+      property ParentShowHint;
+      property ShowHint;
+      property DragCursor;
+      property DragMode;
+      property Visible;
+  end;
+
+
 
   { TKingBaseSpine }
   TKingBaseSpin = class( TSpinButton )
@@ -563,9 +613,6 @@ implementation
 
 {$R KCAL32.RES}
 
-uses
-  System.DateUtils;
-
 const
 
   { * TKingNavigator Glpyh Suffix's in the KINGCAL.RES * }
@@ -665,7 +712,7 @@ constructor TYearSpin.Create( AOwner : TComponent );
     { Set the Base Ranges of selectable years }
     FMinYear := 1980;
     FMaxYear := 2040;
-//    FMaxYear := 2020;
+    // FMaxYear := 2020;
 
     for I := 0 to TForm( AOwner ).ComponentCount - 1 do
     begin
@@ -1160,7 +1207,7 @@ procedure TKingNavigator.InitButtons;
       end
       else
       begin
-        Btn.Font.Name := 'Times New Roman'; { Captions Font }
+        Btn.Font.Name := 'Segoe UI'; { Captions Font }
         Btn.Font.Size := 9; { Set Caption to 9 Points }
         Btn.Font.Color := FHighlight; { Set initial color to clBlue }
         Btn.Caption := kcDateToStr( Date );
@@ -1190,7 +1237,7 @@ procedure TKingNavigator.SetVisible( Value : TCalcBtnSet );
     If ( W <> Width ) or ( H <> Height )
     then
       inherited SetBounds( Left, Top, W, H );
-    invalidate;
+    self.invalidate;
   end;
 
 { *************************************************************************** }
@@ -1269,6 +1316,7 @@ procedure TKingNavigator.AdjustSize(
       else
         Buttons[ I ].SetBounds( Width + 1, 0, ButtonWidth, Height );
     end;
+    self.invalidate;
   end;
 
 { *************************************************************************** }
@@ -1280,6 +1328,7 @@ procedure TKingNavigator.SetBounds( ALeft, ATop, AWidth, AHeight : Integer );
     H := AHeight;
     AdjustSize( W, H );
     inherited SetBounds( ALeft, ATop, W, H );
+    self.invalidate;
   end;
 
 { *************************************************************************** }
@@ -1301,6 +1350,7 @@ procedure TKingNavigator.WMSize( var Message : TWMSize );
 procedure TKingNavigator.Click( Sender : TObject );
   begin
     BtnClick( TKingButton( Sender ).Index );
+    self.Invalidate;
   end;
 
 { *************************************************************************** }
@@ -1337,6 +1387,10 @@ procedure TKingNavigator.BtnMouseDown(
       then
         Form.Perform( CM_CANCELMODE, 0, 0 );
     end;
+
+    self.Invalidate;
+
+
   end;
 
 { *************************************************************************** }
@@ -1402,6 +1456,9 @@ procedure TKingNavigator.KeyDown(
             Buttons[ FocusedButton ].Click;
         end;
     end;
+
+    self.Invalidate;
+
   end;
 
 { *************************************************************************** }
@@ -1432,6 +1489,8 @@ procedure TKingNavigator.Loaded;
 
 { *************************************************************************** }
 procedure TKingNavigator.BtnClick( Index : TCalcBtn );
+var
+  I : TCalcBtn;
   begin
     if ( CalendarSource <> nil )
     then
@@ -1452,6 +1511,10 @@ procedure TKingNavigator.BtnClick( Index : TCalcBtn );
         end;
       end;
     end;
+    for I := Low(Buttons) to High(Buttons) do begin
+      Buttons[I].Invalidate;
+      application.ProcessMessages;
+    end;
     if not ( csDesigning in ComponentState ) and Assigned( FOnNavClick )
     then
       FOnNavClick( Self, Index );
@@ -1464,10 +1527,15 @@ procedure TKingNavigator.TheDateChanged;
     dDate : TDateTime;
   begin
 
-    cToday := kcDateToStr( Date );
+    cToday := kcDateToStr( Now );
     dDate := EncodeDate( CalendarSource.Year, CalendarSource.Month,
       CalendarSource.Day );
     cDate := kcDateToStr( dDate );
+
+    if ( cDate <> cToday ) then
+      SetTodayText(cDate)
+    else
+      SetTodayText(cToday);
 
     if ( cDate <> cToday )
     then
@@ -1490,20 +1558,29 @@ procedure TKingNavigator.TheDateChanged;
 
       Buttons[ nbToday ].Font.Color := Highlight;
     end;
+    Buttons[ nbToday ].Invalidate;
+    self.Invalidate;
   end;
 
 { *************************************************************************** }
 procedure TKingNavigator.SetHighlight( oColor : TColor );
+var
+  I: TCalcbtn;
   begin
     FHighlight := oColor;
     Buttons[ nbToday ].Font.Color := FHighlight;
 
+    for I := Low(Buttons) to High(Buttons) do begin
+      Buttons[I].Invalidate;
+      application.ProcessMessages;
+    end;
   end;
 
 { *************************************************************************** }
 procedure TKingNavigator.SetSource( Value : TKingCalendar );
   begin
     FCalendarSource := Value;
+    self.invalidate;
   end;
 
 { *************************************************************************** }
@@ -1529,6 +1606,7 @@ procedure TKingNavigator.SetTodayText( Value : String );
     then
       Buttons[ nbToday ].Caption := Value;
 
+    self.invalidate;
   end;
 
 { *************************************************************************** }
@@ -1540,8 +1618,9 @@ procedure TKingNavigator.SetTodayStyle( Value : Boolean );
     then
       Buttons[ nbToday ].Caption := FTodayText
     else
-      Buttons[ nbToday ].Caption := kcDateToStr( Date );
+      Buttons[ nbToday ].Caption := kcDateToStr( Now );
 
+    self.invalidate;
   end;
 
 { ===========================================================================
@@ -1603,7 +1682,8 @@ procedure TMonthBar.InitButtons;
       Btn.Enabled := True;
       Btn.SetBounds( X, 0, MinBtnSize.X, MinBtnSize.Y );
 
-      Btn.Font.Name := 'Small Fonts';
+      Btn.Font.Name := 'Segue UI';
+      //      Btn.Font.Name := 'Small Fonts';
       Btn.Font.Size := 7;
       Btn.Caption := StrPas( MthCaption[ I ] );
 
@@ -1715,6 +1795,8 @@ procedure TMonthBar.AdjustSize(
       else
         Buttons[ I ].SetBounds( Width + 1, 0, ButtonWidth, Height );
     end;
+
+    invalidate;
   end;
 
 { *************************************************************************** }
@@ -1741,6 +1823,8 @@ procedure TMonthBar.WMSize( var Message : TWMSize );
     then
       inherited SetBounds( Left, Top, W, H );
     Message.Result := 0;
+
+    invalidate;
   end;
 
 { *************************************************************************** }
@@ -2007,6 +2091,7 @@ procedure TMonthBar.TheDateChanged( Sender : TObject );
       else
         Buttons[ X ].Font.Color := Highlight;
     end;
+    invalidate;
   end;
 
 { ===========================================================================
@@ -2016,11 +2101,23 @@ procedure TKingButton.Paint;
   var
     R : TRect;
   begin
+    if ThemeControl(self) then
+      PerformEraseBackground(Self, Canvas.Handle);
+
     Inherited Paint;
+
+//      if ShowFocus and Focused and FShowFocusRect then
+//  begin
+//    Canvas.Brush.Color := Self.Color;
+//    R := Rect( FButtonWidth + 1, 2, Width - FButtonWidth -1, Height - 2 );
+//    Canvas.DrawFocusRect( R );
+//  end;
+
     if ( GetFocus = Parent.Handle ) and
       ( FIndex = TKingNavigator( Parent ).FocusedButton )
     then
     begin
+      Canvas.Brush.Color := Self.Color;
       R := Bounds( 0, 0, Width, Height );
       InflateRect( R, - 3, - 3 );
       IF FState = bsDown
@@ -2037,6 +2134,9 @@ procedure TMonthButton.Paint;
   var
     R : TRect;
   begin
+    if ThemeControl(self) then
+      PerformEraseBackground(Self, Canvas.Handle);
+
     Inherited Paint;
     if ( GetFocus = Parent.Handle ) and
       ( FIndex = TMonthBar( Parent ).FocusedButton )
@@ -2069,6 +2169,10 @@ constructor TKingLabel.Create( AOwner : TComponent );
         Break;
       end;
     end;
+    FIncludeWeekNum := False;
+    self.AutoSize := True;
+
+
   end;
 
 { *************************************************************************** }
@@ -2105,6 +2209,12 @@ procedure TKingLabel.SetFormat( Value : String );
 
   end;
 
+procedure TKingLabel.SetIncludeWeekNum(Value: Boolean);
+begin
+  FIncludeWeekNum := Value;
+  UpdateLabel;
+end;
+
 { *************************************************************************** }
 procedure TKingLabel.SetSource( Value : TKingCalendar );
   begin
@@ -2132,23 +2242,28 @@ procedure TKingLabel.Notification(
 procedure TKingLabel.UpdateLabel;
   var
     cDate : String;
-    ldf: string;
+    ldf : string;
   begin
 
     if ( FCalendarSource <> nil )
     then
     begin
       // Furnish the locale format settings record
-      {$WARN SYMBOL_PLATFORM OFF}
-      formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-      {$WARN SYMBOL_PLATFORM ON}
-
+{$WARN SYMBOL_PLATFORM OFF}
+      formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
       ldf := formatSettings.LongDateFormat;
 
-      DateTimeToString( cDate, ldf, CalendarSource.CalendarDate, formatSettings );
-//      DateTimeToString( cDate, FFormat, CalendarSource.CalendarDate );
+      DateTimeToString( cDate, ldf, CalendarSource.CalendarDate,
+        formatSettings );
+      // DateTimeToString( cDate, FFormat, CalendarSource.CalendarDate );
       Caption := cDate;
+
+      if FIncludeWeekNum then
+        Caption := Caption + ' - Week Number ' + WeekOfTheYear( CalendarSource.CalendarDate ).ToString;
     end;
+
+    self.Invalidate;
 
   end;
 
@@ -2157,54 +2272,53 @@ procedure TKingLabel.UpdateLabel;
   =========================================================================== }
 function kcDateToStr( dDate : TDateTime ) : String;
   var
-    sdf: string;
+    sdf : string;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
     sdf := formatSettings.ShortDateFormat;
     DateTimeToString( Result, sdf, dDate, formatSettings );
-//    DateTimeToString( Result, 'mm/dd/yy', dDate );
+    // DateTimeToString( Result, 'mm/dd/yy', dDate );
 
   end;
 
 { *************************************************************************** }
 function kcIsLeapYear( nYear : Integer ) : Boolean;
   var
-    dt: TDateTime;
+    dt : TDateTime;
   begin
-    dt := encodedatetime(nyear,1,1,0,0,0,0);
-    result := System.DateUtils.IsInLeapYear(dt);
-//    Result := ( nYear mod 4 = 0 ) and
-//      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    dt := encodedatetime( nYear, 1, 1, 0, 0, 0, 0 );
+    Result := IsInLeapYear( dt );
+    // Result := ( nYear mod 4 = 0 ) and
+    // ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
   end;
 
 { *************************************************************************** }
 function kcMonth( dDate : TDateTime ) : Word;
-//  var
-//    AYear, AMonth, ADay : Word;
+  // var
+  // AYear, AMonth, ADay : Word;
   begin
-    result := System.DateUtils.MonthOf(dDate);
-//
-//    DecodeDate( dDate, AYear, AMonth, ADay );
-//    Result := AMonth;
+    Result := MonthOf( dDate );
+    //
+    // DecodeDate( dDate, AYear, AMonth, ADay );
+    // Result := AMonth;
   end;
 
 { *************************************************************************** }
 function kcMonthDays( nMonth, nYear : Integer ) : Integer;
-//  const
-//    DaysPerMonth : array [ 1 .. 12 ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
-//      31, 30, 31, 30, 31 );
+  // const
+  // DaysPerMonth : array [ 1 .. 12 ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
+  // 31, 30, 31, 30, 31 );
   begin
-    result := System.DateUtils.DaysInAMonth(nYear,nMonth);
-//
-//
-//    Result := DaysPerMonth[ nMonth ];
-//    if ( nMonth = 2 ) and kcIsLeapYear( nYear )
-//    then
-//      Inc( Result );
+    Result := DaysInAMonth( nYear, nMonth );
+    //
+    //
+    // Result := DaysPerMonth[ nMonth ];
+    // if ( nMonth = 2 ) and kcIsLeapYear( nYear )
+    // then
+    // Inc( Result );
   end;
 
 { *************************************************************************** }
@@ -2215,42 +2329,42 @@ function kcDate2Week( dDate : TDateTime ) : Integer;
 
 { *************************************************************************** }
 function kcWeekOfYear( dDate : TDateTime ) : Integer;
-//  var
-//    X, nDayCount : Integer;
-//    nMonth, nDay, nYear : Word;
+  // var
+  // X, nDayCount : Integer;
+  // nMonth, nDay, nYear : Word;
   begin
-    result := System.DateUtils.WeekOfTheYear(dDate);
-//
-//    nDayCount := 0;
-//
-//    DecodeDate( dDate, nYear, nMonth, nDay );
-//
-//    For X := 1 to ( nMonth - 1 ) do
-//      nDayCount := nDayCount + kcMonthDays( X, nYear );
-//
-//    nDayCount := nDayCount + nDay;
-//
-//    Result := ( ( nDayCount div 7 ) + 1 );
+    Result := WeekOfTheYear( dDate );
+    //
+    // nDayCount := 0;
+    //
+    // DecodeDate( dDate, nYear, nMonth, nDay );
+    //
+    // For X := 1 to ( nMonth - 1 ) do
+    // nDayCount := nDayCount + kcMonthDays( X, nYear );
+    //
+    // nDayCount := nDayCount + nDay;
+    //
+    // Result := ( ( nDayCount div 7 ) + 1 );
 
   end;
 
 { *************************************************************************** }
 function kcDayOfYear( dDate : TDateTime ) : Integer;
-//  var
-//    X, nDayCount : Integer;
-//    nMonth, nDay, nYear : Word;
+  // var
+  // X, nDayCount : Integer;
+  // nMonth, nDay, nYear : Word;
   begin
-    result := System.DateUtils.DayOfTheYear(dDate);
-//
-//
-//    nDayCount := 0;
-//
-//    DecodeDate( dDate, nYear, nMonth, nDay );
-//
-//    For X := 1 to ( nMonth - 1 ) do
-//      nDayCount := nDayCount + kcMonthDays( X, nYear );
-//
-//    Result := nDayCount + nDay;
+    Result := DayOfTheYear( dDate );
+    //
+    //
+    // nDayCount := 0;
+    //
+    // DecodeDate( dDate, nYear, nMonth, nDay );
+    //
+    // For X := 1 to ( nMonth - 1 ) do
+    // nDayCount := nDayCount + kcMonthDays( X, nYear );
+    //
+    // Result := nDayCount + nDay;
 
   end;
 
@@ -2316,69 +2430,69 @@ function kcEaster( nYear : Integer ) : TDateTime;
 { *************************************************************************** }
 function kcDayOfWeek( dDate : TDateTime ) : Integer;
   begin
-    result := System.DateUtils.DayOfTheWeek(dDate);
-//    MonthOf(dDate);
-//    Result := Trunc( dDate ) mod 7 + 1;
+    Result := DayOfTheWeek( dDate );
+    // MonthOf(dDate);
+    // Result := Trunc( dDate ) mod 7 + 1;
   end;
 
 { *************************************************************************** }
 function kcIncDate( dDate : TDateTime ) : TDateTime;
-//  var
-//    AYear, AMonth, ADay : Word;
+  // var
+  // AYear, AMonth, ADay : Word;
   begin
-    result := System.DateUtils.IncDay(dDate,1);
+    Result := IncDay( dDate, 1 );
 
-//    DecodeDate( dDate, AYear, AMonth, ADay );
-//
-//    if ( ( ADay + 1 ) > kcMonthDays( AMonth, AYear ) )
-//    then
-//    begin
-//      if ( AMonth + 1 ) > 12
-//      then
-//      begin
-//        AMonth := 1;
-//        AYear := AYear + 1;
-//      end
-//      else
-//        AMonth := AMonth + 1;
-//
-//      ADay := 1;
-//    end
-//    else
-//      ADay := ADay + 1;
-//
-//    Result := EncodeDate( AYear, AMonth, ADay );
-//
+    // DecodeDate( dDate, AYear, AMonth, ADay );
+    //
+    // if ( ( ADay + 1 ) > kcMonthDays( AMonth, AYear ) )
+    // then
+    // begin
+    // if ( AMonth + 1 ) > 12
+    // then
+    // begin
+    // AMonth := 1;
+    // AYear := AYear + 1;
+    // end
+    // else
+    // AMonth := AMonth + 1;
+    //
+    // ADay := 1;
+    // end
+    // else
+    // ADay := ADay + 1;
+    //
+    // Result := EncodeDate( AYear, AMonth, ADay );
+    //
   end;
 
 { *************************************************************************** }
 function kcDecdate( dDate : TDateTime ) : TDateTime;
-//  var
-//    AYear, AMonth, ADay : Word;
+  // var
+  // AYear, AMonth, ADay : Word;
   begin
-    result := System.DateUtils.IncDay(dDate,-1);
-//
-//    DecodeDate( dDate, AYear, AMonth, ADay );
-//
-//    if ( ADay = 1 )
-//    then
-//    begin
-//      if ( AMonth - 1 ) < 1
-//      then
-//      begin
-//        AMonth := 12;
-//        AYear := AYear - 1;
-//      end
-//      else
-//        AMonth := AMonth - 1;
-//
-//      ADay := kcMonthDays( AMonth, AYear );
-//    end
-//    else
-//      ADay := ADay - 1;
-//
-//    Result := EncodeDate( AYear, AMonth, ADay );
-//
+    Result := IncDay( dDate, - 1 );
+    //
+    // DecodeDate( dDate, AYear, AMonth, ADay );
+    //
+    // if ( ADay = 1 )
+    // then
+    // begin
+    // if ( AMonth - 1 ) < 1
+    // then
+    // begin
+    // AMonth := 12;
+    // AYear := AYear - 1;
+    // end
+    // else
+    // AMonth := AMonth - 1;
+    //
+    // ADay := kcMonthDays( AMonth, AYear );
+    // end
+    // else
+    // ADay := ADay - 1;
+    //
+    // Result := EncodeDate( AYear, AMonth, ADay );
+    //
   end;
 
 { *************************************************************************** }
@@ -2446,34 +2560,34 @@ function kcAddDates( dMin, dMax : TDateTime ) : Integer;
 function kcIncDateBy(
   dDate  : TDateTime;
   nValue : Integer ) : TDateTime;
-//  var
-//    AYear, AMonth, ADay : Word;
-//    APreMonth, APreYear : Word;
+  // var
+  // AYear, AMonth, ADay : Word;
+  // APreMonth, APreYear : Word;
   begin
-    result := System.DateUtils.IncDay(dDate,nValue);
+    Result := IncDay( dDate, nValue );
 
-//    DecodeDate( dDate, AYear, AMonth, ADay );
-//    APreMonth := AMonth;
-//    APreYear := AYear;
-//
-//    if ( ( ADay + nValue ) > kcMonthDays( AMonth, AYear ) )
-//    then
-//    begin
-//      if ( AMonth + 1 ) > 12
-//      then
-//      begin
-//        AMonth := 1;
-//        AYear := AYear + 1;
-//      end
-//      else
-//        AMonth := AMonth + 1;
-//
-//      ADay := ( 0 - ( kcMonthDays( APreMonth, APreYear ) - ADay ) );
-//    end;
-//
-//    ADay := ADay + nValue;
-//
-//    Result := EncodeDate( AYear, AMonth, ADay );
+    // DecodeDate( dDate, AYear, AMonth, ADay );
+    // APreMonth := AMonth;
+    // APreYear := AYear;
+    //
+    // if ( ( ADay + nValue ) > kcMonthDays( AMonth, AYear ) )
+    // then
+    // begin
+    // if ( AMonth + 1 ) > 12
+    // then
+    // begin
+    // AMonth := 1;
+    // AYear := AYear + 1;
+    // end
+    // else
+    // AMonth := AMonth + 1;
+    //
+    // ADay := ( 0 - ( kcMonthDays( APreMonth, APreYear ) - ADay ) );
+    // end;
+    //
+    // ADay := ADay + nValue;
+    //
+    // Result := EncodeDate( AYear, AMonth, ADay );
 
   end;
 
@@ -2481,34 +2595,141 @@ function kcIncDateBy(
 function kcDecDateBy(
   dDate  : TDateTime;
   nValue : Integer ) : TDateTime;
-//  var
-//    AYear, AMonth, ADay : Word;
-    // hint  APreMonth, APreYear: Word;
+  // var
+  // AYear, AMonth, ADay : Word;
+  // hint  APreMonth, APreYear: Word;
   begin
-    result := System.DateUtils.IncDay(dDate,nValue);
+    Result := IncDay( dDate, nValue );
 
-//    DecodeDate( dDate, AYear, AMonth, ADay );
-//
-//    If ( ADay <= nValue )
-//    then
-//    begin
-//      if AMonth = 1
-//      then
-//      begin
-//        AMonth := 12;
-//        AYear := AYear - 1;
-//      end
-//      else
-//        AMonth := AMonth - 1;
-//
-//      ADay := ( kcMonthDays( AMonth, AYear ) + ADay );
-//
-//    end;
-//
-//    ADay := ADay - nValue;
-//
-//    Result := EncodeDate( AYear, AMonth, ADay );
-//
+    // DecodeDate( dDate, AYear, AMonth, ADay );
+    //
+    // If ( ADay <= nValue )
+    // then
+    // begin
+    // if AMonth = 1
+    // then
+    // begin
+    // AMonth := 12;
+    // AYear := AYear - 1;
+    // end
+    // else
+    // AMonth := AMonth - 1;
+    //
+    // ADay := ( kcMonthDays( AMonth, AYear ) + ADay );
+    //
+    // end;
+    //
+    // ADay := ADay - nValue;
+    //
+    // Result := EncodeDate( AYear, AMonth, ADay );
+    //
   end;
+
+{ TKingWeekLabel }
+
+procedure TKingWeekLabel.Change;
+//  var
+//    X : Integer;
+  begin
+    if Assigned( FOnChange )
+    then
+      FOnChange( Self );
+
+//    if FHookCount > 0
+//    then
+//      for X := 1 to FHookCount do
+//      begin
+//        FHookEvent := FHooks[ X ];
+//        FHookEvent( Self );
+//      end;
+
+end;
+
+constructor TKingWeekLabel.Create(AOwner: TComponent);
+  var
+    I : Integer;
+  begin
+    inherited Create( AOwner );
+    FIncludeCaption := True;
+    for I := 0 to TForm( AOwner ).ComponentCount - 1 do
+    begin
+      if TForm( AOwner ).Components[ I ] is TKingCalendar
+      then
+      begin
+        CalendarSource := TKingCalendar( TForm( AOwner ).Components[ I ] );
+        Break;
+      end;
+    end;
+    self.AutoSize := True;
+
+end;
+
+procedure TKingWeekLabel.DateChange(Sender: TObject);
+begin
+    UpdateLabel;
+end;
+
+procedure TKingWeekLabel.Loaded;
+begin
+    inherited Loaded;
+
+    UpdateLabel;
+
+    if ( FCalendarSource <> nil )
+    then
+      CalendarSource.HookEvent := DateChange;
+
+end;
+
+procedure TKingWeekLabel.Notification(AComponent: TComponent;
+  Operation: TOperation);
+begin
+    inherited Notification( AComponent, Operation );
+
+    { If the wired TKingCalendar has been deleted, NIL the connection }
+    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+    then
+      FCalendarSource := nil;
+
+end;
+
+procedure TKingWeekLabel.SetFormat(Value: String);
+begin
+    if ( FCalendarSource <> nil )
+    then
+      UpdateLabel;
+
+end;
+
+procedure TKingWeekLabel.SetIncludeCaption(Value: Boolean);
+begin
+  FIncludeCaption := Value;
+  UpdateLabel;
+end;
+
+procedure TKingWeekLabel.SetSource(Value: TKingCalendar);
+begin
+    FCalendarSource := Value;
+    UpdateLabel;
+
+end;
+
+procedure TKingWeekLabel.UpdateLabel;
+  begin
+
+    if ( FCalendarSource <> nil )
+    then
+    begin
+      if FIncludeCaption then
+        Caption := 'Week: ' + WeekOfTheYear( CalendarSource.CalendarDate ).ToString
+      else
+        Caption := WeekOfTheYear( CalendarSource.CalendarDate ).ToString;
+    end;
+    self.Invalidate;
+
+    if not ( csLoading in ComponentState )
+      then
+        Change;
+end;
 
 end.

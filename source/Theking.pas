@@ -47,6 +47,7 @@ uses
   System.SysUtils,
   System.Variants,
   System.Classes,
+  System.DateUtils,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -497,8 +498,6 @@ type
 
 implementation
 
-uses
-  System.DateUtils;
 
 { //\\ 1.2 }
 { **************************************************************************** }
@@ -611,6 +610,11 @@ constructor TKingCalendar.Create( AOwner : TComponent );
     FShowBars := False;
     { //\\ End 1.2 }
 
+    self.Font.Name := 'Segoe UI';
+    self.FTextFont.Name := 'Segoe UI';
+    self.FTitleFont.Name := 'Segoe UI';
+
+
   end;
 
 { **************************************************************************** }
@@ -707,17 +711,17 @@ function TKingCalendar.DaysThisMonth : Integer;
 
 { **************************************************************************** }
 function TKingCalendar.DaysInMonth( nMonth, nYear : Integer ) : Integer;
-//  const
-//    DaysPerMonth : array [ TMonth ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
-//      31, 30, 31, 30, 31 );
-// Note - Use Delphi's built in routine
+  // const
+  // DaysPerMonth : array [ TMonth ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
+  // 31, 30, 31, 30, 31 );
+  // Note - Use Delphi's built in routine
 
   begin
-//    Result :=  DaysPerMonth[ nMonth ];
-    Result :=  System.DateUtils.DaysinAMonth(nYear, nMonth);
-//    if ( Month = 2 ) and IsLeapYear( nYear )
-//    then
-//      Inc( Result ); { leap-year Feb is special }
+    // Result :=  DaysPerMonth[ nMonth ];
+    Result := DaysinAMonth( nYear, nMonth );
+    // if ( Month = 2 ) and IsLeapYear( nYear )
+    // then
+    // Inc( Result ); { leap-year Feb is special }
   end;
 
 { **************************************************************************** }
@@ -913,12 +917,12 @@ function TKingCalendar.LeapYear : Boolean;
 { **************************************************************************** }
 function TKingCalendar.IsLeapYear( nYear : Integer ) : Boolean;
   begin
-    result := System.SysUtils.IsLeapYear(nYear);
+    Result := IsLeapYear( nYear );
 
     // Use Delphi's built in check
 
-//    Result := ( nYear mod 4 = 0 ) and
-//      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    // Result := ( nYear mod 4 = 0 ) and
+    // ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
   end;
 
 { **************************************************************************** }
@@ -1052,8 +1056,11 @@ procedure TKingCalendar.SetDateElement(
           2 :
             begin
               if Assigned( FMonthChange )
-              then begin
-                if AMonth > 12 then begin
+              then
+              begin
+                if AMonth > 12
+                then
+                begin
                   AMonth := AMonth mod 12;
                 end;
                 FMonthChange( Self, AMonth );

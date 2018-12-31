@@ -117,7 +117,7 @@ object FrmCalEdit: TFrmCalEdit
         Width = 317
         Height = 119
         Day = 30
-        Month = 6
+        Month = 12
         Year = 2018
         TabOrder = 2
         TextPlacement = ktTopLeft
@@ -314,7 +314,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        Month = 6
+        Month = 12
         ParentFont = False
         Year = 2018
         TabOrder = 2
@@ -481,7 +481,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Height = -8
         Font.Name = 'Small Fonts'
         Font.Style = []
-        Month = 6
+        Month = 12
         ParentFont = False
         Year = 2018
         TabOrder = 0

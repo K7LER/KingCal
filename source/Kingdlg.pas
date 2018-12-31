@@ -36,7 +36,6 @@
 { *                                                                                * }
 { * ***** END LICENSE BLOCK *****                                                  * }
 
-
 unit KingDlg;
 
 interface
@@ -55,7 +54,7 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Spin,
+  VCL.Samples.Spin,
   kingpop;
 
 type
@@ -117,7 +116,7 @@ type
 
 implementation
 
-//uses
+// uses
 // winprocs;
 
 {$R KDLG32.RES}
@@ -272,4 +271,3 @@ procedure TKingDateDialog.BtnClick( Sender : TObject );
   end;
 
 end.
-

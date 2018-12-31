@@ -125,12 +125,12 @@ procedure TkcPopup.KingCalendar1Change( Sender : TObject );
     cDate : String;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
-    cDate := FormatDateTime( 'mmmm d, yyyy', KingCalendar1.CalendarDate, formatSettings );
-//    cDate := FormatDateTime( 'mmmm d, yyyy', KingCalendar1.CalendarDate );
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    cDate := FormatDateTime( 'mmmm d, yyyy', KingCalendar1.CalendarDate,
+      formatSettings );
+    // cDate := FormatDateTime( 'mmmm d, yyyy', KingCalendar1.CalendarDate );
     Caption := cDate;
   end;
 

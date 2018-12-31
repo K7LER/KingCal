@@ -155,17 +155,16 @@ procedure TKcCalc.SpeedButton2Click( Sender : TObject );
     cNewDate : TDateTime;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
     if not ( Date2.Text = '' )
     then
     begin
       cNewDate := Date1.Value + StrToInt( Date2.Text );
-//      NewDate.Text := DateTimeToStr( cNewDate);
+      // NewDate.Text := DateTimeToStr( cNewDate);
       // Need to pass the local settings in case non-standard date settings
-      NewDate.Text := DateTimeToStr( cNewDate, formatSettings);
+      NewDate.Text := DateTimeToStr( cNewDate, formatSettings );
     end;
   end;
 
@@ -174,16 +173,16 @@ procedure TKcCalc.SpeedButton1Click( Sender : TObject );
     cNewDate : TDateTime;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
     if not ( Date2.Text = '' )
     then
     begin
       cNewDate := Date1.Value - StrToInt( Date2.Text );
       // Need to pass the local settings in case non-standard date settings
-      NewDate.Text := DateTimeToStr( cNewDate,formatSettings );
-//      NewDate.Text := DateTimeToStr( cNewDate );
+      NewDate.Text := DateTimeToStr( cNewDate, formatSettings );
+      // NewDate.Text := DateTimeToStr( cNewDate );
     end;
   end;
 

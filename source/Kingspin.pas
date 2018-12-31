@@ -47,14 +47,15 @@ uses
   System.SysUtils,
   System.Variants,
   System.Classes,
+  System.DateUtils,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Menus,
   Vcl.Dialogs,
   Vcl.StdCtrls,
-  Vcl.Buttons,
-  Spin;
+  VCL.Samples.Spin,
+  Vcl.Buttons;
 
 type
 
@@ -219,29 +220,25 @@ type
 
 implementation
 
-uses
-  System.DateUtils,
-  WinProcs;
-
 function kcIsLeapYear( nYear : Integer ) : Boolean;
   begin
-    result := System.SysUtils.IsLeapYear(nYear);
+    result := IsLeapYear( nYear );
 
-//    Result := ( nYear mod 4 = 0 ) and
-//      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    // Result := ( nYear mod 4 = 0 ) and
+    // ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
   end;
 
 function kcMonthDays( nMonth, nYear : Integer ) : Integer;
-//  const
-//    DaysPerMonth : array [ 1 .. 12 ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
-//      31, 30, 31, 30, 31 );
+  // const
+  // DaysPerMonth : array [ 1 .. 12 ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
+  // 31, 30, 31, 30, 31 );
   begin
-    result :=  System.DateUtils.DaysInAMonth(nYear,nMonth);
+    result := DaysInAMonth( nYear, nMonth );
 
-//    Result := DaysPerMonth[ nMonth ];
-//    if ( nMonth = 2 ) and kcIsLeapYear( nYear )
-//    then
-//      Inc( Result );
+    // Result := DaysPerMonth[ nMonth ];
+    // if ( nMonth = 2 ) and kcIsLeapYear( nYear )
+    // then
+    // Inc( Result );
   end;
 
 { TKingTimeSpin }
@@ -324,7 +321,7 @@ procedure TKingTimeSpin.KeyPress( var Key : Char );
 
 function TKingTimeSpin.IsValidChar( Key : Char ) : Boolean;
   begin
-    Result := ( ( Key < #32 ) and ( Key <> Chr( VK_RETURN ) ) );
+    result := ( ( Key < #32 ) and ( Key <> Chr( VK_RETURN ) ) );
   end;
 
 procedure TKingTimeSpin.CreateParams( var Params : TCreateParams );
@@ -392,7 +389,7 @@ function TKingTimeSpin.GetMinHeight : Integer;
     if I > Metrics.tmHeight
     then
       I := Metrics.tmHeight;
-    Result := Metrics.tmHeight + I div 4 + GetSystemMetrics
+    result := Metrics.tmHeight + I div 4 + GetSystemMetrics
       ( SM_CYBORDER ) * 4 + 2;
   end;
 
@@ -420,7 +417,7 @@ function TKingTimeSpin.GetValue : TDateTime;
     then
       Text := FStartTime;
 
-    Result := StrToTime( Text );
+    result := StrToTime( Text );
   end;
 
 procedure TKingTimeSpin.SetValue( NewValue : TDateTime );
@@ -428,12 +425,11 @@ procedure TKingTimeSpin.SetValue( NewValue : TDateTime );
     NewTime : String;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
     DateTimeToString( NewTime, TimeFormat, NewValue, formatSettings );
-//    DateTimeToString( NewTime, TimeFormat, NewValue );
+    // DateTimeToString( NewTime, TimeFormat, NewValue );
     Text := NewTime;
   end;
 
@@ -469,7 +465,7 @@ function TKingTimeSpin.IncrementTime( nIncBy : Integer ) : TDateTime;
 
     Min := min2 + nIncBy;
 
-    Result := EncodeTime( Hour, Min, 0, 0 );
+    result := EncodeTime( Hour, Min, 0, 0 );
 
   end;
 
@@ -500,7 +496,7 @@ function TKingTimeSpin.DecrementTime( nIncBy : Integer ) : TDateTime;
       Hour := Hour + 1;
     end;
 
-    Result := EncodeTime( Hour, Min, 0, 0 );
+    result := EncodeTime( Hour, Min, 0, 0 );
 
   end;
 
@@ -528,13 +524,13 @@ constructor TKingDateSpin.Create( AOwner : TComponent );
     FButton.OnDownClick := DownClick;
 
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-    FDateFormat := FormatSettings.ShortDateFormat; { 'MM/DD/YY'; }
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    FDateFormat := formatSettings.ShortDateFormat; { 'MM/DD/YY'; }
 
     DateTimeToString( FStartDate, FDateFormat, Now, formatSettings );
-//    DateTimeToString( FStartDate, FDateFormat, Date );
+    // DateTimeToString( FStartDate, FDateFormat, Date );
     Text := FStartDate;
     Width := 89;
     ControlStyle := ControlStyle - [ csSetCaption ];
@@ -609,7 +605,7 @@ procedure TKingDateSpin.KeyPress( var Key : Char );
 
 function TKingDateSpin.IsValidChar( Key : Char ) : Boolean;
   begin
-    Result := ( ( Key < #32 ) and ( Key <> Chr( VK_RETURN ) ) );
+    result := ( ( Key < #32 ) and ( Key <> Chr( VK_RETURN ) ) );
   end;
 
 procedure TKingDateSpin.CreateParams( var Params : TCreateParams );
@@ -677,7 +673,7 @@ function TKingDateSpin.GetMinHeight : Integer;
     if I > Metrics.tmHeight
     then
       I := Metrics.tmHeight;
-    Result := Metrics.tmHeight + I div 4 + GetSystemMetrics
+    result := Metrics.tmHeight + I div 4 + GetSystemMetrics
       ( SM_CYBORDER ) * 4 + 2;
   end;
 
@@ -698,24 +694,22 @@ procedure TKingDateSpin.CMExit( var Message : TCMExit );
   end;
 
 function TKingDateSpin.GetValue : TDateTime;
-//  var
-//    cTemp : String;
+  // var
+  // cTemp : String;
   begin
     if ( Text = '' )
     then
       Text := FStartDate;
 
-     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
-
-//    cTemp := FormatSettings.ShortDateFormat;
-//    FormatSettings.ShortDateFormat := FDateFormat;
-    Result := StrToDateTime( Text, formatSettings );
-//    Result := StrToDateTime( Text );
-//    FormatSettings.ShortDateFormat := cTemp;
+    // Furnish the locale format settings record
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    // cTemp := FormatSettings.ShortDateFormat;
+    // FormatSettings.ShortDateFormat := FDateFormat;
+    result := StrToDateTime( Text, formatSettings );
+    // Result := StrToDateTime( Text );
+    // FormatSettings.ShortDateFormat := cTemp;
 
   end;
 
@@ -724,12 +718,12 @@ procedure TKingDateSpin.SetValue( NewValue : TDateTime );
     NewDate : String;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
-    DateTimeToString( NewDate, FormatSettings.ShortDateFormat, NewValue,formatSettings );
-//    DateTimeToString( NewDate, DateFormat, NewValue );
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    DateTimeToString( NewDate, formatSettings.ShortDateFormat, NewValue,
+      formatSettings );
+    // DateTimeToString( NewDate, DateFormat, NewValue );
     Text := NewDate;
   end;
 

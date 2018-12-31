@@ -54,7 +54,7 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Spin,
+  VCL.Samples.Spin,
   TheKing;
 
 type
@@ -168,9 +168,6 @@ type
 
 implementation
 
-uses
-  WinProcs;
-
 { TKingHMSpin }
 constructor TKingHMSpin.Create( AOwner : TComponent );
   begin
@@ -199,7 +196,6 @@ destructor TKingHMSpin.Destroy;
     FButton := nil;
     inherited Destroy;
   end;
-
 
 procedure TKingHMSpin.GetDivOffset;
   var
@@ -289,7 +285,6 @@ procedure TKingHMSpin.SetStartTime( oTime : String );
     FStartTime := oTime;
     Text := FStartTime;
   end;
-
 
 procedure TKingHMSpin.GotoPre( Sender : TObject );
   begin
@@ -623,13 +618,12 @@ procedure TKingHMSpin.SetValue( NewValue : TDateTime );
   var
     NewTime : String;
   begin
-     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
+    // Furnish the locale format settings record
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
     DateTimeToString( NewTime, TimeFormat, NewValue, formatSettings );
-//    DateTimeToString( NewTime, TimeFormat, NewValue );
+    // DateTimeToString( NewTime, TimeFormat, NewValue );
     Text := NewTime;
 
     GetDivOffset;
@@ -856,7 +850,6 @@ procedure TKingHMSpin.DecrementBy( nIncBy : Integer );
   begin
     Value := DecrementTime( nIncBy );
   end;
-
 
 function TKingHMSpin.GetSelected : boolean;
   begin

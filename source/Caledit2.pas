@@ -36,7 +36,6 @@
 { *                                                                                * }
 { * ***** END LICENSE BLOCK *****                                                  * }
 
-
 unit Caledit2;
 
 interface

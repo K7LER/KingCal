@@ -36,7 +36,6 @@
 { *                                                                                * }
 { * ***** END LICENSE BLOCK *****                                                  * }
 
-
 unit KingSpn1;
 
 interface
@@ -55,7 +54,7 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Spin,
+  VCL.Samples.Spin,
   TheKing;
 
 type
@@ -171,9 +170,6 @@ type
 
 implementation
 
-uses
-  WinProcs;
-
 function kcIsLeapYear( nYear : Integer ) : boolean;
   begin
     Result := ( nYear mod 4 = 0 ) and
@@ -204,14 +200,13 @@ constructor TKingMDYSpin.Create( AOwner : TComponent );
     FButton.OnDownClick := DownClick;
     // Grab the local settings, in case International Formats
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
-    FDateFormat := FormatSettings.ShortDateFormat; { 'MM/DD/YY'; }
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    FDateFormat := formatSettings.ShortDateFormat; { 'MM/DD/YY'; }
 
     DateTimeToString( FStartDate, FDateFormat, Date, formatSettings );
-//    DateTimeToString( FStartDate, FDateFormat, Date );
+    // DateTimeToString( FStartDate, FDateFormat, Date );
     Text := FStartDate;
     Width := 89;
     ControlStyle := ControlStyle - [ csSetCaption ];
@@ -225,7 +220,6 @@ destructor TKingMDYSpin.Destroy;
     FButton := nil;
     inherited Destroy;
   end;
-
 
 procedure TKingMDYSpin.GetDivOffset;
   var
@@ -585,24 +579,23 @@ procedure TKingMDYSpin.CMExit( var Message : TCMExit );
   end;
 
 function TKingMDYSpin.GetValue : TDateTime;
-//  var
-//    cTemp : String;
+  // var
+  // cTemp : String;
   begin
     if ( Text = '' )
     then
       Text := FStartDate;
 
-     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
-//    cTemp := FormatSettings.ShortDateFormat;
-//    FormatSettings.ShortDateFormat := FDateFormat;
+    // Furnish the locale format settings record
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    // cTemp := FormatSettings.ShortDateFormat;
+    // FormatSettings.ShortDateFormat := FDateFormat;
     Result := StrToDateTime( Text, formatSettings );
-//    Result := StrToDateTime( Text );
+    // Result := StrToDateTime( Text );
 
-//    FormatSettings.ShortDateFormat := cTemp;
+    // FormatSettings.ShortDateFormat := cTemp;
   end;
 
 procedure TKingMDYSpin.SetValue( NewValue : TDateTime );
@@ -610,12 +603,12 @@ procedure TKingMDYSpin.SetValue( NewValue : TDateTime );
     NewDate : String;
   begin
     // Furnish the locale format settings record
-    {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-    {$WARN SYMBOL_PLATFORM ON}
-
-    DateTimeToString( NewDate, FormatSettings.ShortDateFormat, NewValue, formatSettings );
-//    DateTimeToString( NewDate, DateFormat, NewValue );
+{$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+{$WARN SYMBOL_PLATFORM ON}
+    DateTimeToString( NewDate, formatSettings.ShortDateFormat, NewValue,
+      formatSettings );
+    // DateTimeToString( NewDate, DateFormat, NewValue );
 
     Text := NewDate;
 
@@ -649,7 +642,7 @@ function TKingMDYSpin.GetSelected : boolean;
   // hint    sel : boolean;
   begin
     Result := ( SelText <> '' );
-end;
+  end;
 
 function TKingMDYSpin.GetSelValue : word;
   var

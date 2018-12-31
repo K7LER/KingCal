@@ -85,7 +85,6 @@ var
 implementation
 
 {$R *.DFM}
-
 { *************************************************************************** }
 
 procedure TFrmAttach.SetContainer( Value : TWinControl );
