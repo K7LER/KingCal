@@ -202,8 +202,16 @@ constructor TKingMDYSpin.Create( AOwner : TComponent );
     FButton.FocusControl := Self;
     FButton.OnUpClick := UpClick;
     FButton.OnDownClick := DownClick;
+    // Grab the local settings, in case International Formats
+    // Furnish the locale format settings record
+    {$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+    {$WARN SYMBOL_PLATFORM ON}
+
     FDateFormat := FormatSettings.ShortDateFormat; { 'MM/DD/YY'; }
-    DateTimeToString( FStartDate, FDateFormat, Date );
+
+    DateTimeToString( FStartDate, FDateFormat, Date, formatSettings );
+//    DateTimeToString( FStartDate, FDateFormat, Date );
     Text := FStartDate;
     Width := 89;
     ControlStyle := ControlStyle - [ csSetCaption ];
@@ -577,24 +585,38 @@ procedure TKingMDYSpin.CMExit( var Message : TCMExit );
   end;
 
 function TKingMDYSpin.GetValue : TDateTime;
-  var
-    cTemp : String;
+//  var
+//    cTemp : String;
   begin
     if ( Text = '' )
     then
       Text := FStartDate;
 
-    cTemp := FormatSettings.ShortDateFormat;
-    FormatSettings.ShortDateFormat := FDateFormat;
-    Result := StrToDateTime( Text );
-    FormatSettings.ShortDateFormat := cTemp;
+     // Furnish the locale format settings record
+    {$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+    {$WARN SYMBOL_PLATFORM ON}
+
+//    cTemp := FormatSettings.ShortDateFormat;
+//    FormatSettings.ShortDateFormat := FDateFormat;
+    Result := StrToDateTime( Text, formatSettings );
+//    Result := StrToDateTime( Text );
+
+//    FormatSettings.ShortDateFormat := cTemp;
   end;
 
 procedure TKingMDYSpin.SetValue( NewValue : TDateTime );
   var
     NewDate : String;
   begin
-    DateTimeToString( NewDate, DateFormat, NewValue );
+    // Furnish the locale format settings record
+    {$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+    {$WARN SYMBOL_PLATFORM ON}
+
+    DateTimeToString( NewDate, FormatSettings.ShortDateFormat, NewValue, formatSettings );
+//    DateTimeToString( NewDate, DateFormat, NewValue );
+
     Text := NewDate;
 
     GetDivOffset;

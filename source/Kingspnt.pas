@@ -623,7 +623,13 @@ procedure TKingHMSpin.SetValue( NewValue : TDateTime );
   var
     NewTime : String;
   begin
-    DateTimeToString( NewTime, TimeFormat, NewValue );
+     // Furnish the locale format settings record
+    {$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+    {$WARN SYMBOL_PLATFORM ON}
+
+    DateTimeToString( NewTime, TimeFormat, NewValue, formatSettings );
+//    DateTimeToString( NewTime, TimeFormat, NewValue );
     Text := NewTime;
 
     GetDivOffset;

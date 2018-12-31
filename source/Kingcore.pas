@@ -41,8 +41,8 @@ unit KingCore;
 interface
 
 const
-  vcdVersion = 'v2.0'; { * KingCalendar Version Number   * }
-  vcdBuildDate = '06/28/18'; { * KingCalendar Build Date       * }
+  vcdVersion = 'v2.0.6'; { * KingCalendar Version Number   * }
+  vcdBuildDate = '12/30/18'; { * KingCalendar Build Date       * }
 
 implementation
 

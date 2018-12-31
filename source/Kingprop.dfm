@@ -69,7 +69,7 @@ object VcdAboutBox: TVcdAboutBox
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Copyright '#169' 1995-2018 Mark Lussier and AppVision'
+    Caption = 'Copyright '#169' 1995-2019 Mark Lussier and AppVision'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13

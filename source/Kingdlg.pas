@@ -272,3 +272,4 @@ procedure TKingDateDialog.BtnClick( Sender : TObject );
   end;
 
 end.
+

@@ -319,7 +319,7 @@ object KcCalc: TKcCalc
     Width = 81
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '5/15/95'
+    StartDate = '12/30/18'
     AutoSelect = False
     ReadOnly = True
   end
@@ -336,7 +336,7 @@ object KcCalc: TKcCalc
     Width = 81
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '5/15/95'
+    StartDate = '12/30/18'
     AutoSelect = False
     ReadOnly = True
   end
@@ -346,7 +346,7 @@ object KcCalc: TKcCalc
     Width = 89
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '5/15/95'
+    StartDate = '12/31/18'
     AutoSelect = False
     ReadOnly = True
   end
@@ -395,7 +395,7 @@ object KcCalc: TKcCalc
     Width = 89
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '5/15/95'
+    StartDate = '12/30/18'
     AutoSelect = False
     ReadOnly = True
   end

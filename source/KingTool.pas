@@ -563,6 +563,9 @@ implementation
 
 {$R KCAL32.RES}
 
+uses
+  System.DateUtils;
+
 const
 
   { * TKingNavigator Glpyh Suffix's in the KINGCAL.RES * }
@@ -661,7 +664,8 @@ constructor TYearSpin.Create( AOwner : TComponent );
     inherited Create( AOwner );
     { Set the Base Ranges of selectable years }
     FMinYear := 1980;
-    FMaxYear := 2020;
+    FMaxYear := 2040;
+//    FMaxYear := 2020;
 
     for I := 0 to TForm( AOwner ).ComponentCount - 1 do
     begin
@@ -2128,12 +2132,21 @@ procedure TKingLabel.Notification(
 procedure TKingLabel.UpdateLabel;
   var
     cDate : String;
+    ldf: string;
   begin
 
     if ( FCalendarSource <> nil )
     then
     begin
-      DateTimeToString( cDate, FFormat, CalendarSource.CalendarDate );
+      // Furnish the locale format settings record
+      {$WARN SYMBOL_PLATFORM OFF}
+      formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+      {$WARN SYMBOL_PLATFORM ON}
+
+      ldf := formatSettings.LongDateFormat;
+
+      DateTimeToString( cDate, ldf, CalendarSource.CalendarDate, formatSettings );
+//      DateTimeToString( cDate, FFormat, CalendarSource.CalendarDate );
       Caption := cDate;
     end;
 
@@ -2143,36 +2156,55 @@ procedure TKingLabel.UpdateLabel;
   KingCalendar Components for Delphi Support Functions
   =========================================================================== }
 function kcDateToStr( dDate : TDateTime ) : String;
+  var
+    sdf: string;
   begin
-    DateTimeToString( Result, 'mm/dd/yy', dDate );
+    // Furnish the locale format settings record
+    {$WARN SYMBOL_PLATFORM OFF}
+    formatSettings := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+    {$WARN SYMBOL_PLATFORM ON}
+
+    sdf := formatSettings.ShortDateFormat;
+    DateTimeToString( Result, sdf, dDate, formatSettings );
+//    DateTimeToString( Result, 'mm/dd/yy', dDate );
+
   end;
 
 { *************************************************************************** }
 function kcIsLeapYear( nYear : Integer ) : Boolean;
+  var
+    dt: TDateTime;
   begin
-    Result := ( nYear mod 4 = 0 ) and
-      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    dt := encodedatetime(nyear,1,1,0,0,0,0);
+    result := System.DateUtils.IsInLeapYear(dt);
+//    Result := ( nYear mod 4 = 0 ) and
+//      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
   end;
 
 { *************************************************************************** }
 function kcMonth( dDate : TDateTime ) : Word;
-  var
-    AYear, AMonth, ADay : Word;
+//  var
+//    AYear, AMonth, ADay : Word;
   begin
-    DecodeDate( dDate, AYear, AMonth, ADay );
-    Result := AMonth;
+    result := System.DateUtils.MonthOf(dDate);
+//
+//    DecodeDate( dDate, AYear, AMonth, ADay );
+//    Result := AMonth;
   end;
 
 { *************************************************************************** }
 function kcMonthDays( nMonth, nYear : Integer ) : Integer;
-  const
-    DaysPerMonth : array [ 1 .. 12 ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
-      31, 30, 31, 30, 31 );
+//  const
+//    DaysPerMonth : array [ 1 .. 12 ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
+//      31, 30, 31, 30, 31 );
   begin
-    Result := DaysPerMonth[ nMonth ];
-    if ( nMonth = 2 ) and kcIsLeapYear( nYear )
-    then
-      Inc( Result );
+    result := System.DateUtils.DaysInAMonth(nYear,nMonth);
+//
+//
+//    Result := DaysPerMonth[ nMonth ];
+//    if ( nMonth = 2 ) and kcIsLeapYear( nYear )
+//    then
+//      Inc( Result );
   end;
 
 { *************************************************************************** }
@@ -2183,39 +2215,42 @@ function kcDate2Week( dDate : TDateTime ) : Integer;
 
 { *************************************************************************** }
 function kcWeekOfYear( dDate : TDateTime ) : Integer;
-  var
-    X, nDayCount : Integer;
-    nMonth, nDay, nYear : Word;
+//  var
+//    X, nDayCount : Integer;
+//    nMonth, nDay, nYear : Word;
   begin
-
-    nDayCount := 0;
-
-    DecodeDate( dDate, nYear, nMonth, nDay );
-
-    For X := 1 to ( nMonth - 1 ) do
-      nDayCount := nDayCount + kcMonthDays( X, nYear );
-
-    nDayCount := nDayCount + nDay;
-
-    Result := ( ( nDayCount div 7 ) + 1 );
+    result := System.DateUtils.WeekOfTheYear(dDate);
+//
+//    nDayCount := 0;
+//
+//    DecodeDate( dDate, nYear, nMonth, nDay );
+//
+//    For X := 1 to ( nMonth - 1 ) do
+//      nDayCount := nDayCount + kcMonthDays( X, nYear );
+//
+//    nDayCount := nDayCount + nDay;
+//
+//    Result := ( ( nDayCount div 7 ) + 1 );
 
   end;
 
 { *************************************************************************** }
 function kcDayOfYear( dDate : TDateTime ) : Integer;
-  var
-    X, nDayCount : Integer;
-    nMonth, nDay, nYear : Word;
+//  var
+//    X, nDayCount : Integer;
+//    nMonth, nDay, nYear : Word;
   begin
-
-    nDayCount := 0;
-
-    DecodeDate( dDate, nYear, nMonth, nDay );
-
-    For X := 1 to ( nMonth - 1 ) do
-      nDayCount := nDayCount + kcMonthDays( X, nYear );
-
-    Result := nDayCount + nDay;
+    result := System.DateUtils.DayOfTheYear(dDate);
+//
+//
+//    nDayCount := 0;
+//
+//    DecodeDate( dDate, nYear, nMonth, nDay );
+//
+//    For X := 1 to ( nMonth - 1 ) do
+//      nDayCount := nDayCount + kcMonthDays( X, nYear );
+//
+//    Result := nDayCount + nDay;
 
   end;
 
@@ -2281,65 +2316,69 @@ function kcEaster( nYear : Integer ) : TDateTime;
 { *************************************************************************** }
 function kcDayOfWeek( dDate : TDateTime ) : Integer;
   begin
-    Result := Trunc( dDate ) mod 7 + 1;
+    result := System.DateUtils.DayOfTheWeek(dDate);
+//    MonthOf(dDate);
+//    Result := Trunc( dDate ) mod 7 + 1;
   end;
 
 { *************************************************************************** }
 function kcIncDate( dDate : TDateTime ) : TDateTime;
-  var
-    AYear, AMonth, ADay : Word;
+//  var
+//    AYear, AMonth, ADay : Word;
   begin
+    result := System.DateUtils.IncDay(dDate,1);
 
-    DecodeDate( dDate, AYear, AMonth, ADay );
-
-    if ( ( ADay + 1 ) > kcMonthDays( AMonth, AYear ) )
-    then
-    begin
-      if ( AMonth + 1 ) > 12
-      then
-      begin
-        AMonth := 1;
-        AYear := AYear + 1;
-      end
-      else
-        AMonth := AMonth + 1;
-
-      ADay := 1;
-    end
-    else
-      ADay := ADay + 1;
-
-    Result := EncodeDate( AYear, AMonth, ADay );
-
+//    DecodeDate( dDate, AYear, AMonth, ADay );
+//
+//    if ( ( ADay + 1 ) > kcMonthDays( AMonth, AYear ) )
+//    then
+//    begin
+//      if ( AMonth + 1 ) > 12
+//      then
+//      begin
+//        AMonth := 1;
+//        AYear := AYear + 1;
+//      end
+//      else
+//        AMonth := AMonth + 1;
+//
+//      ADay := 1;
+//    end
+//    else
+//      ADay := ADay + 1;
+//
+//    Result := EncodeDate( AYear, AMonth, ADay );
+//
   end;
 
 { *************************************************************************** }
 function kcDecdate( dDate : TDateTime ) : TDateTime;
-  var
-    AYear, AMonth, ADay : Word;
+//  var
+//    AYear, AMonth, ADay : Word;
   begin
-
-    DecodeDate( dDate, AYear, AMonth, ADay );
-
-    if ( ADay = 1 )
-    then
-    begin
-      if ( AMonth - 1 ) < 1
-      then
-      begin
-        AMonth := 12;
-        AYear := AYear - 1;
-      end
-      else
-        AMonth := AMonth - 1;
-
-      ADay := kcMonthDays( AMonth, AYear );
-    end
-    else
-      ADay := ADay - 1;
-
-    Result := EncodeDate( AYear, AMonth, ADay );
-
+    result := System.DateUtils.IncDay(dDate,-1);
+//
+//    DecodeDate( dDate, AYear, AMonth, ADay );
+//
+//    if ( ADay = 1 )
+//    then
+//    begin
+//      if ( AMonth - 1 ) < 1
+//      then
+//      begin
+//        AMonth := 12;
+//        AYear := AYear - 1;
+//      end
+//      else
+//        AMonth := AMonth - 1;
+//
+//      ADay := kcMonthDays( AMonth, AYear );
+//    end
+//    else
+//      ADay := ADay - 1;
+//
+//    Result := EncodeDate( AYear, AMonth, ADay );
+//
   end;
 
 { *************************************************************************** }
@@ -2407,33 +2446,34 @@ function kcAddDates( dMin, dMax : TDateTime ) : Integer;
 function kcIncDateBy(
   dDate  : TDateTime;
   nValue : Integer ) : TDateTime;
-  var
-    AYear, AMonth, ADay : Word;
-    APreMonth, APreYear : Word;
+//  var
+//    AYear, AMonth, ADay : Word;
+//    APreMonth, APreYear : Word;
   begin
+    result := System.DateUtils.IncDay(dDate,nValue);
 
-    DecodeDate( dDate, AYear, AMonth, ADay );
-    APreMonth := AMonth;
-    APreYear := AYear;
-
-    if ( ( ADay + nValue ) > kcMonthDays( AMonth, AYear ) )
-    then
-    begin
-      if ( AMonth + 1 ) > 12
-      then
-      begin
-        AMonth := 1;
-        AYear := AYear + 1;
-      end
-      else
-        AMonth := AMonth + 1;
-
-      ADay := ( 0 - ( kcMonthDays( APreMonth, APreYear ) - ADay ) );
-    end;
-
-    ADay := ADay + nValue;
-
-    Result := EncodeDate( AYear, AMonth, ADay );
+//    DecodeDate( dDate, AYear, AMonth, ADay );
+//    APreMonth := AMonth;
+//    APreYear := AYear;
+//
+//    if ( ( ADay + nValue ) > kcMonthDays( AMonth, AYear ) )
+//    then
+//    begin
+//      if ( AMonth + 1 ) > 12
+//      then
+//      begin
+//        AMonth := 1;
+//        AYear := AYear + 1;
+//      end
+//      else
+//        AMonth := AMonth + 1;
+//
+//      ADay := ( 0 - ( kcMonthDays( APreMonth, APreYear ) - ADay ) );
+//    end;
+//
+//    ADay := ADay + nValue;
+//
+//    Result := EncodeDate( AYear, AMonth, ADay );
 
   end;
 
@@ -2441,33 +2481,34 @@ function kcIncDateBy(
 function kcDecDateBy(
   dDate  : TDateTime;
   nValue : Integer ) : TDateTime;
-  var
-    AYear, AMonth, ADay : Word;
+//  var
+//    AYear, AMonth, ADay : Word;
     // hint  APreMonth, APreYear: Word;
   begin
+    result := System.DateUtils.IncDay(dDate,nValue);
 
-    DecodeDate( dDate, AYear, AMonth, ADay );
-
-    If ( ADay <= nValue )
-    then
-    begin
-      if AMonth = 1
-      then
-      begin
-        AMonth := 12;
-        AYear := AYear - 1;
-      end
-      else
-        AMonth := AMonth - 1;
-
-      ADay := ( kcMonthDays( AMonth, AYear ) + ADay );
-
-    end;
-
-    ADay := ADay - nValue;
-
-    Result := EncodeDate( AYear, AMonth, ADay );
-
+//    DecodeDate( dDate, AYear, AMonth, ADay );
+//
+//    If ( ADay <= nValue )
+//    then
+//    begin
+//      if AMonth = 1
+//      then
+//      begin
+//        AMonth := 12;
+//        AYear := AYear - 1;
+//      end
+//      else
+//        AMonth := AMonth - 1;
+//
+//      ADay := ( kcMonthDays( AMonth, AYear ) + ADay );
+//
+//    end;
+//
+//    ADay := ADay - nValue;
+//
+//    Result := EncodeDate( AYear, AMonth, ADay );
+//
   end;
 
 end.

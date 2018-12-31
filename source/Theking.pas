@@ -497,6 +497,9 @@ type
 
 implementation
 
+uses
+  System.DateUtils;
+
 { //\\ 1.2 }
 { **************************************************************************** }
 function min( nOne, nTwo : Longint ) : Longint;
@@ -704,14 +707,17 @@ function TKingCalendar.DaysThisMonth : Integer;
 
 { **************************************************************************** }
 function TKingCalendar.DaysInMonth( nMonth, nYear : Integer ) : Integer;
-  const
-    DaysPerMonth : array [ TMonth ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
-      31, 30, 31, 30, 31 );
+//  const
+//    DaysPerMonth : array [ TMonth ] of Integer = ( 31, 28, 31, 30, 31, 30, 31,
+//      31, 30, 31, 30, 31 );
+// Note - Use Delphi's built in routine
+
   begin
-    Result := DaysPerMonth[ nMonth ];
-    if ( Month = 2 ) and IsLeapYear( nYear )
-    then
-      Inc( Result ); { leap-year Feb is special }
+//    Result :=  DaysPerMonth[ nMonth ];
+    Result :=  System.DateUtils.DaysinAMonth(nYear, nMonth);
+//    if ( Month = 2 ) and IsLeapYear( nYear )
+//    then
+//      Inc( Result ); { leap-year Feb is special }
   end;
 
 { **************************************************************************** }
@@ -907,8 +913,12 @@ function TKingCalendar.LeapYear : Boolean;
 { **************************************************************************** }
 function TKingCalendar.IsLeapYear( nYear : Integer ) : Boolean;
   begin
-    Result := ( nYear mod 4 = 0 ) and
-      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    result := System.SysUtils.IsLeapYear(nYear);
+
+    // Use Delphi's built in check
+
+//    Result := ( nYear mod 4 = 0 ) and
+//      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
   end;
 
 { **************************************************************************** }
@@ -1042,8 +1052,12 @@ procedure TKingCalendar.SetDateElement(
           2 :
             begin
               if Assigned( FMonthChange )
-              then
+              then begin
+                if AMonth > 12 then begin
+                  AMonth := AMonth mod 12;
+                end;
                 FMonthChange( Self, AMonth );
+              end;
               if Assigned( FDateChange )
               then
                 FDateChange( Self, FDate );

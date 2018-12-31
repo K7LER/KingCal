@@ -154,7 +154,7 @@ object KcPopup: TKcPopup
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     OnChange = KingCalendar1Change
