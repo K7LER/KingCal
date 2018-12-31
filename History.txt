@@ -1,6 +1,10 @@
 King Calendar - Open Source Edition
 Version History
 ===================================
+2.0.6 - Update - 12/30/2018
+- Fixed some items reported by Ian Branch
+- Changed Date format usage to support International locales
+- Updated demos. Some logic was missing in original demos to range check items.
 
 2.0.2 - Update - 12/29/2018
 - Added support for Delphi 10.3 Rio
