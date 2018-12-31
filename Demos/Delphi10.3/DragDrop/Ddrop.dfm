@@ -105,7 +105,7 @@ object FrmMain: TFrmMain
     Height = 31
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June 30, 2018'
+    Caption = 'Sunday, December 30, 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clPurple
     Font.Height = -21
@@ -126,7 +126,7 @@ object FrmMain: TFrmMain
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     OnDragDrop = KingCalendar1DragDrop

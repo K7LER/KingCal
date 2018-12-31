@@ -24,7 +24,7 @@ object Frm3Month: TFrm3Month
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = '30 December 2018'
+    Caption = 'Sunday, December 30, 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
@@ -41,7 +41,7 @@ object Frm3Month: TFrm3Month
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = '30 December 2018'
+    Caption = 'Sunday, December 30, 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
@@ -58,7 +58,7 @@ object Frm3Month: TFrm3Month
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = '30 December 2018'
+    Caption = 'Sunday, December 30, 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13

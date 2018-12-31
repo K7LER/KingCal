@@ -25,7 +25,7 @@ object Form1: TForm1
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     TabOrder = 0

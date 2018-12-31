@@ -25,7 +25,7 @@ object FrmNavigate: TFrmNavigate
     Height = 24
     Alignment = taCenter
     AutoSize = False
-    Caption = '30 December 2018'
+    Caption = 'Sunday, December 30, 2018'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -16

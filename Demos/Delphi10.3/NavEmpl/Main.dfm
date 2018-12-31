@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 156
   BorderStyle = bsDialog
   Caption = 'KingCalendar Navigator Example'
-  ClientHeight = 310
+  ClientHeight = 389
   ClientWidth = 530
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -39,7 +39,7 @@ object Form1: TForm1
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
-      Month = 6
+      Month = 12
       ParentFont = False
       Year = 2018
       TabOrder = 0
@@ -331,9 +331,35 @@ object Form1: TForm1
       Height = 21
       Alignment = taCenter
       AutoSize = False
-      Caption = 'June 30, 2018'
+      Caption = 'Sunday, December 30, 2018 - Week Number 52'
       CalendarSource = KingCalendar1
       DateFormat = 'MMMM DD, YYYY'
+      IncludeWeekNum = True
+    end
+  end
+  object GroupBox7: TGroupBox
+    Left = 8
+    Top = 311
+    Width = 339
+    Height = 43
+    Caption = ' TKingWeekLabel '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 7
+    object KingWeekLabel1: TKingWeekLabel
+      Left = 3
+      Top = 16
+      Width = 333
+      Height = 13
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '52'
+      CalendarSource = KingCalendar1
+      IncludeCaption = True
     end
   end
 end

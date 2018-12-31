@@ -102,7 +102,7 @@ object FrmMisc: TFrmMisc
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     TabOrder = 1
@@ -431,7 +431,7 @@ object FrmMisc: TFrmMisc
       Height = 16
       Alignment = taCenter
       AutoSize = False
-      Caption = 'June 30, 2018'
+      Caption = 'Sunday, December 30, 2018'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -13

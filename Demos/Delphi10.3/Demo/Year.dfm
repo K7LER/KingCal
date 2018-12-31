@@ -53,7 +53,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar9
     DateFormat = 'MMMM'
   end
@@ -64,7 +64,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar10
     DateFormat = 'MMMM'
   end
@@ -75,7 +75,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar11
     DateFormat = 'MMMM'
   end
@@ -86,7 +86,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar12
     DateFormat = 'MMMM'
   end
@@ -97,7 +97,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar8
     DateFormat = 'MMMM'
   end
@@ -108,7 +108,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar7
     DateFormat = 'MMMM'
   end
@@ -119,7 +119,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar6
     DateFormat = 'MMMM'
   end
@@ -130,7 +130,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar5
     DateFormat = 'MMMM'
   end
@@ -141,7 +141,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar1
     DateFormat = 'MMMM'
   end
@@ -152,7 +152,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar2
     DateFormat = 'MMMM'
   end
@@ -163,7 +163,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar3
     DateFormat = 'MMMM'
   end
@@ -174,7 +174,7 @@ object FrmYear: TFrmYear
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'June'
+    Caption = 'Sunday, December 30, 2018'
     CalendarSource = KingCalendar4
     DateFormat = 'MMMM'
   end
@@ -229,7 +229,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -276,7 +276,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -323,7 +323,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -370,7 +370,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -417,7 +417,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -464,7 +464,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -511,7 +511,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -558,7 +558,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -605,7 +605,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -652,7 +652,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -699,7 +699,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
@@ -746,7 +746,7 @@ object FrmYear: TFrmYear
     Font.Height = -9
     Font.Name = 'Small Fonts'
     Font.Style = []
-    Month = 6
+    Month = 12
     ParentFont = False
     Year = 2018
     IsActive = False
