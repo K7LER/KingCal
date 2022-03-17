@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{5D37A8E2-12C6-431A-B8FF-720EB5448954}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="KingCalendar270.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclKingCalendar270.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="KingCalendar270">
+        <MSBuild Projects="KingCalendar270.dproj"/>
+    </Target>
+    <Target Name="KingCalendar270:Clean">
+        <MSBuild Projects="KingCalendar270.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="KingCalendar270:Make">
+        <MSBuild Projects="KingCalendar270.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclKingCalendar270">
+        <MSBuild Projects="dclKingCalendar270.dproj"/>
+    </Target>
+    <Target Name="dclKingCalendar270:Clean">
+        <MSBuild Projects="dclKingCalendar270.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclKingCalendar270:Make">
+        <MSBuild Projects="dclKingCalendar270.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="KingCalendar270;dclKingCalendar270"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="KingCalendar270:Clean;dclKingCalendar270:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="KingCalendar270:Make;dclKingCalendar270:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -1,0 +1,56 @@
+package KingCalendar280;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'KingCalendar for Delphi 11.0 Run Time'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  vclx,
+  vclsmp,
+  rtl,
+  xmlrtl,
+  vclactnband;
+
+contains
+  Kingdlg in '..\..\source\Kingdlg.pas',
+  Kingspn1 in '..\..\source\Kingspn1.pas',
+  Kingspnt in '..\..\source\Kingspnt.pas',
+  KingTool in '..\..\source\KingTool.pas',
+  Theking in '..\..\source\Theking.pas',
+  Kingcore in '..\..\source\Kingcore.pas',
+  Attach in '..\..\source\Attach.pas' {FrmAttach},
+  Caledit in '..\..\source\Caledit.pas' {FrmCalEdit},
+  Caledit2 in '..\..\source\Caledit2.pas' {FrmColor},
+  Kccmpedt in '..\..\source\Kccmpedt.pas',
+  Kingcalc in '..\..\source\Kingcalc.pas' {KcCalc},
+  Kingpop in '..\..\source\Kingpop.pas' {KcPopup},
+  Kingprop in '..\..\source\Kingprop.pas' {VcdAboutBox},
+  Kingspin in '..\..\source\Kingspin.pas';
+
+end.
