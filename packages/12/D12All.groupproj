@@ -3,10 +3,10 @@
         <ProjectGuid>{5A41770A-F3A3-4BBB-AD19-EDC7A70B7282}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="dclKingCalendar290.dproj">
+        <Projects Include="KingCalendar290.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="KingCalendar290.dproj">
+        <Projects Include="dclKingCalendar290.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -17,15 +17,6 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="dclKingCalendar290">
-        <MSBuild Projects="dclKingCalendar290.dproj"/>
-    </Target>
-    <Target Name="dclKingCalendar290:Clean">
-        <MSBuild Projects="dclKingCalendar290.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="dclKingCalendar290:Make">
-        <MSBuild Projects="dclKingCalendar290.dproj" Targets="Make"/>
-    </Target>
     <Target Name="KingCalendar290">
         <MSBuild Projects="KingCalendar290.dproj"/>
     </Target>
@@ -35,14 +26,37 @@
     <Target Name="KingCalendar290:Make">
         <MSBuild Projects="KingCalendar290.dproj" Targets="Make"/>
     </Target>
+    <Target Name="dclKingCalendar290">
+        <MSBuild Projects="dclKingCalendar290.dproj"/>
+    </Target>
+    <Target Name="dclKingCalendar290:Clean">
+        <MSBuild Projects="dclKingCalendar290.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclKingCalendar290:Make">
+        <MSBuild Projects="dclKingCalendar290.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="dclKingCalendar290;KingCalendar290"/>
+        <CallTarget Targets="KingCalendar290;dclKingCalendar290"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="dclKingCalendar290:Clean;KingCalendar290:Clean"/>
+        <CallTarget Targets="KingCalendar290:Clean;dclKingCalendar290:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="dclKingCalendar290:Make;KingCalendar290:Make"/>
+        <CallTarget Targets="KingCalendar290:Make;dclKingCalendar290:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='ALL'">
+        <BuildGroupProject Include="KingCalendar290.dproj">
+            <ProjectGuid>{8233ED76-E689-4A3D-9757-4EF287E2D3AF}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclKingCalendar290.dproj">
+            <ProjectGuid>{D7901D48-CF7B-4CDC-972E-A68D1C6CC27E}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
 </Project>

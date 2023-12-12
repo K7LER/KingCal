@@ -13,9 +13,7 @@ object VcdAboutBox: TVcdAboutBox
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
   Position = poScreenCenter
-  PixelsPerInch = 96
   TextHeight = 13
   object Bevel1: TBevel
     Left = 9
@@ -69,7 +67,7 @@ object VcdAboutBox: TVcdAboutBox
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Copyright '#169' 1995-2019 Mark Lussier and AppVision'
+    Caption = 'Copyright '#169' 1995-2023 Mark Lussier and AppVision'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13

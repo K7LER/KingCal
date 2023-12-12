@@ -38,10 +38,8 @@ object KcCalc: TKcCalc
     0000000000000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  OldCreateOrder = True
   Position = poScreenCenter
   OnClose = FormClose
-  PixelsPerInch = 96
   TextHeight = 16
   object Label1: TLabel
     Left = 200
@@ -319,7 +317,7 @@ object KcCalc: TKcCalc
     Width = 81
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '12/30/18'
+    StartDate = '12/30/23'
     AutoSelect = False
     ReadOnly = True
   end
@@ -336,7 +334,7 @@ object KcCalc: TKcCalc
     Width = 81
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '12/30/18'
+    StartDate = '12/30/23'
     AutoSelect = False
     ReadOnly = True
   end
@@ -346,7 +344,7 @@ object KcCalc: TKcCalc
     Width = 89
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '12/31/18'
+    StartDate = '12/30/23'
     AutoSelect = False
     ReadOnly = True
   end
@@ -395,7 +393,7 @@ object KcCalc: TKcCalc
     Width = 89
     Height = 26
     DateFormat = 'M/d/yy'
-    StartDate = '12/30/18'
+    StartDate = '12/30/23'
     AutoSelect = False
     ReadOnly = True
   end
