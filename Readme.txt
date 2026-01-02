@@ -1,154 +1,234 @@
-
 KingCalendar Components for Delphi
-Release v2.1.1 12/12/2023
+Release v26.1.1 - January 1, 2026
 
-INTRODUCTION
+================================================================================
+ABOUT KINGCALENDAR
+================================================================================
 
-KingCalendar is a calendar component for Delphi developed by Mark Lussier and
-his company AppVision. The component originated originated in Delphi 1.x, then 
-was updated to Delphi 2.x and 3.x. 
+KingCalendar is a calendar component for Delphi originally created by Mark 
+Lussier and AppVision. The component has been updated over the years from the 
+early Delphi versions to work with today's Delphi versions.
 
-As Mark moved on from active development, the components became abandoned.
-Lance Rasmussen from CDE Software in Seattle has actively updated the component
-to the newer Delphi versions and in June 2018, received the permission from Mark
-to move the component set to open source and place in source control.
+Lance Rasmussen from CDE Software in Seattle now maintains the component. In 
+June 2018, Mark gave Lance permission to make KingCalendar open source and 
+share it on GitHub.
 
-The distribution has been updated for support of Delphi 12.
+This version works with Delphi 13.
 
-If you wish to contribute source code improvements, please contact Lance Rasmussen
-with the source changes.
+If you have improvements to the code, please contact Lance Rasmussen.
 
 
+================================================================================
 INSTALLING KINGCALENDAR
+================================================================================
 
-Delphi 12 Athens Instructions
+--------------------------------------------------------------------------------
+For Delphi 13 (64-bit IDE)
+--------------------------------------------------------------------------------
 
-1. Using GitHub, download the project to the desired folder or download the ZIP 
-   archive and extract to the desired folder.
-2. Open the IDE and go to Tools > Options > Delphi Options > Library
-3. For 32 bit - Add the LIB29x32\RELEASE directory (or LIB29x32\DEBUG) to the Library Path
-4. For 64 bit - Add the LIB29x64\RELEASE directory (or LIB29x64\DEBUG) to the Library Path
-5. Add the SOURCE directory to the Browsing path. Close the Options.
-6. Open the KingCalD12All.groupproj project group.
-7. Change the Release of the runtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-8. Compile the non-DCL package.
-9. Change the Release of the designtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-10. Compile the designtime package.
-11. Right-click on the designtime package and select install.
-12. Change the Release of the runtime package to 64 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-13. Compile the runtime package.
+1. Download the project from GitHub to a folder on your computer. You can also 
+   download the ZIP file and unzip it to a folder.
 
-Delphi 11 Alexandria Instructions
+2. Open Delphi and go to Tools > Options > Delphi Options > Library
 
-1. Using GitHub, download the project to the desired folder or download the ZIP 
-   archive and extract to the desired folder.
-2. Open the IDE and go to Tools > Options > Delphi Options > Library
-3. For 32 bit - Add the LIB28x32\RELEASE directory (or LIB28x32\DEBUG) to the Library Path
-4. For 64 bit - Add the LIB28x64\RELEASE directory (or LIB28x64\DEBUG) to the Library Path
-5. Add the SOURCE directory to the Browsing path. Close the Options.
-6. Open the KingCalD104All.groupproj project group.
-7. Change the Release of the runtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-8. Compile the non-DCL package.
-9. Change the Release of the designtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-10. Compile the designtime package.
-11. Right-click on the designtime package and select install.
-12. Change the Release of the runtime package to 64 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-13. Compile the runtime package.
+3. Under Library Path, add the folder LIB37x64\RELEASE (or LIB37x64\DEBUG if 
+   you prefer)
 
-Delphi 10.4 Sydney Instructions
+4. Under Browsing path, add the SOURCE folder
 
-1. Using GitHub, download the project to the desired folder or download the ZIP 
-   archive and extract to the desired folder.
-2. Open the IDE and go to Tools > Options > Delphi Options > Library
-3. For 32 bit - Add the LIB27x32\RELEASE directory (or LIB27x32\DEBUG) to the Library Path
-4. For 64 bit - Add the LIB27x64\RELEASE directory (or LIB27x64\DEBUG) to the Library Path
-5. Add the SOURCE directory to the Browsing path. Close the Options.
-6. Open the KingCalD104All.groupproj project group.
-7. Change the Release of the runtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-8. Compile the non-DCL package.
-9. Change the Release of the designtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-10. Compile the designtime package.
-11. Right-click on the designtime package and select install.
-12. Change the Release of the runtime package to 64 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-13. Compile the runtime package.
+5. Click OK to close the Options window
 
-Delphi 10.3 Rio Instructions
+6. Open the project file KingCalD13All.groupproj
 
-1. Using GitHub, download the project to the desired folder or download the ZIP 
-   archive and extract to the desired folder.
-2. Open the IDE and go to Tools > Options > Delphi Options > Library
-3. For 32 bit - Add the LIB26x32\RELEASE directory (or LIB26x32\DEBUG) to the Library Path
-4. For 64 bit - Add the LIB26x64\RELEASE directory (or LIB26x64\DEBUG) to the Library Path
-5. Add the SOURCE directory to the Browsing path. Close the Options.
-6. Open the KingCalD103All.groupproj project group.
-7. Change the Release of the runtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-8. Compile the non-DCL package.
-9. Change the Release of the designtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-10. Compile the designtime package.
-11. Right-click on the designtime package and select install.
-12. Change the Release of the runtime package to 64 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-13. Compile the runtime package.
+7. Set the runtime package to either Release or Debug mode (match what you 
+   chose in step 3)
 
-Delphi 10.2 Tokyo Instructions
+8. Compile the runtime package (the one without DCL in the name)
 
-1. Using GitHub, download the project to the desired folder or download the ZIP 
-   archive and extract to the desired folder.
-2. Open the IDE and go to Tools > Options > Delphi Options > Library
-3. For 32 bit - Add the LIB25x32\RELEASE directory (or LIB25x32\DEBUG) to the Library Path
-4. For 64 bit - Add the LIB25x64\RELEASE directory (or LIB25x64\DEBUG) to the Library Path
-5. Add the SOURCE directory to the Browsing path. Close the Options.
-6. Open the KingCalD102All.groupproj project group.
-7. Change the Release of the runtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-8. Compile the non-DCL package.
-9. Change the Release of the designtime package to 32 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-10. Compile the designtime package.
-11. Right-click on the designtime package and select install.
-12. Change the Release of the runtime package to 64 bit and to either Release or Debug mode depending on
-   your preference based in step 1.
-13. Compile the runtime package.
+9. Set the designtime package to either Release or Debug mode (match what you 
+   chose in step 3)
 
-REMOVING KINGCALENDAR
+10. Compile the designtime package (the one with DCL in the name)
 
-Delphi 10.3 Rio Instructions
- 
-To un-install the KingCalendar Components from the Delphi IDE perform the
-following steps.
+11. Right-click on the designtime package and choose Install
 
-1. Use Options |Install Components... Select KINGCAL from the list box on the
-   left.. Clik the Remove Button.. Click Ok.
-2. Remove the KingCal directory.
 
-Delphi 10.2 Tokyo Instructions
- 
-To un-install the KingCalendar Components from the Delphi IDE perform the
-following steps.
+--------------------------------------------------------------------------------
+For Delphi 13 (32-bit IDE)
+--------------------------------------------------------------------------------
 
-1. Use Options |Install Components... Select KINGCAL from the list box on the
-   left.. Clik the Remove Button.. Click Ok.
-2. Remove the KingCal directory.
+1. Download the project from GitHub to a folder on your computer. You can also 
+   download the ZIP file and unzip it to a folder.
 
-UPDATES
+2. Open Delphi and go to Tools > Options > Delphi Options > Library
 
-The project and updates are currently maintained in Github at:
+3. Under Library Path, add these folders:
+   - For 32-bit: LIB37x32\RELEASE (or LIB37x32\DEBUG)
+   - For 64-bit: LIB37x64\RELEASE (or LIB37x64\DEBUG)
+
+4. Under Browsing path, add the SOURCE folder
+
+5. Click OK to close the Options window
+
+6. Open the project file KingCalD13All.groupproj
+
+7. Set the runtime package to 32-bit and either Release or Debug mode
+
+8. Compile the runtime package
+
+9. Set the designtime package to 32-bit and either Release or Debug mode
+
+10. Compile the designtime package
+
+11. Right-click on the designtime package and choose Install
+
+12. Now set the runtime package to 64-bit and either Release or Debug mode
+
+13. Compile the runtime package again
+
+
+--------------------------------------------------------------------------------
+For Delphi 12 (64-bit IDE)
+--------------------------------------------------------------------------------
+
+1. Download the project from GitHub to a folder on your computer. You can also 
+   download the ZIP file and unzip it to a folder.
+
+2. Open Delphi and go to Tools > Options > Delphi Options > Library
+
+3. Under Library Path, add the folder LIB29x64\RELEASE (or LIB29x64\DEBUG if 
+   you prefer)
+
+4. Under Browsing path, add the SOURCE folder
+
+5. Click OK to close the Options window
+
+6. Open the project file KingCalD12All.groupproj
+
+7. Set the runtime package to either Release or Debug mode (match what you 
+   chose in step 3)
+
+8. Compile the runtime package (the one without DCL in the name)
+
+9. Set the designtime package to either Release or Debug mode (match what you 
+   chose in step 3)
+
+10. Compile the designtime package (the one with DCL in the name)
+
+11. Right-click on the designtime package and choose Install
+
+
+--------------------------------------------------------------------------------
+For Delphi 12 (32-bit IDE)
+--------------------------------------------------------------------------------
+
+1. Download the project from GitHub to a folder on your computer. You can also 
+   download the ZIP file and unzip it to a folder.
+
+2. Open Delphi and go to Tools > Options > Delphi Options > Library
+
+3. Under Library Path, add these folders:
+   - For 32-bit: LIB29x32\RELEASE (or LIB29x32\DEBUG)
+   - For 64-bit: LIB29x64\RELEASE (or LIB29x64\DEBUG)
+
+4. Under Browsing path, add the SOURCE folder
+
+5. Click OK to close the Options window
+
+6. Open the project file KingCalD12All.groupproj
+
+7. Set the runtime package to 32-bit and either Release or Debug mode
+
+8. Compile the runtime package
+
+9. Set the designtime package to 32-bit and either Release or Debug mode
+
+10. Compile the designtime package
+
+11. Right-click on the designtime package and choose Install
+
+12. Now set the runtime package to 64-bit and either Release or Debug mode
+
+13. Compile the runtime package again
+
+
+--------------------------------------------------------------------------------
+For Delphi 11
+--------------------------------------------------------------------------------
+
+1. Download the project from GitHub to a folder on your computer. You can also 
+   download the ZIP file and unzip it to a folder.
+
+2. Open Delphi and go to Tools > Options > Delphi Options > Library
+
+3. Under Library Path, add these folders:
+   - For 32-bit: LIB28x32\RELEASE (or LIB28x32\DEBUG)
+   - For 64-bit: LIB28x64\RELEASE (or LIB28x64\DEBUG)
+
+4. Under Browsing path, add the SOURCE folder
+
+5. Click OK to close the Options window
+
+6. Open the project file KingCalD104All.groupproj
+
+7. Set the runtime package to 32-bit and either Release or Debug mode
+
+8. Compile the runtime package
+
+9. Set the designtime package to 32-bit and either Release or Debug mode
+
+10. Compile the designtime package
+
+11. Right-click on the designtime package and choose Install
+
+12. Now set the runtime package to 64-bit and either Release or Debug mode
+
+13. Compile the runtime package again
+
+
+--------------------------------------------------------------------------------
+For Delphi 10.4
+--------------------------------------------------------------------------------
+
+Follow the same steps as Delphi 11, but use these folders instead:
+- For 32-bit: LIB27x32\RELEASE (or LIB27x32\DEBUG)
+- For 64-bit: LIB27x64\RELEASE (or LIB27x64\DEBUG)
+
+
+--------------------------------------------------------------------------------
+For Delphi 10.3
+--------------------------------------------------------------------------------
+
+Follow the same steps as Delphi 11, but use these folders instead:
+- For 32-bit: LIB26x32\RELEASE (or LIB26x32\DEBUG)
+- For 64-bit: LIB26x64\RELEASE (or LIB26x64\DEBUG)
+
+Use the project file KingCalD103All.groupproj
+
+
+--------------------------------------------------------------------------------
+For Delphi 10.2
+--------------------------------------------------------------------------------
+
+Follow the same steps as Delphi 11, but use these folders instead:
+- For 32-bit: LIB25x32\RELEASE (or LIB25x32\DEBUG)
+- For 64-bit: LIB25x64\RELEASE (or LIB25x64\DEBUG)
+
+Use the project file KingCalD102All.groupproj
+
+
+================================================================================
+UPDATES AND DOWNLOADS
+================================================================================
+
+You can find the latest version of KingCalendar on GitHub at:
 https://github.com/K7LER/KingCal
 
-SUPPORT
 
-There is no official support of the component. If you have questions or wish to contribute
-code updates, please contact Lance Rasmussen at lancerasmussen@gmail.com
+================================================================================
+NEED HELP?
+================================================================================
 
-
+There is no official support for this component. If you have questions or want 
+to share code improvements, please email Lance Rasmussen at 
+lancerasmussen@gmail.com

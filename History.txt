@@ -1,6 +1,8 @@
 King Calendar - Open Source Edition
 Version History
 ===================================
+26.1.1 - Update - 1/1/2026
+- Added support for Delphi 13
 
 2.1.1 - Update - 12/12/2023
 - Added support for Delphi 12

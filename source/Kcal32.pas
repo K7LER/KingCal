@@ -170,7 +170,7 @@ procedure TKingCalendarProperty.Edit;
       with DialogBox do begin
         vcdEdition.Caption := 'Calendar Components for Delphi';
         vcdRelease.Caption := 'Release ' + vcdVersion + ' (' + vcdBuildDate + ')';
-        vcdCopyright.Caption := 'Portions Copyright © 1995,1996 AppVision Software - MPL 2.0 https://github.com/K7LER/KingCal.git';
+        vcdCopyright.Caption := 'Portions Copyright   1995,1996 AppVision Software - MPL 2.0 https://github.com/K7LER/KingCal.git';
         vcdComponent.Caption := GetComponent( 0 ).ClassName + ' Component';
         ShowModal;
       end;
@@ -241,7 +241,7 @@ procedure RegisterAboutBox;
     Supports( BorlandIDEServices, IOTAAboutBoxServices, AboutBoxServices );
     ProductImage := LoadBitmap( FindResourceHInstance( HInstance ), 'KINGSPLASH' );
     AboutBoxIndex := AboutBoxServices.AddPluginInfo( 'King Calendar Components - ' + 'Release ' + vcdVersion + ' (' + vcdBuildDate + ')', 'Please visit https://github.com/K7LER/KingCal for more information ' + #13#10#13#10 +
-      'Copyright © 1995-2018 Mark Lussier and AppVision Software' + #13#10 + 'All Rights Reserved', ProductImage, False, 'MIT 1.0' );
+      'Copyright   1995-2018 Mark Lussier and AppVision Software - Lance Rasmussen Maintainer' + #13#10 + 'All Rights Reserved', ProductImage, False, 'MIT 1.0' );
   end;
 
 procedure UnRegisterAboutBox;
