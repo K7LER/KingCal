@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find C:_cKC -type f -name *.dproj -o -name *.dpk -o -name *.groupproj)",
+      "Bash(find C:_cKC -maxdepth 2 -type f \\\\\\(-name *.groupproj -o -name *.dproj \\\\\\))",
+      "Bash(find C:_cKC/Documentation -type f -name *.md -o -name *.txt)",
+      "Bash(wc:*)"
+    ]
+  }
+}
