@@ -9,7 +9,7 @@ uses
 {$R *.RES}
 
 begin
-  TStyleManager.TrySetStyle('Windows10 Blue');
+  TStyleManager.TrySetStyle('Glow');
   Application.CreateForm(TFrmMain, FrmMain);
   Application.Run;
 end.

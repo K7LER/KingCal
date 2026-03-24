@@ -8,7 +8,7 @@ object FrmMain: TFrmMain
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -22,9 +22,9 @@ object FrmMain: TFrmMain
     AutoSize = False
     Caption = 'Appointments'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -36,9 +36,9 @@ object FrmMain: TFrmMain
     AutoSize = False
     Caption = 'Phone Calls'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -50,9 +50,9 @@ object FrmMain: TFrmMain
     AutoSize = False
     Caption = 'To Do'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -64,9 +64,9 @@ object FrmMain: TFrmMain
     AutoSize = False
     Caption = 'Meetings'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -78,9 +78,9 @@ object FrmMain: TFrmMain
     AutoSize = False
     Caption = 'Other'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -92,9 +92,9 @@ object FrmMain: TFrmMain
     AutoSize = False
     Caption = 'Personal'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -122,9 +122,9 @@ object FrmMain: TFrmMain
     Height = 417
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 6
     ParentFont = False
@@ -154,14 +154,14 @@ object FrmMain: TFrmMain
     StartingDay = 0
     TextInCell = True
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clBlack
+    TextFont.Color = clWindowText
     TextFont.Height = -9
-    TextFont.Name = 'Small Fonts'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     ColorCellText = True
     ColorCellDay = False
@@ -182,9 +182,9 @@ object FrmMain: TFrmMain
     Height = 57
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     Items.Strings = (
@@ -202,9 +202,9 @@ object FrmMain: TFrmMain
     Height = 57
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     Items.Strings = (
@@ -222,9 +222,9 @@ object FrmMain: TFrmMain
     Height = 57
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     Items.Strings = (
@@ -242,9 +242,9 @@ object FrmMain: TFrmMain
     Height = 57
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     Items.Strings = (
@@ -261,9 +261,9 @@ object FrmMain: TFrmMain
     Height = 57
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     Items.Strings = (
@@ -280,9 +280,9 @@ object FrmMain: TFrmMain
     Height = 57
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     Items.Strings = (

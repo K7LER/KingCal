@@ -9,9 +9,9 @@ object FrmAdvance: TFrmAdvance
   ClientWidth = 633
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clBlack
+  Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = [fsBold]
   OldCreateOrder = True
   Position = poScreenCenter
@@ -32,9 +32,9 @@ object FrmAdvance: TFrmAdvance
     AutoSize = False
     Caption = 'June 30, 2018'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -16
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     CalendarSource = KingCalendar1
@@ -47,9 +47,9 @@ object FrmAdvance: TFrmAdvance
     Height = 13
     Caption = 'Appointments'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -60,9 +60,9 @@ object FrmAdvance: TFrmAdvance
     Height = 13
     Caption = 'Calls to Make'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -73,9 +73,9 @@ object FrmAdvance: TFrmAdvance
     Height = 13
     Caption = 'Things to do'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -96,7 +96,7 @@ object FrmAdvance: TFrmAdvance
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -111,7 +111,7 @@ object FrmAdvance: TFrmAdvance
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -126,7 +126,7 @@ object FrmAdvance: TFrmAdvance
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -141,7 +141,7 @@ object FrmAdvance: TFrmAdvance
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -154,7 +154,7 @@ object FrmAdvance: TFrmAdvance
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -165,9 +165,9 @@ object FrmAdvance: TFrmAdvance
     Height = 25
     Caption = '&Close'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -183,9 +183,9 @@ object FrmAdvance: TFrmAdvance
     Hint = 'Drag and Drop items from this listbox onto the Calendar!'
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 11
     Items.Strings = (
@@ -207,9 +207,9 @@ object FrmAdvance: TFrmAdvance
     Hint = 'Drag and Drop items from this listbox onto the Calendar!'
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 11
     Items.Strings = (
@@ -232,9 +232,9 @@ object FrmAdvance: TFrmAdvance
     Hint = 'Drag and Drop items from this listbox onto the Calendar!'
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 11
     Items.Strings = (
@@ -255,9 +255,9 @@ object FrmAdvance: TFrmAdvance
     Height = 96
     Caption = ' Views '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 4
@@ -273,7 +273,7 @@ object FrmAdvance: TFrmAdvance
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       TabOrder = 0
@@ -288,7 +288,7 @@ object FrmAdvance: TFrmAdvance
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       TabOrder = 1
@@ -303,9 +303,9 @@ object FrmAdvance: TFrmAdvance
     Hint = 'Use this button to toggle the selectability of weekends.'
     Caption = 'Block &Weekends'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     ParentShowHint = False
@@ -332,9 +332,9 @@ object FrmAdvance: TFrmAdvance
     Height = 287
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 6
     ParentFont = False
@@ -363,14 +363,14 @@ object FrmAdvance: TFrmAdvance
     StartingDay = 0
     TextInCell = True
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clBlack
+    TextFont.Color = clWindowText
     TextFont.Height = -9
-    TextFont.Name = 'Small Fonts'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -13
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     ColorCellText = True
     ColorCellDay = False

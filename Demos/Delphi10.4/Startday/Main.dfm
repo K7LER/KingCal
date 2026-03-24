@@ -8,7 +8,7 @@ object Form1: TForm1
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -21,9 +21,9 @@ object Form1: TForm1
     Height = 117
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -51,12 +51,12 @@ object Form1: TForm1
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     RowHeights = (
       12
@@ -75,9 +75,9 @@ object Form1: TForm1
     Caption = ' Starting Day Of Week '
     Columns = 2
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemIndex = 0
     Items.Strings = (

@@ -9,7 +9,7 @@ object Form1: TForm1
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -22,9 +22,9 @@ object Form1: TForm1
     Height = 145
     Caption = ' TKingCalendar '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 0
@@ -35,9 +35,9 @@ object Form1: TForm1
       Height = 117
       Day = 30
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       Month = 6
       ParentFont = False
@@ -65,12 +65,12 @@ object Form1: TForm1
       TextFont.Charset = DEFAULT_CHARSET
       TextFont.Color = clWindowText
       TextFont.Height = -13
-      TextFont.Name = 'System'
+      TextFont.Name = 'Segoe UI'
       TextFont.Style = []
       TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clBlack
+      TitleFont.Color = clWindowText
       TitleFont.Height = -11
-      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Name = 'Segoe UI'
       TitleFont.Style = []
       RowHeights = (
         12
@@ -89,9 +89,9 @@ object Form1: TForm1
     Height = 49
     Caption = ' TKingNavigator '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
@@ -114,9 +114,9 @@ object Form1: TForm1
     Height = 41
     Caption = ' TMonthBar '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 2
@@ -137,9 +137,9 @@ object Form1: TForm1
     Height = 114
     Caption = ' Month/Year Combos '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 3
@@ -174,9 +174,9 @@ object Form1: TForm1
     Height = 49
     Caption = ' M/D/Y Spins '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 4
@@ -187,9 +187,9 @@ object Form1: TForm1
       Height = 11
       Caption = 'Month'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Small Fonts'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -200,9 +200,9 @@ object Form1: TForm1
       Height = 11
       Caption = 'Day'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Small Fonts'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -213,9 +213,9 @@ object Form1: TForm1
       Height = 11
       Caption = 'Year'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Small Fonts'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -295,7 +295,7 @@ object Form1: TForm1
     Height = 129
     Alignment = taCenter
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Times New Roman'
     Font.Style = []
@@ -318,9 +318,9 @@ object Form1: TForm1
     Height = 43
     Caption = ' TKingLabel '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 6

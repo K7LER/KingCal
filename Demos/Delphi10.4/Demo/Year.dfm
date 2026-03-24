@@ -10,7 +10,7 @@ object FrmYear: TFrmYear
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -40,9 +40,9 @@ object FrmYear: TFrmYear
     Height = 13
     Caption = 'Change the Year'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -188,9 +188,9 @@ object FrmYear: TFrmYear
       'es how a real Year at a Glance would look'
     Caption = '&Color the Months'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     ParentShowHint = False
@@ -205,9 +205,9 @@ object FrmYear: TFrmYear
     Height = 22
     Hint = 'Use this SpinEdit to change the currently visible year'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     MaxValue = 0
     MinValue = 0
@@ -225,9 +225,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -256,12 +256,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -272,9 +272,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -303,12 +303,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -319,9 +319,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -350,12 +350,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -366,9 +366,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -397,12 +397,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -413,9 +413,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -444,12 +444,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -460,9 +460,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -491,12 +491,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -507,9 +507,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -538,12 +538,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -554,9 +554,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -585,12 +585,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -601,9 +601,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -632,12 +632,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -648,9 +648,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -679,12 +679,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -695,9 +695,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -726,12 +726,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -742,9 +742,9 @@ object FrmYear: TFrmYear
     Height = 86
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -773,12 +773,12 @@ object FrmYear: TFrmYear
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end

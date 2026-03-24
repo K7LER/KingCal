@@ -17,7 +17,7 @@ uses
 {$R *.RES}
 
 begin
-  TStyleManager.TrySetStyle('Windows10 Blue');
+  TStyleManager.TrySetStyle('Glow');
   Application.Title    := 'KingCalendar Demonstration';
   Application.HelpFile := '';
   Application.CreateForm(TFrmMain, FrmMain);

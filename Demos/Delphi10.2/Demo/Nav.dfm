@@ -11,7 +11,7 @@ object FrmNavigate: TFrmNavigate
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -26,9 +26,9 @@ object FrmNavigate: TFrmNavigate
     AutoSize = False
     Caption = 'June 30, 2018'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -16
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     CalendarSource = KingCalendar1
@@ -41,9 +41,9 @@ object FrmNavigate: TFrmNavigate
     Height = 25
     Caption = '&Close'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -58,9 +58,9 @@ object FrmNavigate: TFrmNavigate
     Height = 167
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 6
     ParentFont = False
@@ -88,12 +88,12 @@ object FrmNavigate: TFrmNavigate
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -13
-    TitleFont.Name = 'System'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     RowHeights = (
       14
@@ -111,9 +111,9 @@ object FrmNavigate: TFrmNavigate
     Height = 89
     Caption = ' TKingNavigator Component '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 2
@@ -126,9 +126,9 @@ object FrmNavigate: TFrmNavigate
         'This navigator bar allows for rapid movement around the calendar' +
         ' with the ability to'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -139,9 +139,9 @@ object FrmNavigate: TFrmNavigate
       Height = 13
       Caption = 'return to the current date at any time.'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -164,9 +164,9 @@ object FrmNavigate: TFrmNavigate
     Height = 73
     Caption = ' TMonthBar Component '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 3
@@ -179,9 +179,9 @@ object FrmNavigate: TFrmNavigate
         'Use the monthbar to rapidly scroll through the months of the yea' +
         'r'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -206,9 +206,9 @@ object FrmNavigate: TFrmNavigate
       ' When not checked, the currently focused date is displayed.'
     Caption = 'Display Text  in Navigator'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     ParentShowHint = False
@@ -223,9 +223,9 @@ object FrmNavigate: TFrmNavigate
     Height = 241
     Caption = ' Misc. Components '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 5
@@ -238,7 +238,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -251,7 +251,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -264,7 +264,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -277,7 +277,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -290,7 +290,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -303,7 +303,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -316,7 +316,7 @@ object FrmNavigate: TFrmNavigate
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -327,9 +327,9 @@ object FrmNavigate: TFrmNavigate
       Height = 13
       Caption = 'Date Spin Control'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end

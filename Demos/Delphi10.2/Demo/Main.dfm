@@ -8,9 +8,9 @@ object FrmMain: TFrmMain
   ClientWidth = 401
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clBlack
+  Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -25,7 +25,7 @@ object FrmMain: TFrmMain
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -24
-    Font.Name = 'Arial'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -36,9 +36,9 @@ object FrmMain: TFrmMain
     Height = 13
     Caption = 'Powerful Calendar Oriented'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -49,9 +49,9 @@ object FrmMain: TFrmMain
     Height = 13
     Caption = 'Components for Delphi'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -62,9 +62,9 @@ object FrmMain: TFrmMain
     Height = 121
     Caption = ' The Calendars '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 0
@@ -75,9 +75,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'The most versitile and powerful calendar control available'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -88,9 +88,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'for Delphi. Use it in PIM'#39's, to select dates or display data.'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -101,9 +101,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'This is the heart and soul of KingCalendar.'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -114,9 +114,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'Use the amazing Popup Calendar to enhance your'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -127,9 +127,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'products power and presentation.'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -159,9 +159,9 @@ object FrmMain: TFrmMain
     Height = 49
     Caption = ' Navigational Components '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
@@ -172,9 +172,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'Quickly navigate around the calendar using these'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -185,9 +185,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'powerful navigational components.'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -208,9 +208,9 @@ object FrmMain: TFrmMain
     Height = 49
     Caption = ' Advanced Techniques '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 2
@@ -221,9 +221,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'Display Text inside the Calendar, Utilize Drag and Drop'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -234,9 +234,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'techniques. '
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -247,9 +247,9 @@ object FrmMain: TFrmMain
       Height = 25
       Caption = 'Display...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       TabOrder = 0
@@ -263,9 +263,9 @@ object FrmMain: TFrmMain
     Height = 73
     Caption = ' Spinners, ComboBox'#39's and Labels '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 3
@@ -276,9 +276,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'Tons of neat controls. ComboBox'#39's for manipulating the'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -289,9 +289,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'Month, Day and Year. Spin Controls to do the same. And'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -302,9 +302,9 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = 'a label control to automaticaly display the date, always.'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
@@ -315,9 +315,9 @@ object FrmMain: TFrmMain
       Height = 25
       Caption = 'Display...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       TabOrder = 0

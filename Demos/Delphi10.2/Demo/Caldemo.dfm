@@ -9,9 +9,9 @@ object FrmCalendar: TFrmCalendar
   ClientWidth = 605
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clBlack
+  Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -25,9 +25,9 @@ object FrmCalendar: TFrmCalendar
     Height = 13
     Caption = 'First Day of the Week'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -40,7 +40,7 @@ object FrmCalendar: TFrmCalendar
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -53,7 +53,7 @@ object FrmCalendar: TFrmCalendar
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -64,9 +64,9 @@ object FrmCalendar: TFrmCalendar
     Height = 102
     Caption = ' Change '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 14
@@ -78,9 +78,9 @@ object FrmCalendar: TFrmCalendar
     Height = 25
     Caption = '&Close'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -95,9 +95,9 @@ object FrmCalendar: TFrmCalendar
     Hint = 'An example of the TKingCalendar Component'
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 6
     ParentFont = False
@@ -123,14 +123,14 @@ object FrmCalendar: TFrmCalendar
     ColorSets.ColorSet9 = clRed
     StartingDay = 0
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clBlack
+    TextFont.Color = clWindowText
     TextFont.Height = -9
-    TextFont.Name = 'Small Fonts'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     RowHeights = (
       12
@@ -150,9 +150,9 @@ object FrmCalendar: TFrmCalendar
       'Use this ComboBox to select which day of the week the Calendar d' +
       'isplay starts with.'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     ParentShowHint = False
@@ -177,9 +177,9 @@ object FrmCalendar: TFrmCalendar
     Caption = 'Display Gridlines'
     Checked = True
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     State = cbChecked
@@ -193,9 +193,9 @@ object FrmCalendar: TFrmCalendar
     Height = 121
     Caption = ' Placement of Day '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemIndex = 0
     Items.Strings = (
@@ -218,9 +218,9 @@ object FrmCalendar: TFrmCalendar
       'the month in the cell'
     Caption = 'Cell Font'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -239,9 +239,9 @@ object FrmCalendar: TFrmCalendar
       'he week in the title bar'
     Caption = 'Title Font'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -260,9 +260,9 @@ object FrmCalendar: TFrmCalendar
       'he focused day'
     Caption = 'Focused Background'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -278,9 +278,9 @@ object FrmCalendar: TFrmCalendar
     Hint = 'Use this button to change the color used in the title bar'
     Caption = 'Title Color'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -298,9 +298,9 @@ object FrmCalendar: TFrmCalendar
       'e focused day'
     Caption = 'Focused Foreground'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -318,9 +318,9 @@ object FrmCalendar: TFrmCalendar
       'cells'
     Caption = 'Cell Color'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -338,9 +338,9 @@ object FrmCalendar: TFrmCalendar
       'te'
     Caption = 'Today'#39's Color'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -358,9 +358,9 @@ object FrmCalendar: TFrmCalendar
       'es'
     Caption = 'Gridline Color'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -375,9 +375,9 @@ object FrmCalendar: TFrmCalendar
     Height = 121
     Caption = ' Other Examples '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 13
@@ -391,9 +391,9 @@ object FrmCalendar: TFrmCalendar
         'in a calendar to represent Appointments, Todos, etc.'
       Caption = 'Example of Cell Coloring'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       ParentShowHint = False
@@ -432,7 +432,7 @@ object FrmCalendar: TFrmCalendar
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Left = 432
     Top = 240

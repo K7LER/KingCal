@@ -8,9 +8,9 @@ object Frm3Month: TFrm3Month
   ClientWidth = 612
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clBlack
+  Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -28,7 +28,7 @@ object Frm3Month: TFrm3Month
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     CalendarSource = Cal1
@@ -45,7 +45,7 @@ object Frm3Month: TFrm3Month
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     CalendarSource = Cal2
@@ -62,7 +62,7 @@ object Frm3Month: TFrm3Month
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     CalendarSource = Cal3
@@ -124,9 +124,9 @@ object Frm3Month: TFrm3Month
     Hint = 'Close the 3 Month At A Glance'
     Caption = '&Close'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -142,9 +142,9 @@ object Frm3Month: TFrm3Month
     Height = 25
     Caption = 'Scroll  &Forward  >'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     Layout = blGlyphRight
     NumGlyphs = 2
@@ -159,9 +159,9 @@ object Frm3Month: TFrm3Month
     Height = 25
     Caption = '<  Scroll  B&ackward'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -175,9 +175,9 @@ object Frm3Month: TFrm3Month
     Height = 25
     Caption = '&Block Weekends'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     NumGlyphs = 2
     ParentFont = False
@@ -191,9 +191,9 @@ object Frm3Month: TFrm3Month
     Height = 128
     Day = 30
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -222,12 +222,12 @@ object Frm3Month: TFrm3Month
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -263,12 +263,12 @@ object Frm3Month: TFrm3Month
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
@@ -304,12 +304,12 @@ object Frm3Month: TFrm3Month
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
+    TitleFont.Color = clWindowText
     TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     HeaderUseFixed = False
   end
