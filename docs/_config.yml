@@ -1,0 +1,8 @@
+theme: jekyll-theme-modernist
+
+title: KingCalendar for Delphi
+description: >-
+  A fully-featured VCL calendar component library for Delphi 10.2 through 13,
+  supporting Win32, Win64, and Win64x platforms. Open source, MIT licensed.
+
+show_downloads: false

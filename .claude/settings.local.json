@@ -9,7 +9,8 @@
       "Bash(xxd \"/c/_c/KC/Demos/Delphi10.2/Demo/Info.dfm\")",
       "Bash(python3:*)",
       "Bash(find C:/_c/KC -name *.bpl)",
-      "Bash(find Demos -type d -not -path */.*)"
+      "Bash(find Demos -type d -not -path */.*)",
+      "Bash(curl -s https://raw.githubusercontent.com/pages-themes/modernist/master/_layouts/default.html)"
     ]
   }
 }
