@@ -166,6 +166,9 @@ var
   CheckToVersion : array[0..MAX_VERSIONS-1] of Integer;
   CheckCount     : Integer;
 
+  // Installation log — written to {app}\installation.log after ssPostInstall
+  InstallLog : TStringList;
+
 
 // =============================================================================
 // Compiler-version → package info lookup
@@ -480,6 +483,35 @@ end;
 
 
 // =============================================================================
+// Logging and progress helpers
+// =============================================================================
+
+// Append a timestamped entry to the installation log and to the Inno Setup log.
+procedure LogLine(const Msg: String);
+begin
+  if Assigned(InstallLog) then
+    InstallLog.Add('[' + GetDateTimeString('yyyy/mm/dd hh:nn:ss', '/', ':') + '] ' + Msg);
+  Log(Msg);
+end;
+
+
+// Update the wizard status label so the user can see what is happening.
+// Must call Application.ProcessMessages after to repaint the window.
+procedure SetStatus(const Msg: String);
+begin
+  WizardForm.StatusLabel.Caption := Msg;
+  WizardForm.Update;
+end;
+
+
+// Inno Setup Pascal has no BoolToStr; use this wrapper instead.
+function BoolStr(B: Boolean): String;
+begin
+  if B then Result := 'True' else Result := 'False';
+end;
+
+
+// =============================================================================
 // Post-install helpers
 // =============================================================================
 
@@ -553,31 +585,37 @@ end;
 
 
 // Compile runtime package for both Debug and Release.
-// For Win32, also compiles the design-time (dcl) package for both configs.
+// For Win32, also compiles the design-time (dcl) package for Win32.
+// When HasBin64 is True (64-bit IDE, D12+), also compiles dcl for Win64 during
+// the Win32 pass so the 64-bit IDE can load the design-time package.
 // DCC_DcuOutput is overridden on the MSBuild command line so DCUs always land
 // in the correct LIBD subfolder, regardless of what the dproj contains.
+// MSBuild stdout/stderr is captured to a per-build log and appended to InstallLog.
 function CompilePackages(const AppDir, BDSRoot, BDSVer,
                          PkgFolder, PkgSuffix, PlatformName,
-                         LibPrefix: String): Boolean;
+                         LibPrefix: String; HasBin64: Boolean): Boolean;
 var
   RsVars      : String;
   BatchPath   : String;
+  MsbuildLog  : String;
   RuntimeDpr  : String;
   DesignDpr   : String;
   Lines       : TStringList;
+  LogLines    : TStringList;
   ExitCode    : Integer;
   PlatSuffix  : String;
   DcuPathD    : String;
   DcuPathR    : String;
-  Dcu32PathD  : String;
-  Dcu32PathR  : String;
+  Dcu64PathD  : String;
+  Dcu64PathR  : String;
+  I           : Integer;
 
 begin
   Result := False;
   RsVars := BDSRoot + '\bin\rsvars.bat';
   if not FileExists(RsVars) then
   begin
-    Log('rsvars.bat not found for BDS ' + BDSVer + '; skipping compile.');
+    LogLine('rsvars.bat not found for BDS ' + BDSVer + '; skipping compile.');
     Exit;
   end;
 
@@ -586,7 +624,7 @@ begin
 
   if not FileExists(RuntimeDpr) then
   begin
-    Log('Runtime dproj not found: ' + RuntimeDpr);
+    LogLine('Runtime dproj not found: ' + RuntimeDpr);
     Exit;
   end;
 
@@ -604,12 +642,14 @@ begin
     DcuPathR := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\Release';
   end;
 
-  // Win32 dcl DCU paths (always x32)
-  Dcu32PathD := AppDir + '\' + LibPrefix + 'x32\Debug';
-  Dcu32PathR := AppDir + '\' + LibPrefix + 'x32\Release';
+  // Win64 dcl DCU paths — used when compiling Win64 dcl during Win32 pass
+  Dcu64PathD := AppDir + '\' + LibPrefix + 'x64\Debug';
+  Dcu64PathR := AppDir + '\' + LibPrefix + 'x64\Release';
 
-  BatchPath := ExpandConstant('{tmp}') + '\KCBuild_' + PkgSuffix + '_' + PlatformName + '.bat';
-  Lines     := TStringList.Create;
+  BatchPath  := ExpandConstant('{tmp}') + '\KCBuild_' + PkgSuffix + '_' + PlatformName + '.bat';
+  MsbuildLog := ExpandConstant('{tmp}') + '\KCBuild_' + PkgSuffix + '_' + PlatformName + '.log';
+
+  Lines := TStringList.Create;
   try
     Lines.Add('@echo off');
     Lines.Add('call "' + RsVars + '"');
@@ -619,25 +659,42 @@ begin
     Lines.Add('msbuild "' + RuntimeDpr + '"' +
               ' /t:Build /p:Config=Debug /p:Platform=' + PlatformName +
               DcuArg(DcuPathD) +
-              ' /nologo /v:minimal');
+              ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
 
     // --- Runtime: Release ---
     Lines.Add('msbuild "' + RuntimeDpr + '"' +
               ' /t:Build /p:Config=Release /p:Platform=' + PlatformName +
               DcuArg(DcuPathR) +
-              ' /nologo /v:minimal');
+              ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
 
-    // --- Design-time (Win32 only): Debug + Release ---
+    // --- Design-time (Win32 pass only) ---
+    // Win32 dcl is always compiled.
+    // Win64 dcl is compiled here too when HasBin64 so the 64-bit IDE can load it.
+    // LR20260324 - Added Win64 dcl compile for 64-bit IDE (D12+) support
     if (PlatformName = 'Win32') and FileExists(DesignDpr) then
     begin
+      // Win32 dcl: Debug + Release
       Lines.Add('msbuild "' + DesignDpr + '"' +
                 ' /t:Build /p:Config=Debug /p:Platform=Win32' +
-                DcuArg(Dcu32PathD) +
-                ' /nologo /v:minimal');
+                DcuArg(DcuPathD) +
+                ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
       Lines.Add('msbuild "' + DesignDpr + '"' +
                 ' /t:Build /p:Config=Release /p:Platform=Win32' +
-                DcuArg(Dcu32PathR) +
-                ' /nologo /v:minimal');
+                DcuArg(DcuPathR) +
+                ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+
+      // Win64 dcl: compile during Win32 pass when IDE is 64-bit (D12+)
+      if HasBin64 then
+      begin
+        Lines.Add('msbuild "' + DesignDpr + '"' +
+                  ' /t:Build /p:Config=Debug /p:Platform=Win64' +
+                  DcuArg(Dcu64PathD) +
+                  ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+        Lines.Add('msbuild "' + DesignDpr + '"' +
+                  ' /t:Build /p:Config=Release /p:Platform=Win64' +
+                  DcuArg(Dcu64PathR) +
+                  ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+      end;
     end;
 
     Lines.SaveToFile(BatchPath);
@@ -645,12 +702,30 @@ begin
     Lines.Free;
   end;
 
+  LogLine('Compiling ' + PkgSuffix + '/' + PlatformName + ' ...');
   ExitCode := RunBatch(BatchPath);
+
+  // Append MSBuild output to the installation log for debugging
+  if FileExists(MsbuildLog) then
+  begin
+    LogLines := TStringList.Create;
+    try
+      LogLines.LoadFromFile(MsbuildLog);
+      for I := 0 to LogLines.Count - 1 do
+        LogLine('  [msbuild] ' + LogLines[I]);
+    finally
+      LogLines.Free;
+    end;
+  end;
+
   if ExitCode = 0 then
-    Result := True
+  begin
+    Result := True;
+    LogLine('Compile OK: ' + PkgSuffix + '/' + PlatformName);
+  end
   else
-    Log('Build warning: exit code ' + IntToStr(ExitCode) +
-        ' compiling ' + PkgSuffix + '/' + PlatformName);
+    LogLine('Compile FAILED (exit ' + IntToStr(ExitCode) + '): ' +
+            PkgSuffix + '/' + PlatformName);
 end;
 
 
@@ -658,52 +733,100 @@ end;
 // IDE can locate them as dependencies, then register the design-time BPL.
 //
 //   Win32 runtime BPL  → {BDSRoot}\bin\
-//   Win32 dcl BPL      → {BDSRoot}\bin\   + Known Packages
-//   Win64 runtime BPL  → {BDSRoot}\bin64\ (if 64-bit IDE present)
+//   Win32 dcl BPL      → {BDSRoot}\bin\
+//   Win64 runtime BPL  → {BDSRoot}\bin64\  (if 64-bit IDE)
+//   Win64 dcl BPL      → {BDSRoot}\bin64\  (if 64-bit IDE) + Known Packages
+//
+// 64-bit IDE (D12+) can only load Win64 design-time packages.
+// 32-bit IDE uses Win32 design-time packages.
+// LR20260324 - Fixed: was only registering Win32 BPL which silently fails in 64-bit IDE
 procedure CopyAndRegisterBPLs(const AppDir, BDSRoot, BDSVer,
                                PkgFolder, PkgSuffix, Config: String;
                                HasBin64: Boolean);
 var
-  PkgBase   : String;
-  BinDir    : String;
-  Bin64Dir  : String;
-  RuntimeBpl: String;
-  DclBpl    : String;
-  RegKey    : String;
+  PkgBase    : String;
+  BinDir     : String;
+  Bin64Dir   : String;
+  RuntimeBpl : String;
+  DclBpl     : String;
+  RegKey     : String;
+  RegBplPath : String;
 begin
   PkgBase  := AppDir + '\packages\' + PkgFolder;
   BinDir   := BDSRoot + '\bin\';
   Bin64Dir := BDSRoot + '\bin64\';
+  RegKey   := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages';
 
-  // --- Win32 runtime BPL ---
+  LogLine('Registering BPLs for BDS ' + BDSVer + '  Config=' + Config +
+          '  HasBin64=' + BoolStr(HasBin64));
+
+  // --- Win32 runtime BPL → bin\ ---
   RuntimeBpl := PkgBase + '\Win32\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
   if FileExists(RuntimeBpl) then
-    FileCopy(RuntimeBpl, BinDir + 'KingCalendar' + PkgSuffix + '.bpl', False)
+  begin
+    CopyFile(RuntimeBpl, BinDir + 'KingCalendar' + PkgSuffix + '.bpl', False);
+    LogLine('Copied Win32 runtime BPL to: ' + BinDir);
+  end
   else
-    Log('Win32 runtime BPL not found: ' + RuntimeBpl);
+    LogLine('Win32 runtime BPL not found: ' + RuntimeBpl);
 
-  // --- Win32 design-time BPL: copy to bin\ and register ---
+  // --- Win32 dcl BPL → bin\ (copy always; used by 32-bit IDE) ---
   DclBpl := PkgBase + '\Win32\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
   if FileExists(DclBpl) then
   begin
-    FileCopy(DclBpl, BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl', False);
-    RegKey := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages';
-    RegWriteStringValue(HKCU, RegKey,
-      BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl',
-      'KingCalendar Components');
-    Log('Registered BPL: ' + BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl');
+    CopyFile(DclBpl, BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl', False);
+    LogLine('Copied Win32 dcl BPL to: ' + BinDir);
   end
   else
-    Log('Win32 design-time BPL not found: ' + DclBpl);
+    LogLine('Win32 dcl BPL not found: ' + DclBpl);
 
-  // --- Win64 runtime BPL (needed by the 64-bit IDE) ---
   if HasBin64 and DirExists(Bin64Dir) then
   begin
+    // --- Win64 runtime BPL → bin64\ ---
     RuntimeBpl := PkgBase + '\Win64\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
     if FileExists(RuntimeBpl) then
-      FileCopy(RuntimeBpl, Bin64Dir + 'KingCalendar' + PkgSuffix + '.bpl', False)
+    begin
+      CopyFile(RuntimeBpl, Bin64Dir + 'KingCalendar' + PkgSuffix + '.bpl', False);
+      LogLine('Copied Win64 runtime BPL to: ' + Bin64Dir);
+    end
     else
-      Log('Win64 runtime BPL not found: ' + RuntimeBpl);
+      LogLine('Win64 runtime BPL not found: ' + RuntimeBpl);
+
+    // --- Win64 dcl BPL → bin64\ + Known Packages ---
+    // 64-bit IDE (D12+) requires a Win64 design-time package; Win32 BPL is ignored.
+    DclBpl := PkgBase + '\Win64\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
+    if FileExists(DclBpl) then
+    begin
+      CopyFile(DclBpl, Bin64Dir + 'dclKingCalendar' + PkgSuffix + '.bpl', False);
+      RegBplPath := Bin64Dir + 'dclKingCalendar' + PkgSuffix + '.bpl';
+      RegWriteStringValue(HKCU, RegKey, RegBplPath, 'KingCalendar Components');
+      LogLine('Registered Win64 dcl BPL in Known Packages: ' + RegBplPath);
+    end
+    else
+    begin
+      // Win64 dcl not available — fall back to Win32 (may fail to load in 64-bit IDE)
+      LogLine('Win64 dcl BPL not found; falling back to Win32 registration: ' + DclBpl);
+      RegBplPath := BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl';
+      if FileExists(RegBplPath) then
+      begin
+        RegWriteStringValue(HKCU, RegKey, RegBplPath, 'KingCalendar Components');
+        LogLine('Registered Win32 dcl BPL (fallback): ' + RegBplPath);
+      end
+      else
+        LogLine('No dcl BPL found for Known Packages — registration skipped');
+    end;
+  end
+  else
+  begin
+    // --- 32-bit IDE: register Win32 dcl from bin\ ---
+    RegBplPath := BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl';
+    if FileExists(RegBplPath) then
+    begin
+      RegWriteStringValue(HKCU, RegKey, RegBplPath, 'KingCalendar Components');
+      LogLine('Registered Win32 dcl BPL in Known Packages: ' + RegBplPath);
+    end
+    else
+      LogLine('Win32 dcl BPL not found for Known Packages registration: ' + RegBplPath);
   end;
 end;
 
@@ -780,6 +903,11 @@ begin
   Config := 'Release';
   if BuildDebugRB.Checked then Config := 'Debug';
 
+  // Initialise the installation log; will be saved to {app}\installation.log
+  InstallLog := TStringList.Create;
+  LogLine('KingCalendar post-install started');
+  LogLine('AppDir=' + AppDir + '  Config=' + Config);
+
   PlatNames[PLT_WIN32]   := 'Win32';
   PlatNames[PLT_WIN64]   := 'Win64';
   PlatNames[PLT_WIN64X]  := 'Win64x';
@@ -795,11 +923,18 @@ begin
     if not VersionChecks.Checked[I] then Continue;
     VerIdx := CheckToVersion[I];
 
+    LogLine('Processing: ' + Versions[VerIdx].DisplayName +
+            '  BDSVer=' + Versions[VerIdx].BDSVer +
+            '  HasBin64=' + BoolStr(Versions[VerIdx].HasBin64));
+
     // --- Compile both Debug + Release for each selected platform ---
     for J := 0 to NUM_PLATFORMS - 1 do
     begin
       if not DoPlat[J] then Continue;
       if not PlatformAvailable(Versions[VerIdx].BDSRoot, J, Versions[VerIdx]) then Continue;
+
+      SetStatus('Compiling ' + Versions[VerIdx].DisplayName +
+                ' / ' + PlatNames[J] + ' ...');
 
       if not CompilePackages(
                AppDir,
@@ -808,7 +943,8 @@ begin
                Versions[VerIdx].PkgFolder,
                Versions[VerIdx].PkgSuffix,
                PlatNames[J],
-               Versions[VerIdx].LibPrefix
+               Versions[VerIdx].LibPrefix,
+               Versions[VerIdx].HasBin64
              ) then
         AnyCompileErr := True;
     end;
@@ -817,6 +953,8 @@ begin
     // Runs once per version (not per platform); uses the user-selected config.
     if DoPlat[PLT_WIN32] and
        PlatformAvailable(Versions[VerIdx].BDSRoot, PLT_WIN32, Versions[VerIdx]) then
+    begin
+      SetStatus('Registering ' + Versions[VerIdx].DisplayName + ' design-time package ...');
       CopyAndRegisterBPLs(
         AppDir,
         Versions[VerIdx].BDSRoot,
@@ -826,8 +964,10 @@ begin
         Config,
         Versions[VerIdx].HasBin64
       );
+    end;
 
     // --- Add selected-config DCU folder and source to library paths ---
+    SetStatus('Updating library paths for ' + Versions[VerIdx].DisplayName + ' ...');
     for J := 0 to NUM_PLATFORMS - 1 do
     begin
       if not DoPlat[J] then Continue;
@@ -844,11 +984,22 @@ begin
     end;
   end;
 
+  // --- Save installation log to {app}\installation.log ---
+  SetStatus('Saving installation log ...');
+  LogLine('Post-install complete.  AnyCompileErr=' + BoolStr(AnyCompileErr));
+  try
+    InstallLog.SaveToFile(AppDir + '\installation.log');
+  except
+    Log('Warning: could not save installation.log');
+  end;
+  InstallLog.Free;
+  InstallLog := nil;
+
   // --- Final status message ---
   if AnyCompileErr then
     MsgBox(
       'KingCalendar was installed but one or more packages could not be compiled.' + #13#10 +
-      'Check the setup log for details.' + #13#10 + #13#10 +
+      'Check installation.log in the installation folder for details.' + #13#10 + #13#10 +
       'You can compile the packages manually from the Delphi IDE by opening' + #13#10 +
       'the group project in the packages\ subfolder.',
       mbInformation, MB_OK
@@ -874,6 +1025,9 @@ begin
   if CurUninstallStep <> usPostUninstall then Exit;
 
   AppDir := ExpandConstant('{app}');
+
+  // Remove the installation log written by the post-install phase
+  DeleteFile(AppDir + '\installation.log');
 
   // Delete all *.dcu files recursively (compiled units)
   Exec(ExpandConstant('{cmd}'),
