@@ -1,470 +1,153 @@
-# KingCal
+# KingCalendar for Delphi
 
-KingCalendar Components for Delphi
+A fully-featured VCL calendar component library for **Delphi 10.2 through 13**, supporting Win32, Win64, and Win64x platforms. Open source under the MIT License.
 
-Release v26.1.1 - January 1, 2026
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Delphi](https://img.shields.io/badge/Delphi-10.2–13-red.svg)](https://www.embarcadero.com)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-brightgreen.svg)](https://k7ler.github.io/KingCal/)
 
+---
 
+## Quick Install
 
-================================================================================
+Download and run the Windows installer — it detects every Delphi version on your machine, compiles the packages, and registers the components in each IDE automatically.
 
-ABOUT KINGCALENDAR
+**[⬇ Download KingCalendarSetup.exe](https://github.com/K7LER/KingCal/raw/master/Installer/KingCalendarSetup.exe)**
 
-================================================================================
+> Close the Delphi IDE before running the installer. An `installation.log` is written to the install folder if you need to troubleshoot.
 
+---
 
+## Screenshots
 
-KingCalendar is a calendar component for Delphi originally created by Mark 
+| Main Calendar | Popup Picker | Navigation Controls |
+|:---:|:---:|:---:|
+| ![Main calendar grid](screenshots/demo.png) | ![Popup date picker](screenshots/popup.png) | ![Navigation controls](screenshots/navigational.png) |
 
-Lussier and AppVision. The component has been updated over the years from the 
+| Spinner, Combo & Label Controls | Drag & Drop |
+|:---:|:---:|
+| ![Spinner and combo controls](screenshots/spinnercombolabels.png) | ![Drag and drop demo](screenshots/dragdrop.png) |
 
-early Delphi versions to work with today's Delphi versions.
+---
 
+## Components
 
+All controls install directly into the Delphi IDE component palette.
 
-Lance Rasmussen from CDE Software in Seattle now maintains the component. In 
+| Component | Description |
+|---|---|
+| `TKingCalendar` | Core month-grid calendar control |
+| `TKingPopup` | Non-visual popup calendar |
+| `TKingDateDialog` | Edit control with built-in calendar button |
+| `TDBKingDlg` | Database-bound date picker (`TDataSource` / `TField`) |
+| `TKingNavigator` | Panel with prev/next month & year buttons |
+| `TMonthBar` | Row of 12 month-selection buttons |
+| `TKingLabel` | Label that tracks the selected date |
+| `TKingWeekLabel` | Label that displays the ISO week number |
+| `TMonthSpin` / `TMonthCombo` | Spin and combo controls for month navigation |
+| `TYearSpin` / `TYearCombo` | Spin and combo controls for year navigation |
+| `TDaySpin` / `TDayCombo` | Spin and combo controls for day navigation |
+| `TKingDateSpin` | Inline date spin editor |
+| `TKingTimeSpin` | Inline time spin editor |
+| `TKingHMSpin` | Hour/minute/second field-by-field spin editor |
+| `TKingMDYSpin` | Month/day/year field-by-field spin editor |
 
-June 2018, Mark gave Lance permission to make KingCalendar open source and 
+---
 
-share it on GitHub.
+## Delphi Version Support
 
+| Delphi Version | BDS Key | Package Suffix | Win32 | Win64 | Win64x |
+|---|---|---|:---:|:---:|:---:|
+| Delphi 13 | 37.0 | `370` | ✓ | ✓ | ✓ |
+| Delphi 12 | 29.0 | `360` | ✓ | ✓ | — |
+| Delphi 11 | 22.0 | `290` | ✓ | ✓ | — |
+| Delphi 10.4 | 21.0 | `280` | — | ✓ | — |
+| Delphi 10.3 | 20.0 | `270` | — | ✓ | — |
+| Delphi 10.2 | 19.0 | `260` | — | ✓ | — |
 
+---
 
-This version works with Delphi 13.
+## Manual Installation (Git Clone)
 
+Use this method if you want the full source and prefer to manage builds yourself.
 
+```
+git clone https://github.com/K7LER/KingCal.git
+```
 
-If you have improvements to the code, please contact Lance Rasmussen.
+1. In Delphi go to **Tools → Options → Delphi Options → Library**.
+2. Add `LIBD<ver>x64\RELEASE` (and `LIBD<ver>x32\RELEASE` for 32-bit targets) to the **Library Path**.
+3. Add the `source\` folder to the **Browsing Path**.
+4. Open the group project for your version, e.g. `packages\13\D13All.groupproj`.
+5. Compile the runtime package (`KingCalendar370.dpk`) first.
+6. Compile the design-time package (`dclKingCalendar370.dpk`).
+7. Right-click the design-time package → **Install**.
 
+See the [Wiki](https://github.com/K7LER/KingCal/wiki) for version-specific library folder names and detailed step-by-step instructions for each Delphi release.
 
+---
 
+## Demo Projects
 
+Five ready-to-compile demo projects are included for Delphi 10.2, 10.3, 10.4, and 13 under the `Demos\` folder.
 
-================================================================================
+| Demo | Description |
+|---|---|
+| **Main Demo** | Full `TKingCalendar` feature tour — color sets, blocked days, events, annotations |
+| **Drag & Drop** | Dragging selected dates between two calendars |
+| **Navigation** | Wiring `TKingNavigator`, spin, and combo controls to a calendar |
+| **Date Picker** | `TKingPopup` and `TKingDateDialog` in a real form |
+| **Start Day** | Switching the first day of the week at runtime |
 
-INSTALLING KINGCALENDAR
+---
 
-================================================================================
+## Key Features
 
+- **Full month-grid calendar** with day selection, blocked days, flagged days, and per-cell color customization
+- **Nine built-in color sets** (`ColorSet1`–`ColorSet9`) configurable at design or runtime
+- **High DPI and VCL Styles** compatible
+- **Database binding** via `TDBKingDlg` linked to any `TDataSource` / `TField`
+- **Color bar overlays** for visualizing multi-day events or ranges
+- **No external dependencies** — pure Object Pascal, no third-party runtime required
 
+---
 
---------------------------------------------------------------------------------
+## Documentation
 
-For Delphi 13 (64-bit IDE)
+- **[Project Website](https://k7ler.github.io/KingCal/)** — feature overview, screenshots, and install guide
+- **[Wiki](https://github.com/K7LER/KingCal/wiki)** — full component reference, property/event/method listings, and code examples
+- **`Documentation\kingcal30.rtf`** — original component reference guide (included in the install)
 
---------------------------------------------------------------------------------
+---
 
+## Contributing
 
+Bug reports and pull requests are welcome. Please open an issue first for anything beyond a small fix.
 
-1\. Download the project from GitHub to a folder on your computer. You can also 
+- [Open an issue](https://github.com/K7LER/KingCal/issues)
+- [Read the contributing guide](CONTRIBUTING.md)
 
-&nbsp;  download the ZIP file and unzip it to a folder.
+---
 
+## Version History
 
+| Version | Date | Notes |
+|---|---|---|
+| 26.1.1 | 2026-01-01 | Added Delphi 13 support; Windows installer |
+| 2.1.1 | 2023-12-12 | Added Delphi 12 support |
+| 2.0.9 | 2022-12-01 | Added Delphi 11 support |
+| 2.0.8 | 2018-12-31 | VCL Styles navigator fix; Segoe UI default font; `TKingWeekLabel` added |
+| 2.0.6 | 2018-12-30 | International locale date format support |
+| 2.0.2 | 2018-12-29 | Added Delphi 10.3 Rio support |
+| 2.0.0 | 2018-06-28 | Initial open-source release |
 
-2\. Open Delphi and go to Tools > Options > Delphi Options > Library
+---
 
+## License
 
+MIT License. See [LICENSE](LICENSE) for the full text.
 
-3\. Under Library Path, add the folder LIB37x64\\RELEASE (or LIB37x64\\DEBUG if 
+**Original component:** Mark Lussier and AppVision © 1995–2000
+**Current maintainer:** Lance Rasmussen — [lancerasmussen@gmail.com](mailto:lancerasmussen@gmail.com)
 
-&nbsp;  you prefer)
-
-
-
-4\. Under Browsing path, add the SOURCE folder
-
-
-
-5\. Click OK to close the Options window
-
-
-
-6\. Open the project file KingCalD13All.groupproj
-
-
-
-7\. Set the runtime package to either Release or Debug mode (match what you 
-
-&nbsp;  chose in step 3)
-
-
-
-8\. Compile the runtime package (the one without DCL in the name)
-
-
-
-9\. Set the designtime package to either Release or Debug mode (match what you 
-
-&nbsp;  chose in step 3)
-
-
-
-10\. Compile the designtime package (the one with DCL in the name)
-
-
-
-11\. Right-click on the designtime package and choose Install
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 13 (32-bit IDE)
-
---------------------------------------------------------------------------------
-
-
-
-1\. Download the project from GitHub to a folder on your computer. You can also 
-
-&nbsp;  download the ZIP file and unzip it to a folder.
-
-
-
-2\. Open Delphi and go to Tools > Options > Delphi Options > Library
-
-
-
-3\. Under Library Path, add these folders:
-
-&nbsp;  - For 32-bit: LIB37x32\\RELEASE (or LIB37x32\\DEBUG)
-
-&nbsp;  - For 64-bit: LIB37x64\\RELEASE (or LIB37x64\\DEBUG)
-
-
-
-4\. Under Browsing path, add the SOURCE folder
-
-
-
-5\. Click OK to close the Options window
-
-
-
-6\. Open the project file KingCalD13All.groupproj
-
-
-
-7\. Set the runtime package to 32-bit and either Release or Debug mode
-
-
-
-8\. Compile the runtime package
-
-
-
-9\. Set the designtime package to 32-bit and either Release or Debug mode
-
-
-
-10\. Compile the designtime package
-
-
-
-11\. Right-click on the designtime package and choose Install
-
-
-
-12\. Now set the runtime package to 64-bit and either Release or Debug mode
-
-
-
-13\. Compile the runtime package again
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 12 (64-bit IDE)
-
---------------------------------------------------------------------------------
-
-
-
-1\. Download the project from GitHub to a folder on your computer. You can also 
-
-&nbsp;  download the ZIP file and unzip it to a folder.
-
-
-
-2\. Open Delphi and go to Tools > Options > Delphi Options > Library
-
-
-
-3\. Under Library Path, add the folder LIB29x64\\RELEASE (or LIB29x64\\DEBUG if 
-
-&nbsp;  you prefer)
-
-
-
-4\. Under Browsing path, add the SOURCE folder
-
-
-
-5\. Click OK to close the Options window
-
-
-
-6\. Open the project file KingCalD12All.groupproj
-
-
-
-7\. Set the runtime package to either Release or Debug mode (match what you 
-
-&nbsp;  chose in step 3)
-
-
-
-8\. Compile the runtime package (the one without DCL in the name)
-
-
-
-9\. Set the designtime package to either Release or Debug mode (match what you 
-
-&nbsp;  chose in step 3)
-
-
-
-10\. Compile the designtime package (the one with DCL in the name)
-
-
-
-11\. Right-click on the designtime package and choose Install
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 12 (32-bit IDE)
-
---------------------------------------------------------------------------------
-
-
-
-1\. Download the project from GitHub to a folder on your computer. You can also 
-
-&nbsp;  download the ZIP file and unzip it to a folder.
-
-
-
-2\. Open Delphi and go to Tools > Options > Delphi Options > Library
-
-
-
-3\. Under Library Path, add these folders:
-
-&nbsp;  - For 32-bit: LIB29x32\\RELEASE (or LIB29x32\\DEBUG)
-
-&nbsp;  - For 64-bit: LIB29x64\\RELEASE (or LIB29x64\\DEBUG)
-
-
-
-4\. Under Browsing path, add the SOURCE folder
-
-
-
-5\. Click OK to close the Options window
-
-
-
-6\. Open the project file KingCalD12All.groupproj
-
-
-
-7\. Set the runtime package to 32-bit and either Release or Debug mode
-
-
-
-8\. Compile the runtime package
-
-
-
-9\. Set the designtime package to 32-bit and either Release or Debug mode
-
-
-
-10\. Compile the designtime package
-
-
-
-11\. Right-click on the designtime package and choose Install
-
-
-
-12\. Now set the runtime package to 64-bit and either Release or Debug mode
-
-
-
-13\. Compile the runtime package again
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 11
-
---------------------------------------------------------------------------------
-
-
-
-1\. Download the project from GitHub to a folder on your computer. You can also 
-
-&nbsp;  download the ZIP file and unzip it to a folder.
-
-
-
-2\. Open Delphi and go to Tools > Options > Delphi Options > Library
-
-
-
-3\. Under Library Path, add these folders:
-
-&nbsp;  - For 32-bit: LIB28x32\\RELEASE (or LIB28x32\\DEBUG)
-
-&nbsp;  - For 64-bit: LIB28x64\\RELEASE (or LIB28x64\\DEBUG)
-
-
-
-4\. Under Browsing path, add the SOURCE folder
-
-
-
-5\. Click OK to close the Options window
-
-
-
-6\. Open the project file KingCalD104All.groupproj
-
-
-
-7\. Set the runtime package to 32-bit and either Release or Debug mode
-
-
-
-8\. Compile the runtime package
-
-
-
-9\. Set the designtime package to 32-bit and either Release or Debug mode
-
-
-
-10\. Compile the designtime package
-
-
-
-11\. Right-click on the designtime package and choose Install
-
-
-
-12\. Now set the runtime package to 64-bit and either Release or Debug mode
-
-
-
-13\. Compile the runtime package again
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 10.4
-
---------------------------------------------------------------------------------
-
-
-
-Follow the same steps as Delphi 11, but use these folders instead:
-
-\- For 32-bit: LIB27x32\\RELEASE (or LIB27x32\\DEBUG)
-
-\- For 64-bit: LIB27x64\\RELEASE (or LIB27x64\\DEBUG)
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 10.3
-
---------------------------------------------------------------------------------
-
-
-
-Follow the same steps as Delphi 11, but use these folders instead:
-
-\- For 32-bit: LIB26x32\\RELEASE (or LIB26x32\\DEBUG)
-
-\- For 64-bit: LIB26x64\\RELEASE (or LIB26x64\\DEBUG)
-
-
-
-Use the project file KingCalD103All.groupproj
-
-
-
-
-
---------------------------------------------------------------------------------
-
-For Delphi 10.2
-
---------------------------------------------------------------------------------
-
-
-
-Follow the same steps as Delphi 11, but use these folders instead:
-
-\- For 32-bit: LIB25x32\\RELEASE (or LIB25x32\\DEBUG)
-
-\- For 64-bit: LIB25x64\\RELEASE (or LIB25x64\\DEBUG)
-
-
-
-Use the project file KingCalD102All.groupproj
-
-
-
-
-
-================================================================================
-
-UPDATES AND DOWNLOADS
-
-================================================================================
-
-
-
-You can find the latest version of KingCalendar on GitHub at:
-
-https://github.com/K7LER/KingCal
-
-
-
-
-
-================================================================================
-
-NEED HELP?
-
-================================================================================
-
-
-
-There is no official support for this component. If you have questions or want 
-
-to share code improvements, please email Lance Rasmussen at 
-
-lancerasmussen@gmail.com
-
+In June 2018, Mark Lussier gave Lance Rasmussen permission to open-source KingCalendar and publish it on GitHub.
