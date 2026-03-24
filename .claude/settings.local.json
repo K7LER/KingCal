@@ -8,7 +8,8 @@
       "Bash(ls -la /c/_c/KC/source/*.pas)",
       "Bash(xxd \"/c/_c/KC/Demos/Delphi10.2/Demo/Info.dfm\")",
       "Bash(python3:*)",
-      "Bash(find C:/_c/KC -name *.bpl)"
+      "Bash(find C:/_c/KC -name *.bpl)",
+      "Bash(find Demos -type d -not -path */.*)"
     ]
   }
 }

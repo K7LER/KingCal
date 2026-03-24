@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KingCalendar — Delphi VCL Calendar Components</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:      #1a56db;
+      --brand-dark: #1e429f;
+      --accent:     #e3a008;
+      --bg:         #f9fafb;
+      --surface:    #ffffff;
+      --text:       #111928;
+      --muted:      #6b7280;
+      --border:     #e5e7eb;
+      --radius:     10px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 60%, #3b82f6 100%);
+      color: #fff;
+      padding: 72px 24px 80px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto 36px;
+      opacity: .88;
+    }
+    .btn-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 13px 28px;
+      cursor: pointer;
+      transition: transform .12s, box-shadow .12s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.18); text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #1a1a1a; }
+    .btn-secondary { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.5); }
+
+    /* ── Layout ── */
+    .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 64px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin-bottom: 40px;
+    }
+
+    /* ── Feature grid ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+    }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p  { color: var(--muted); font-size: 0.92rem; }
+
+    /* ── Screenshots ── */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .screenshot-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .screenshot-item img {
+      width: 100%;
+      display: block;
+    }
+    .screenshot-item figcaption {
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 600;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Version table ── */
+    .version-table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      font-size: 0.93rem;
+    }
+    thead { background: var(--brand); color: #fff; }
+    thead th { padding: 13px 16px; text-align: left; font-weight: 600; }
+    tbody tr:nth-child(even) { background: #f3f4f6; }
+    tbody td { padding: 11px 16px; border-top: 1px solid var(--border); }
+    .badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 2px 10px;
+    }
+    .badge-gray {
+      background: #f3f4f6;
+      color: var(--muted);
+    }
+
+    /* ── Install options ── */
+    .install-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .install-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+    }
+    .install-card.highlighted {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(26,86,219,.15);
+    }
+    .install-card .card-tag {
+      display: inline-block;
+      background: var(--brand);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 3px 12px;
+      margin-bottom: 16px;
+    }
+    .install-card .card-tag.tag-alt {
+      background: #6b7280;
+    }
+    .install-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+    .install-card p  { color: var(--muted); font-size: 0.93rem; margin-bottom: 22px; }
+    .steps ol { padding-left: 20px; color: var(--muted); font-size: 0.91rem; }
+    .steps li { margin-bottom: 7px; }
+    .steps code {
+      background: #f3f4f6;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.87em;
+      color: var(--text);
+    }
+
+    /* ── Controls showcase ── */
+    .controls-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      list-style: none;
+    }
+    .controls-list li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 0.92rem;
+    }
+    .controls-list li strong { display: block; margin-bottom: 4px; }
+    .controls-list li span { color: var(--muted); font-size: 0.86rem; }
+
+    /* ── Footer ── */
+    footer {
+      background: #111928;
+      color: #9ca3af;
+      text-align: center;
+      padding: 40px 24px;
+      font-size: 0.88rem;
+    }
+    footer a { color: #d1d5db; }
+    footer p + p { margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-badge">Open Source · MIT License</div>
+    <h1>KingCalendar<br>for Delphi</h1>
+    <p>
+      A fully-featured VCL calendar component library for Delphi 10.2 through 13,
+      with support for Win32, Win64, and Win64x platforms.
+    </p>
+    <div class="btn-group">
+      <a class="btn btn-primary"
+         href="https://github.com/K7LER/KingCal/raw/master/Installer/KingCalendarSetup.exe"
+         download>
+        ⬇ Download Installer
+      </a>
+      <a class="btn btn-secondary"
+         href="https://github.com/K7LER/KingCal">
+        ★ View on GitHub
+      </a>
+    </div>
+    <p style="margin-top:18px; font-size:0.82rem; opacity:.65;">
+      v2026.0324 &nbsp;·&nbsp; Maintained by Lance Rasmussen &nbsp;·&nbsp; Originally by Mark Lussier &amp; AppVision
+    </p>
+  </div>
+</header>
+
+
+<!-- ═══════════════════ FEATURES ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Why KingCalendar?</h2>
+    <p class="section-sub">
+      Everything you need for date selection and calendar display in a Delphi VCL application,
+      packaged in one install.
+    </p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗓</div>
+        <h3>Full Month Grid</h3>
+        <p>Renders a complete month view with day selection, blocked days, flagged days, and per-cell color customization.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>9 Built-in Color Sets</h3>
+        <p>Choose from nine named color schemes via <code>ColorSet1</code>–<code>ColorSet9</code> properties, or build your own.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Companion Controls</h3>
+        <p>Month/year/day spin and combo controls, week labels, a navigator panel, and a month-bar all bind directly to the calendar.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🪟</div>
+        <h3>Popup &amp; Dialog Modes</h3>
+        <p><code>TKingPopup</code> drops down like a date-picker; <code>TKingDateDialog</code> is a standalone date selection dialog.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗄</div>
+        <h3>Database Aware</h3>
+        <p><code>TDBKingDlg</code> links directly to a <code>TField</code> for seamless live binding in data-aware forms.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔢</div>
+        <h3>Spin Editors</h3>
+        <p>Inline date, time, and MDY spin-button editors for quick keyboard-friendly date entry in any form.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📐</div>
+        <h3>High DPI &amp; VCL Styles</h3>
+        <p>Fully compatible with Delphi's High DPI scaling and VCL Styles runtime theming.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>No External Dependencies</h3>
+        <p>Pure Object Pascal. Ships pre-compiled for every supported Delphi version — no third-party runtime required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ SCREENSHOTS ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Screenshots</h2>
+    <p class="section-sub">A sample of what KingCalendar looks like in a running application.</p>
+    <div class="screenshot-grid">
+      <figure class="screenshot-item">
+        <img src="https://raw.githubusercontent.com/K7LER/KingCal/master/screenshots/demo.png"
+             alt="Main calendar grid demo" loading="lazy">
+        <figcaption>Main Calendar Grid</figcaption>
+      </figure>
+      <figure class="screenshot-item">
+        <img src="https://raw.githubusercontent.com/K7LER/KingCal/master/screenshots/popup.png"
+             alt="Popup date picker" loading="lazy">
+        <figcaption>Popup Date Picker</figcaption>
+      </figure>
+      <figure class="screenshot-item">
+        <img src="https://raw.githubusercontent.com/K7LER/KingCal/master/screenshots/navigational.png"
+             alt="Navigation controls" loading="lazy">
+        <figcaption>Navigation Controls</figcaption>
+      </figure>
+      <figure class="screenshot-item">
+        <img src="https://raw.githubusercontent.com/K7LER/KingCal/master/screenshots/spinnercombolabels.png"
+             alt="Spinner, combo, and label companions" loading="lazy">
+        <figcaption>Spinner, Combo &amp; Label Controls</figcaption>
+      </figure>
+      <figure class="screenshot-item">
+        <img src="https://raw.githubusercontent.com/K7LER/KingCal/master/screenshots/dragdrop.png"
+             alt="Drag and drop demo" loading="lazy">
+        <figcaption>Drag &amp; Drop Example</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ COMPONENTS ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Included Controls</h2>
+    <p class="section-sub">All controls register directly in the Delphi IDE component palette.</p>
+    <ul class="controls-list">
+      <li><strong>TKingCalendar</strong><span>Core month-grid calendar control</span></li>
+      <li><strong>TKingPopup</strong><span>Dropdown popup date picker</span></li>
+      <li><strong>TKingDateDialog</strong><span>Standalone date selection dialog</span></li>
+      <li><strong>TDBKingDlg</strong><span>Database-bound date picker</span></li>
+      <li><strong>TKingNavigator</strong><span>Prev/next month &amp; year buttons</span></li>
+      <li><strong>TMonthBar</strong><span>Row of month-selection buttons</span></li>
+      <li><strong>TKingLabel</strong><span>Date-bound label</span></li>
+      <li><strong>TKingWeekLabel</strong><span>Week-number bound label</span></li>
+      <li><strong>TMonthSpin / TMonthCombo</strong><span>Month navigation spin &amp; combo</span></li>
+      <li><strong>TYearSpin / TYearCombo</strong><span>Year navigation spin &amp; combo</span></li>
+      <li><strong>TDaySpin / TDayCombo</strong><span>Day navigation spin &amp; combo</span></li>
+      <li><strong>TKingDateSpin</strong><span>Inline date spin editor</span></li>
+      <li><strong>TKingTimeSpin</strong><span>Inline time spin editor</span></li>
+      <li><strong>TKingMDYSpin</strong><span>Month/day/year spin editor</span></li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ DELPHI VERSION SUPPORT ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Delphi Version Support</h2>
+    <p class="section-sub">
+      Pre-compiled library files are included for every listed version.
+      The installer detects which Delphi versions you have installed and compiles only those.
+    </p>
+    <div class="version-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Delphi Version</th>
+            <th>BDS Ver</th>
+            <th>Package Suffix</th>
+            <th>Win32</th>
+            <th>Win64</th>
+            <th>Win64x</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Delphi 13</strong></td>
+            <td>37.0</td>
+            <td><code>370</code></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge">✓</span></td>
+          </tr>
+          <tr>
+            <td><strong>Delphi 12</strong></td>
+            <td>29.0</td>
+            <td><code>360</code></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge badge-gray">—</span></td>
+          </tr>
+          <tr>
+            <td><strong>Delphi 11</strong></td>
+            <td>22.0</td>
+            <td><code>290</code></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge badge-gray">—</span></td>
+          </tr>
+          <tr>
+            <td><strong>Delphi 10.4</strong></td>
+            <td>21.0</td>
+            <td><code>280</code></td>
+            <td><span class="badge badge-gray">—</span></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge badge-gray">—</span></td>
+          </tr>
+          <tr>
+            <td><strong>Delphi 10.3</strong></td>
+            <td>20.0</td>
+            <td><code>270</code></td>
+            <td><span class="badge badge-gray">—</span></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge badge-gray">—</span></td>
+          </tr>
+          <tr>
+            <td><strong>Delphi 10.2</strong></td>
+            <td>19.0</td>
+            <td><code>260</code></td>
+            <td><span class="badge badge-gray">—</span></td>
+            <td><span class="badge">✓</span></td>
+            <td><span class="badge badge-gray">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ INSTALLATION ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Installation</h2>
+    <p class="section-sub">
+      Choose the method that works best for you. The installer is the fastest way to get started.
+    </p>
+    <div class="install-cards">
+
+      <!-- Installer -->
+      <div class="install-card highlighted">
+        <span class="card-tag">Recommended</span>
+        <h3>Windows Installer</h3>
+        <p>
+          The installer automatically detects all Delphi versions on your machine,
+          compiles the packages for each one, and registers the components in every IDE.
+          No manual path configuration needed.
+        </p>
+        <a class="btn btn-primary"
+           href="https://github.com/K7LER/KingCal/raw/master/Installer/KingCalendarSetup.exe"
+           download
+           style="display:inline-flex; margin-bottom:18px;">
+          ⬇ Download KingCalendarSetup.exe
+        </a>
+        <div class="steps">
+          <ol>
+            <li>Close the Delphi IDE before running the installer.</li>
+            <li>Run <code>KingCalendarSetup.exe</code>.</li>
+            <li>Follow the wizard — done. Open Delphi and the components are ready.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Manual / Git -->
+      <div class="install-card">
+        <span class="card-tag tag-alt">Manual / Git</span>
+        <h3>Clone the Repository</h3>
+        <p>
+          For developers who want the full source and prefer to manage builds themselves.
+          Pre-compiled library files are included for every supported Delphi version.
+        </p>
+        <div class="steps">
+          <ol>
+            <li>
+              Clone or download the repo:<br>
+              <code>git clone https://github.com/K7LER/KingCal.git</code>
+            </li>
+            <li>In Delphi, go to <strong>Tools &rarr; Options &rarr; Library</strong>.</li>
+            <li>
+              Add the matching <code>LIBD&lt;ver&gt;x64\RELEASE</code> folder to the <strong>Library Path</strong>.
+            </li>
+            <li>Add the <code>source\</code> folder to the <strong>Browsing Path</strong>.</li>
+            <li>Open the group project for your version, e.g. <code>packages\13\D13All.groupproj</code>.</li>
+            <li>Compile the runtime package, then the design-time package.</li>
+            <li>Right-click the design-time package and choose <strong>Install</strong>.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ DEMOS ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Demo Projects</h2>
+    <p class="section-sub">
+      Five ready-to-compile demo projects are included for Delphi 10.2, 10.3, 10.4, and 13.
+      Open any <code>.groupproj</code> file in the <code>Demos\</code> folder to get started.
+    </p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗓</div>
+        <h3>Main Demo</h3>
+        <p>Comprehensive showcase of <code>TKingCalendar</code> — color sets, blocked days, events, and more.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖱</div>
+        <h3>Drag &amp; Drop</h3>
+        <p>Demonstrates dragging selected dates between controls.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧭</div>
+        <h3>Navigation Controls</h3>
+        <p>Shows how to wire <code>TKingNavigator</code>, spin, and combo controls to the calendar.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Date Picker</h3>
+        <p>Illustrates <code>TKingPopup</code> and <code>TKingDateDialog</code> in a real form.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📆</div>
+        <h3>Start Day</h3>
+        <p>Demonstrates switching the first day of the week between Sunday and Monday.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ HISTORY ═══════════════════ -->
+<section>
+  <div class="container">
+    <h2>Project History</h2>
+    <p class="section-sub"></p>
+    <div class="feature-card" style="max-width:720px;">
+      <p style="color:var(--muted); font-size:0.95rem; line-height:1.8;">
+        KingCalendar was originally created by <strong>Mark Lussier</strong> and
+        <strong>AppVision</strong> in the mid-1990s for early versions of Delphi.
+        In June 2018, Mark gave <strong>Lance Rasmussen</strong> of CDE Software in Seattle
+        permission to open-source the component and publish it on GitHub.
+        Lance has since modernized it for current Delphi versions, added High DPI and
+        VCL Styles support, and built the automated installer.
+        The library is released under the <strong>MIT License</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <div class="container">
+    <p>
+      <strong style="color:#f9fafb;">KingCalendar</strong> &nbsp;·&nbsp;
+      <a href="https://github.com/K7LER/KingCal">GitHub</a> &nbsp;·&nbsp;
+      <a href="https://github.com/K7LER/KingCal/issues">Issues</a> &nbsp;·&nbsp;
+      <a href="https://github.com/K7LER/KingCal/blob/master/LICENSE">MIT License</a>
+    </p>
+    <p>
+      Maintained by <a href="mailto:lancerasmussen@gmail.com">Lance Rasmussen</a>.
+      Original component by Mark Lussier &amp; AppVision &copy; 1995–2000.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
