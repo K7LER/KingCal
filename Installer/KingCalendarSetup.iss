@@ -563,6 +563,41 @@ begin
 end;
 
 
+// Read the BDSCOMMONDIR value from a rsvars.bat or rsvars64.bat file.
+// The relevant line looks like:  @SET BDSCOMMONDIR=C:\Users\Public\...
+// Returns the path with any trailing backslash stripped, or '' if not found.
+function ReadBDSCommonDir(const RsVarsPath: String): String;
+var
+  Lines  : TStringList;
+  I      : Integer;
+  Line   : String;
+  Marker : String;
+begin
+  Result := '';
+  if not FileExists(RsVarsPath) then Exit;
+
+  Marker := '@SET BDSCOMMONDIR=';
+  Lines  := TStringList.Create;
+  try
+    Lines.LoadFromFile(RsVarsPath);
+    for I := 0 to Lines.Count - 1 do
+    begin
+      Line := Trim(Lines[I]);
+      if CompareText(Copy(Line, 1, Length(Marker)), Marker) = 0 then
+      begin
+        Result := Trim(Copy(Line, Length(Marker) + 1, MaxInt));
+        // Strip any trailing backslash
+        while (Length(Result) > 0) and (Result[Length(Result)] = '\') do
+          Result := Copy(Result, 1, Length(Result) - 1);
+        Break;
+      end;
+    end;
+  finally
+    Lines.Free;
+  end;
+end;
+
+
 // Write and execute a batch file that calls rsvars.bat then MSBuild.
 // Compiles runtime package (all selected platforms) and design-time package (Win32 only).
 // Returns True if the build completed without error.
@@ -729,104 +764,133 @@ begin
 end;
 
 
-// Copy compiled BPLs for the selected config to the BDS bin folders so the
-// IDE can locate them as dependencies, then register the design-time BPL.
+// Copy compiled BPLs to the standard Delphi BDSCOMMONDIR\Bpl location and
+// register the design-time packages in the IDE registry.
 //
-//   Win32 runtime BPL  → {BDSRoot}\bin\
-//   Win32 dcl BPL      → {BDSRoot}\bin\
-//   Win64 runtime BPL  → {BDSRoot}\bin64\  (if 64-bit IDE)
-//   Win64 dcl BPL      → {BDSRoot}\bin64\  (if 64-bit IDE) + Known Packages
+// Standard Delphi BPL locations (user-writable, no UAC issues):
+//   Win32: {CommonDocs}\Embarcadero\Studio\{ver}\Bpl\
+//   Win64: {CommonDocs}\Embarcadero\Studio\{ver}\Bpl\Win64\
 //
-// 64-bit IDE (D12+) can only load Win64 design-time packages.
-// 32-bit IDE uses Win32 design-time packages.
-// LR20260324 - Fixed: was only registering Win32 BPL which silently fails in 64-bit IDE
+// Registry:
+//   32-bit IDE: HKCU\Software\Embarcadero\BDS\{ver}\Known Packages
+//   64-bit IDE: HKCU\Software\Embarcadero\BDS\{ver}\Known Packages x64
+//   Value name = full BPL path   Value data = 'KingCalendar'
+//
+// LR20260324 - Rewritten to use standard BDSCOMMONDIR\Bpl paths and correct registry keys
 procedure CopyAndRegisterBPLs(const AppDir, BDSRoot, BDSVer,
                                PkgFolder, PkgSuffix, Config: String;
                                HasBin64: Boolean);
 var
-  PkgBase    : String;
-  BinDir     : String;
-  Bin64Dir   : String;
-  RuntimeBpl : String;
-  DclBpl     : String;
-  RegKey     : String;
-  RegBplPath : String;
+  PkgBase     : String;
+  CommonDir32 : String;
+  CommonDir64 : String;
+  BplDir      : String;   // BDSCOMMONDIR\Bpl  (Win32)
+  Bpl64Dir    : String;   // BDSCOMMONDIR\Bpl\Win64  (Win64)
+  SrcBpl      : String;
+  DestBpl     : String;
 begin
-  PkgBase  := AppDir + '\packages\' + PkgFolder;
-  BinDir   := BDSRoot + '\bin\';
-  Bin64Dir := BDSRoot + '\bin64\';
-  RegKey   := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages';
+  PkgBase := AppDir + '\packages\' + PkgFolder;
+
+  // Read BDSCOMMONDIR from rsvars.bat (Win32) and rsvars64.bat (Win64 IDE).
+  // Fall back to the standard public-documents path if the file cannot be read.
+  CommonDir32 := ReadBDSCommonDir(BDSRoot + '\bin\rsvars.bat');
+  if CommonDir32 = '' then
+    CommonDir32 := ExpandConstant('{%PUBLIC}\Documents') +
+                   '\Embarcadero\Studio\' + BDSVer;
+
+  if HasBin64 then
+  begin
+    CommonDir64 := ReadBDSCommonDir(BDSRoot + '\bin64\rsvars64.bat');
+    if CommonDir64 = '' then
+      CommonDir64 := CommonDir32;
+  end
+  else
+    CommonDir64 := CommonDir32;
+
+  BplDir   := CommonDir32 + '\Bpl';
+  Bpl64Dir := CommonDir64 + '\Bpl\Win64';
 
   LogLine('Registering BPLs for BDS ' + BDSVer + '  Config=' + Config +
           '  HasBin64=' + BoolStr(HasBin64));
+  LogLine('BplDir=' + BplDir);
 
-  // --- Win32 runtime BPL → bin\ ---
-  RuntimeBpl := PkgBase + '\Win32\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
-  if FileExists(RuntimeBpl) then
+  // Ensure target directories exist
+  ForceDirectories(BplDir);
+  if HasBin64 then
+    ForceDirectories(Bpl64Dir);
+
+  // -------------------------------------------------------------------------
+  // Win32 — 32-bit IDE  (Known Packages)
+  // -------------------------------------------------------------------------
+
+  // Copy Win32 runtime BPL (IDE must be able to load it as a dependency)
+  SrcBpl := PkgBase + '\Win32\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
+  if FileExists(SrcBpl) then
   begin
-    CopyFile(RuntimeBpl, BinDir + 'KingCalendar' + PkgSuffix + '.bpl', False);
-    LogLine('Copied Win32 runtime BPL to: ' + BinDir);
+    if CopyFile(SrcBpl, BplDir + '\KingCalendar' + PkgSuffix + '.bpl', False) then
+      LogLine('Copied Win32 runtime BPL to: ' + BplDir)
+    else
+      LogLine('Warning: could not copy Win32 runtime BPL to: ' + BplDir);
   end
   else
-    LogLine('Win32 runtime BPL not found: ' + RuntimeBpl);
+    LogLine('Win32 runtime BPL not found: ' + SrcBpl);
 
-  // --- Win32 dcl BPL → bin\ (copy always; used by 32-bit IDE) ---
-  DclBpl := PkgBase + '\Win32\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
-  if FileExists(DclBpl) then
+  // Copy Win32 dcl BPL and register in Known Packages
+  SrcBpl  := PkgBase + '\Win32\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
+  DestBpl := BplDir + '\dclKingCalendar' + PkgSuffix + '.bpl';
+  if FileExists(SrcBpl) then
   begin
-    CopyFile(DclBpl, BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl', False);
-    LogLine('Copied Win32 dcl BPL to: ' + BinDir);
+    if not CopyFile(SrcBpl, DestBpl, False) then
+    begin
+      LogLine('Warning: could not copy Win32 dcl to BplDir; registering from source');
+      DestBpl := SrcBpl;
+    end
+    else
+      LogLine('Copied Win32 dcl BPL to: ' + DestBpl);
+    RegWriteStringValue(HKCU,
+      'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages',
+      DestBpl, 'KingCalendar');
+    LogLine('Registered Win32 dcl in Known Packages: ' + DestBpl);
   end
   else
-    LogLine('Win32 dcl BPL not found: ' + DclBpl);
+    LogLine('Win32 dcl BPL not found — Known Packages skipped: ' + SrcBpl);
 
-  if HasBin64 and DirExists(Bin64Dir) then
+  // -------------------------------------------------------------------------
+  // Win64 — 64-bit IDE  (Known Packages x64)
+  // -------------------------------------------------------------------------
+  if HasBin64 then
   begin
-    // --- Win64 runtime BPL → bin64\ ---
-    RuntimeBpl := PkgBase + '\Win64\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
-    if FileExists(RuntimeBpl) then
+    // Copy Win64 runtime BPL
+    SrcBpl := PkgBase + '\Win64\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
+    if FileExists(SrcBpl) then
     begin
-      CopyFile(RuntimeBpl, Bin64Dir + 'KingCalendar' + PkgSuffix + '.bpl', False);
-      LogLine('Copied Win64 runtime BPL to: ' + Bin64Dir);
+      if CopyFile(SrcBpl, Bpl64Dir + '\KingCalendar' + PkgSuffix + '.bpl', False) then
+        LogLine('Copied Win64 runtime BPL to: ' + Bpl64Dir)
+      else
+        LogLine('Warning: could not copy Win64 runtime BPL to: ' + Bpl64Dir);
     end
     else
-      LogLine('Win64 runtime BPL not found: ' + RuntimeBpl);
+      LogLine('Win64 runtime BPL not found: ' + SrcBpl);
 
-    // --- Win64 dcl BPL → bin64\ + Known Packages ---
-    // 64-bit IDE (D12+) requires a Win64 design-time package; Win32 BPL is ignored.
-    DclBpl := PkgBase + '\Win64\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
-    if FileExists(DclBpl) then
+    // Copy Win64 dcl BPL and register in Known Packages x64
+    SrcBpl  := PkgBase + '\Win64\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
+    DestBpl := Bpl64Dir + '\dclKingCalendar' + PkgSuffix + '.bpl';
+    if FileExists(SrcBpl) then
     begin
-      CopyFile(DclBpl, Bin64Dir + 'dclKingCalendar' + PkgSuffix + '.bpl', False);
-      RegBplPath := Bin64Dir + 'dclKingCalendar' + PkgSuffix + '.bpl';
-      RegWriteStringValue(HKCU, RegKey, RegBplPath, 'KingCalendar Components');
-      LogLine('Registered Win64 dcl BPL in Known Packages: ' + RegBplPath);
-    end
-    else
-    begin
-      // Win64 dcl not available — fall back to Win32 (may fail to load in 64-bit IDE)
-      LogLine('Win64 dcl BPL not found; falling back to Win32 registration: ' + DclBpl);
-      RegBplPath := BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl';
-      if FileExists(RegBplPath) then
+      if not CopyFile(SrcBpl, DestBpl, False) then
       begin
-        RegWriteStringValue(HKCU, RegKey, RegBplPath, 'KingCalendar Components');
-        LogLine('Registered Win32 dcl BPL (fallback): ' + RegBplPath);
+        LogLine('Warning: could not copy Win64 dcl to Bpl64Dir; registering from source');
+        DestBpl := SrcBpl;
       end
       else
-        LogLine('No dcl BPL found for Known Packages — registration skipped');
-    end;
-  end
-  else
-  begin
-    // --- 32-bit IDE: register Win32 dcl from bin\ ---
-    RegBplPath := BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl';
-    if FileExists(RegBplPath) then
-    begin
-      RegWriteStringValue(HKCU, RegKey, RegBplPath, 'KingCalendar Components');
-      LogLine('Registered Win32 dcl BPL in Known Packages: ' + RegBplPath);
+        LogLine('Copied Win64 dcl BPL to: ' + DestBpl);
+      RegWriteStringValue(HKCU,
+        'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages x64',
+        DestBpl, 'KingCalendar');
+      LogLine('Registered Win64 dcl in Known Packages x64: ' + DestBpl);
     end
     else
-      LogLine('Win32 dcl BPL not found for Known Packages registration: ' + RegBplPath);
+      LogLine('Win64 dcl BPL not found — Known Packages x64 skipped: ' + SrcBpl);
   end;
 end;
 
@@ -1014,13 +1078,66 @@ end;
 
 
 // =============================================================================
+// Uninstall helpers — clean BDSCOMMONDIR artifacts for each Delphi version
+// =============================================================================
+
+// Delete a single file silently; no error if absent.
+procedure DelKC(const Path: String);
+begin
+  DeleteFile(Path);
+end;
+
+
+// Delete all KingCalendar and dclKingCalendar compiled artifacts (BPL, RSM,
+// DCP, BPI, LIB) for the given package suffix from the specified directory.
+procedure DeleteKCFilesFromDir(const Dir, Suffix: String);
+begin
+  DelKC(Dir + '\KingCalendar'    + Suffix + '.bpl');
+  DelKC(Dir + '\KingCalendar'    + Suffix + '.rsm');
+  DelKC(Dir + '\KingCalendar'    + Suffix + '.dcp');
+  DelKC(Dir + '\KingCalendar'    + Suffix + '.bpi');
+  DelKC(Dir + '\KingCalendar'    + Suffix + '.lib');
+  DelKC(Dir + '\dclKingCalendar' + Suffix + '.bpl');
+  DelKC(Dir + '\dclKingCalendar' + Suffix + '.rsm');
+  DelKC(Dir + '\dclKingCalendar' + Suffix + '.dcp');
+  DelKC(Dir + '\dclKingCalendar' + Suffix + '.bpi');
+  DelKC(Dir + '\dclKingCalendar' + Suffix + '.lib');
+end;
+
+
+// Remove every Known Packages registry value whose name contains 'KingCalendar'.
+// KeySuffix is '' for 32-bit IDE or ' x64' for 64-bit IDE.
+procedure CleanKnownPackages(const BDSVer, KeySuffix: String);
+var
+  RegKey : String;
+  Names  : TArrayOfString;
+  I      : Integer;
+begin
+  RegKey := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages' + KeySuffix;
+  if RegGetValueNames(HKCU, RegKey, Names) then
+    for I := 0 to GetArrayLength(Names) - 1 do
+      if Pos('KingCalendar', Names[I]) > 0 then
+        RegDeleteValue(HKCU, RegKey, Names[I]);
+end;
+
+
+// =============================================================================
 // Uninstall cleanup — remove compiled artifacts left by the post-install build
 // =============================================================================
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
-  AppDir   : String;
-  ExitCode : Integer;
+  AppDir      : String;
+  CommonDir32 : String;
+  CommonDir64 : String;
+  BplDir      : String;
+  Bpl64Dir    : String;
+  DcpDir      : String;
+  Dcp64Dir    : String;
+  BatchPath   : String;
+  Lines       : TStringList;
+  ExitCode    : Integer;
+  I           : Integer;
 begin
   if CurUninstallStep <> usPostUninstall then Exit;
 
@@ -1028,6 +1145,42 @@ begin
 
   // Remove the installation log written by the post-install phase
   DeleteFile(AppDir + '\installation.log');
+
+  // --- Clean BDSCOMMONDIR BPL / DCP artifacts for every detected Delphi ---
+  // Re-detect installs here because the wizard was not run during uninstall.
+  DetectDelphiInstalls;
+  for I := 0 to VersionCount - 1 do
+  begin
+    // Read BDSCOMMONDIR from rsvars.bat for each version so we respect
+    // any non-default install paths the user may have configured.
+    CommonDir32 := ReadBDSCommonDir(Versions[I].BDSRoot + '\bin\rsvars.bat');
+    if CommonDir32 = '' then
+      CommonDir32 := ExpandConstant('{%PUBLIC}\Documents') +
+                     '\Embarcadero\Studio\' + Versions[I].BDSVer;
+
+    CommonDir64 := ReadBDSCommonDir(Versions[I].BDSRoot + '\bin64\rsvars64.bat');
+    if CommonDir64 = '' then
+      CommonDir64 := CommonDir32;
+
+    BplDir   := CommonDir32 + '\Bpl';
+    Bpl64Dir := CommonDir64 + '\Bpl\Win64';
+    DcpDir   := CommonDir32 + '\Dcp';
+    Dcp64Dir := CommonDir64 + '\Dcp\Win64';
+
+    // Remove BPL and RSM files from the standard BPL output folders
+    DeleteKCFilesFromDir(BplDir,   Versions[I].PkgSuffix);
+    DeleteKCFilesFromDir(Bpl64Dir, Versions[I].PkgSuffix);
+
+    // Remove DCP, BPI and LIB files from the standard DCP output folders
+    DeleteKCFilesFromDir(DcpDir,   Versions[I].PkgSuffix);
+    DeleteKCFilesFromDir(Dcp64Dir, Versions[I].PkgSuffix);
+
+    // Remove Known Packages registry entries (any path containing 'KingCalendar')
+    CleanKnownPackages(Versions[I].BDSVer, '');      // 32-bit IDE
+    CleanKnownPackages(Versions[I].BDSVer, ' x64');  // 64-bit IDE
+  end;
+
+  // --- Remove compiled artifacts from within the installation folder ---
 
   // Delete all *.dcu files recursively (compiled units)
   Exec(ExpandConstant('{cmd}'),
@@ -1049,10 +1202,25 @@ begin
        '/C del /s /f /q "' + AppDir + '\*.dcp"',
        '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
 
-  // Remove empty platform/config output directories left inside packages\
-  Exec(ExpandConstant('{cmd}'),
-       '/C for /d /r "' + AppDir + '\packages" %D in' +
-       ' (Debug Release Win32 Win64 Win64x WinARM64EC) do' +
-       ' if exist "%D" rmdir /s /q "%D"',
+  // --- Remove all empty directories recursively ---
+  // The batch loops until a full pass finds nothing left to remove,
+  // so any depth of nested empty folders is handled correctly.
+  BatchPath := ExpandConstant('{tmp}') + '\KCRmDirs.bat';
+  Lines := TStringList.Create;
+  try
+    Lines.Add('@echo off');
+    Lines.Add(':loop');
+    Lines.Add('set found=0');
+    Lines.Add('for /f "delims=" %%D in (''dir /ad /b /s "' + AppDir + '" 2^>nul'') do (');
+    Lines.Add('  rd "%%D" 2>nul');
+    Lines.Add('  if not errorlevel 1 set found=1');
+    Lines.Add(')');
+    Lines.Add('if "%found%"=="1" goto loop');
+    Lines.SaveToFile(BatchPath);
+  finally
+    Lines.Free;
+  end;
+
+  Exec(ExpandConstant('{cmd}'), '/C "' + BatchPath + '"',
        '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
 end;
