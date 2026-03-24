@@ -9,7 +9,7 @@ object FrmCalEdit: TFrmCalEdit
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -30,7 +30,7 @@ object FrmCalEdit: TFrmCalEdit
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     PageIndex = 2
     ParentFont = False
@@ -77,7 +77,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ItemHeight = 13
         Items.Strings = (
@@ -142,12 +142,12 @@ object FrmCalEdit: TFrmCalEdit
         TextFont.Charset = DEFAULT_CHARSET
         TextFont.Color = clWindowText
         TextFont.Height = -13
-        TextFont.Name = 'System'
+        TextFont.Name = 'Segoe UI'
         TextFont.Style = []
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -13
-        TitleFont.Name = 'System'
+        TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
         RowHeights = (
           14
@@ -168,7 +168,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         ParentShowHint = False
@@ -184,7 +184,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ItemHeight = 13
         Items.Strings = (
@@ -237,7 +237,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         ParentShowHint = False
@@ -274,7 +274,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 0
@@ -288,7 +288,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ItemIndex = 0
         Items.Strings = (
@@ -312,7 +312,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         Month = 12
         ParentFont = False
@@ -340,12 +340,12 @@ object FrmCalEdit: TFrmCalEdit
         TextFont.Charset = DEFAULT_CHARSET
         TextFont.Color = clWindowText
         TextFont.Height = -13
-        TextFont.Name = 'System'
+        TextFont.Name = 'Segoe UI'
         TextFont.Style = []
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -13
-        TitleFont.Name = 'System'
+        TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
         RowHeights = (
           14
@@ -366,7 +366,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         ParentShowHint = False
@@ -384,7 +384,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         State = cbChecked
@@ -400,7 +400,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ItemIndex = 0
         Items.Strings = (
@@ -422,7 +422,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 6
@@ -437,7 +437,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 7
@@ -452,7 +452,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 8
@@ -478,8 +478,8 @@ object FrmCalEdit: TFrmCalEdit
         Day = 30
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Small Fonts'
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
         Font.Style = []
         Month = 12
         ParentFont = False
@@ -508,12 +508,12 @@ object FrmCalEdit: TFrmCalEdit
         TextFont.Charset = DEFAULT_CHARSET
         TextFont.Color = clWindowText
         TextFont.Height = -13
-        TextFont.Name = 'System'
+        TextFont.Name = 'Segoe UI'
         TextFont.Style = []
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -13
-        TitleFont.Name = 'System'
+        TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
         ColorCellText = True
         ColorCellDay = False
@@ -536,7 +536,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
@@ -568,7 +568,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
@@ -600,7 +600,7 @@ object FrmCalEdit: TFrmCalEdit
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
@@ -635,7 +635,7 @@ object FrmCalEdit: TFrmCalEdit
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 2
     NumGlyphs = 2
@@ -656,7 +656,7 @@ object FrmCalEdit: TFrmCalEdit
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     NumGlyphs = 2
@@ -674,7 +674,7 @@ object FrmCalEdit: TFrmCalEdit
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Tabs.Strings = (
       'Colors'
@@ -687,7 +687,7 @@ object FrmCalEdit: TFrmCalEdit
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Left = 568
     Top = 152

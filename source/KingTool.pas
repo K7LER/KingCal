@@ -57,6 +57,7 @@ uses
   Vcl.Buttons,
   Vcl.ExtCtrls,
   VCL.Samples.Spin,
+  System.Types,
   Vcl.Themes,
   TheKing;
 
@@ -451,6 +452,8 @@ type
         Operation  : TOperation ); override;
       procedure SetTodayStyle( Value : Boolean );
       procedure SetTodayText( Value : String );
+      // LR20260323 - Scale MinBtnSize pixel values for high DPI
+      procedure ChangeScale( M, D : Integer ); override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure SetBounds( ALeft, ATop, AWidth, AHeight : Integer ); override;
@@ -528,6 +531,8 @@ type
       procedure Notification(
         AComponent : TComponent;
         Operation  : TOperation ); override;
+      // LR20260323 - Scale MinBtnSize pixel values for high DPI
+      procedure ChangeScale( M, D : Integer ); override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure SetBounds( ALeft, ATop, AWidth, AHeight : Integer ); override;
@@ -1332,6 +1337,15 @@ procedure TKingNavigator.SetBounds( ALeft, ATop, AWidth, AHeight : Integer );
   end;
 
 { *************************************************************************** }
+// LR20260323 - Scale MinBtnSize pixel values for high DPI
+procedure TKingNavigator.ChangeScale( M, D : Integer );
+  begin
+    inherited ChangeScale( M, D );
+    MinBtnSize.X := MulDiv( MinBtnSize.X, M, D );
+    MinBtnSize.Y := MulDiv( MinBtnSize.Y, M, D );
+  end;
+
+{ *************************************************************************** }
 procedure TKingNavigator.WMSize( var Message : TWMSize );
   var
     W, H : Integer;
@@ -1682,7 +1696,9 @@ procedure TMonthBar.InitButtons;
       Btn.Enabled := True;
       Btn.SetBounds( X, 0, MinBtnSize.X, MinBtnSize.Y );
 
-      Btn.Font.Name := 'Segue UI';
+      // LR20260323 - Fixed typo: was 'Segue UI'
+      // Btn.Font.Name := 'Segue UI';
+      Btn.Font.Name := 'Segoe UI';
       //      Btn.Font.Name := 'Small Fonts';
       Btn.Font.Size := 7;
       Btn.Caption := StrPas( MthCaption[ I ] );
@@ -1808,6 +1824,15 @@ procedure TMonthBar.SetBounds( ALeft, ATop, AWidth, AHeight : Integer );
     H := AHeight;
     AdjustSize( W, H );
     inherited SetBounds( ALeft, ATop, W, H );
+  end;
+
+{ *************************************************************************** }
+// LR20260323 - Scale MinBtnSize pixel values for high DPI
+procedure TMonthBar.ChangeScale( M, D : Integer );
+  begin
+    inherited ChangeScale( M, D );
+    MinBtnSize.X := MulDiv( MinBtnSize.X, M, D );
+    MinBtnSize.Y := MulDiv( MinBtnSize.Y, M, D );
   end;
 
 { *************************************************************************** }
@@ -2099,7 +2124,8 @@ procedure TMonthBar.TheDateChanged( Sender : TObject );
   =========================================================================== }
 procedure TKingButton.Paint;
   var
-    R : TRect;
+    R      : TRect;
+    Margin : Integer;
   begin
     if ThemeControl(self) then
       PerformEraseBackground(Self, Canvas.Handle);
@@ -2119,7 +2145,10 @@ procedure TKingButton.Paint;
     begin
       Canvas.Brush.Color := Self.Color;
       R := Bounds( 0, 0, Width, Height );
-      InflateRect( R, - 3, - 3 );
+      // LR20260323 - Scale focus rect inset for high DPI
+      // InflateRect( R, - 3, - 3 );
+      Margin := MulDiv( 3, Screen.PixelsPerInch, 96 );
+      InflateRect( R, -Margin, -Margin );
       IF FState = bsDown
       then
         OffsetRect( R, 1, 1 );
@@ -2132,7 +2161,8 @@ procedure TKingButton.Paint;
   =========================================================================== }
 procedure TMonthButton.Paint;
   var
-    R : TRect;
+    R      : TRect;
+    Margin : Integer;
   begin
     if ThemeControl(self) then
       PerformEraseBackground(Self, Canvas.Handle);
@@ -2143,7 +2173,10 @@ procedure TMonthButton.Paint;
     then
     begin
       R := Bounds( 0, 0, Width, Height );
-      InflateRect( R, - 3, - 3 );
+      // LR20260323 - Scale focus rect inset for high DPI
+      // InflateRect( R, - 3, - 3 );
+      Margin := MulDiv( 3, Screen.PixelsPerInch, 96 );
+      InflateRect( R, -Margin, -Margin );
       IF FState = bsDown
       then
         OffsetRect( R, 1, 1 );

@@ -5,7 +5,7 @@
         <Config Condition="'$(Config)'==''">Release</Config>
         <FrameworkType>None</FrameworkType>
         <MainSource>dclKingCalendar370.dpk</MainSource>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectGuid>{D7901D48-CF7B-4CDC-972E-A68D1C6CC27E}</ProjectGuid>
         <ProjectVersion>20.4</ProjectVersion>
         <TargetedPlatforms>1048579</TargetedPlatforms>

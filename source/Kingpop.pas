@@ -55,6 +55,7 @@ uses
   Vcl.StdCtrls,
   Vcl.Buttons,
   Vcl.ExtCtrls,
+  System.Types,
   TheKing,
   KingTool,
   Vcl.Grids;

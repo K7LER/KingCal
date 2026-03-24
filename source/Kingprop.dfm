@@ -8,10 +8,10 @@ object VcdAboutBox: TVcdAboutBox
   ClientHeight = 304
   ClientWidth = 376
   Color = clBtnFace
-  Font.Charset = ANSI_CHARSET
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
   TextHeight = 13
@@ -32,7 +32,7 @@ object VcdAboutBox: TVcdAboutBox
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -24
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -47,7 +47,7 @@ object VcdAboutBox: TVcdAboutBox
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -16
-    Font.Name = 'Arial'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -71,7 +71,7 @@ object VcdAboutBox: TVcdAboutBox
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -185,10 +185,10 @@ object VcdAboutBox: TVcdAboutBox
     Width = 89
     Height = 26
     Caption = '&Close'
-    Font.Charset = ANSI_CHARSET
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumGlyphs = 2
     ParentFont = False
