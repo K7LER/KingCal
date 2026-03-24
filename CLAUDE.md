@@ -19,14 +19,14 @@ Pre-compiled binaries live in `LIB<ver>x32/RELEASE` and `LIB<ver>x64/RELEASE` (e
 
 ## Package Naming Convention
 
-| Delphi Version | Package suffix | Folders |
-|---|---|---|
-| 10.2 | 260 | packages/102, LIBD26x64 |
-| 10.3 | 270 | packages/103, LIBD27x64 |
-| 10.4 | 280 | packages/104, LIBD28x64 |
-| 11 | 290 | packages/110, LIBD29x32, LIBD29x64 |
-| 12 | 360 | packages/12, LIBD36x32, LIBD36x64 |
-| 13 | 370 | packages/13, LIBD37x32, LIBD37x64 |
+| Delphi Version | BDS Key | Package suffix | Folders |
+|---|---|---|---|
+| 10.2 | 25.0 | 250 | packages/102, LIBD25x64 |
+| 10.3 | 26.0 | 260 | packages/103, LIBD26x64 |
+| 10.4 | 27.0 | 270 | packages/104, LIBD27x64 |
+| 11 | 28.0 | 280 | packages/110, LIBD28x32, LIBD28x64 |
+| 12 | 29.0 | 290 | packages/12, LIBD29x32, LIBD29x64 |
+| 13 | 37.0 | 370 | packages/13, LIBD37x32, LIBD37x64 |
 
 Each version has two packages:
 - **Runtime** (`KingCalendar<ver>.dpk`) — `{$RUNONLY}`, contains all implementation units

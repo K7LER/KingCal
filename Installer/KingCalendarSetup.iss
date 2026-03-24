@@ -173,22 +173,89 @@ var
 // =============================================================================
 // Compiler-version → package info lookup
 // Detection reads dcc32.exe file version; major version identifies the release.
+// BDS.EXE build number refines the display name and gates platform availability.
+//
+// Platform availability thresholds (BDS.EXE build, 3rd version component):
+//   Win64x    — Delphi 12.1+ (CompMajor=29, build >= 51961)
+//                Delphi 13.x  (CompMajor=37, all builds)
+//   WinARM64EC — Delphi 13.1+ (CompMajor=37, build >= 59082)
 // =============================================================================
 
 // Returns False if this compiler major version is not supported by this installer.
+// DisplayName is set to a generic string; call GetDelphiSubInfo to refine it.
 function GetPkgInfoByCompilerMajor(CompMajor: Cardinal;
   var PkgSuffix, PkgFolder, LibPrefix, DisplayName: String): Boolean;
 begin
   Result := True;
   case CompMajor of
-    25: begin PkgSuffix := '250'; PkgFolder := '102'; LibPrefix := 'LIBD25'; DisplayName := 'Delphi 10.2 Tokyo';     end;
-    26: begin PkgSuffix := '260'; PkgFolder := '103'; LibPrefix := 'LIBD26'; DisplayName := 'Delphi 10.3 Rio';       end;
-    27: begin PkgSuffix := '270'; PkgFolder := '104'; LibPrefix := 'LIBD27'; DisplayName := 'Delphi 10.4 Sydney';    end;
-    28: begin PkgSuffix := '280'; PkgFolder := '110'; LibPrefix := 'LIBD28'; DisplayName := 'Delphi 11 Alexandria';  end;
-    29: begin PkgSuffix := '290'; PkgFolder := '12';  LibPrefix := 'LIBD29'; DisplayName := 'Delphi 12 Athens';      end;
-    37: begin PkgSuffix := '370'; PkgFolder := '13';  LibPrefix := 'LIBD37'; DisplayName := 'Delphi 13 Florence';    end;
+    25: begin PkgSuffix := '250'; PkgFolder := '102'; LibPrefix := 'LIBD25'; DisplayName := 'Delphi 10.2 Tokyo';    end;
+    26: begin PkgSuffix := '260'; PkgFolder := '103'; LibPrefix := 'LIBD26'; DisplayName := 'Delphi 10.3 Rio';      end;
+    27: begin PkgSuffix := '270'; PkgFolder := '104'; LibPrefix := 'LIBD27'; DisplayName := 'Delphi 10.4 Sydney';   end;
+    28: begin PkgSuffix := '280'; PkgFolder := '110'; LibPrefix := 'LIBD28'; DisplayName := 'Delphi 11 Alexandria'; end;
+    29: begin PkgSuffix := '290'; PkgFolder := '12';  LibPrefix := 'LIBD29'; DisplayName := 'Delphi 12 Athens';     end;
+    37: begin PkgSuffix := '370'; PkgFolder := '13';  LibPrefix := 'LIBD37'; DisplayName := 'Delphi 13 Florence';   end;
   else
     Result := False; // Unknown / unsupported compiler version
+  end;
+end;
+
+// Refines DisplayName to the exact Delphi sub-version (e.g. 'Delphi 12.3 Athens')
+// using the BDS.EXE build number (third component of the four-part file version).
+// LR20260324 - Added sub-version name mapping from BDS.EXE build number
+procedure GetDelphiSubInfo(CompMajor, BdsBuild: Cardinal;
+                           var DisplayName: String);
+begin
+  case CompMajor of
+    25: DisplayName := 'Delphi 10.2 Tokyo';
+    26: DisplayName := 'Delphi 10.3 Rio';
+    27: begin
+          if    BdsBuild < 38860 then DisplayName := 'Delphi 10.4.0 Sydney'
+          else if BdsBuild < 40680 then DisplayName := 'Delphi 10.4.1 Sydney'
+          else                          DisplayName := 'Delphi 10.4.2 Sydney';
+        end;
+    28: begin
+          if    BdsBuild < 44500 then DisplayName := 'Delphi 11.0 Alexandria'
+          else if BdsBuild < 46141 then DisplayName := 'Delphi 11.1 Alexandria'
+          else                          DisplayName := 'Delphi 11.2 Alexandria';
+        end;
+    29: begin
+          if    BdsBuild < 50492 then DisplayName := 'Delphi 12.0 Athens (RTM)'
+          else if BdsBuild < 51961 then DisplayName := 'Delphi 12.0 Athens'
+          else if BdsBuild < 53571 then DisplayName := 'Delphi 12.1 Athens'
+          else if BdsBuild < 53982 then DisplayName := 'Delphi 12.2 Athens'
+          else if BdsBuild < 55362 then DisplayName := 'Delphi 12.2.1 Athens'
+          else                          DisplayName := 'Delphi 12.3 Athens';
+        end;
+    37: begin
+          if BdsBuild < 59082 then DisplayName := 'Delphi 13.0 Florence'
+          else                     DisplayName := 'Delphi 13.1 Florence';
+        end;
+  end;
+end;
+
+// Sets platform availability flags based on BDS.EXE version thresholds.
+// A version gate is applied first; the lib directory is then checked to confirm
+// the platform is actually present in this installation.
+// LR20260324 - Added version-gated platform detection using BDS.EXE build number
+procedure SetPlatformFlags(CompMajor, BdsBuild: Cardinal;
+                           const BDSRoot: String;
+                           var Has64x, HasARM64EC: Boolean);
+begin
+  Has64x     := False;
+  HasARM64EC := False;
+  case CompMajor of
+    29: begin
+          // Win64x (WIN64 Modern) requires Delphi 12.1+ (build >= 51961)
+          if BdsBuild >= 51961 then
+            Has64x := DirExists(BDSRoot + '\lib\Win64x');
+        end;
+    37: begin
+          // Win64x available for all Delphi 13.x
+          Has64x := DirExists(BDSRoot + '\lib\Win64x');
+          // WinARM64EC requires Delphi 13.1+ (build >= 59082)
+          if BdsBuild >= 59082 then
+            HasARM64EC := DirExists(BDSRoot + '\lib\WinARM64EC');
+        end;
   end;
 end;
 
@@ -205,8 +272,11 @@ var
   BDSVer    : String;
   BDSRoot   : String;
   Dcc32Path : String;
-  VerMS, VerLS   : Cardinal;
-  CompMajor      : Cardinal;
+  BdsPath   : String;
+  VerMS, VerLS       : Cardinal;
+  BdsVerMS, BdsVerLS : Cardinal;
+  CompMajor : Cardinal;
+  BdsBuild  : Cardinal;  // 3rd component of BDS.EXE file version
   PkgSuffix, PkgFolder, LibPrefix, DisplayName : String;
   Info      : TDetectedDelphi;
 begin
@@ -249,7 +319,18 @@ begin
       Continue;
     end;
 
-    // Detect available platforms via presence of BDS lib sub-directories
+    // Read BDS.EXE version to obtain the exact build number (3rd component).
+    // This is used to refine the display name and gate platform availability.
+    // LR20260324 - Added BDS.EXE version read for sub-version and platform detection
+    BdsBuild := 0;
+    BdsPath  := BDSRoot + '\bin\bds.exe';
+    if FileExists(BdsPath) and GetVersionNumbers(BdsPath, BdsVerMS, BdsVerLS) then
+      BdsBuild := BdsVerLS shr 16;  // high word of LS = build (3rd component)
+
+    // Refine display name to exact sub-version (e.g. 'Delphi 12.3 Athens')
+    GetDelphiSubInfo(CompMajor, BdsBuild, DisplayName);
+
+    // Set platform availability flags using version thresholds + directory checks
     Info.BDSVer      := BDSVer;
     Info.BDSRoot     := BDSRoot;
     Info.DisplayName := DisplayName;
@@ -257,13 +338,13 @@ begin
     Info.PkgFolder   := PkgFolder;
     Info.LibPrefix   := LibPrefix;
     Info.HasBin64    := FileExists(BDSRoot + '\bin64\bds.exe');
-    Info.Has64x      := DirExists(BDSRoot + '\lib\Win64x');
-    Info.HasARM64EC  := DirExists(BDSRoot + '\lib\WinARM64EC');
+    SetPlatformFlags(CompMajor, BdsBuild, BDSRoot, Info.Has64x, Info.HasARM64EC);
 
     Versions[VersionCount] := Info;
     Inc(VersionCount);
 
-    Log('Detected: ' + DisplayName + ' [BDS ' + BDSVer + '] at ' + BDSRoot);
+    Log('Detected: ' + DisplayName + ' [BDS ' + BDSVer + '] build=' +
+        IntToStr(BdsBuild) + ' at ' + BDSRoot);
   end;
 end;
 

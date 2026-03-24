@@ -125,74 +125,96 @@ title: KingCalendar for Delphi
 <!-- ── Delphi Version Support ── -->
 <h2>Delphi Version Support</h2>
 <p class="section-sub">
-  Pre-compiled library files are included for every listed version.
-  The installer detects which Delphi versions you have installed and compiles only those.
+  The installer reads the <code>BDS.EXE</code> build number to identify the exact
+  Delphi sub-version and enable only the platforms that release supports.
 </p>
 
 <div class="version-table-wrap">
   <table>
     <thead>
       <tr>
-        <th>Delphi Version</th>
+        <th>Delphi Release</th>
         <th>BDS Key</th>
-        <th>Package Suffix</th>
+        <th>Suffix</th>
         <th>Win32</th>
         <th>Win64</th>
-        <th>Win64x</th>
+        <th>Win64 Modern</th>
+        <th>WinARM64EC</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><strong>Delphi 13</strong></td>
-        <td>37.0</td>
-        <td><code>370</code></td>
+        <td><strong>Delphi 13.1 Florence</strong></td>
+        <td>37.0</td><td><code>370</code></td>
+        <td><span class="badge">✓</span></td>
         <td><span class="badge">✓</span></td>
         <td><span class="badge">✓</span></td>
         <td><span class="badge">✓</span></td>
       </tr>
       <tr>
-        <td><strong>Delphi 12</strong></td>
-        <td>29.0</td>
-        <td><code>360</code></td>
+        <td><strong>Delphi 13.0 Florence</strong></td>
+        <td>37.0</td><td><code>370</code></td>
         <td><span class="badge">✓</span></td>
-        <td><span class="badge">✓</span></td>
-        <td><span class="badge badge-gray">—</span></td>
-      </tr>
-      <tr>
-        <td><strong>Delphi 11</strong></td>
-        <td>22.0</td>
-        <td><code>290</code></td>
         <td><span class="badge">✓</span></td>
         <td><span class="badge">✓</span></td>
         <td><span class="badge badge-gray">—</span></td>
       </tr>
       <tr>
-        <td><strong>Delphi 10.4</strong></td>
-        <td>21.0</td>
-        <td><code>280</code></td>
-        <td><span class="badge badge-gray">—</span></td>
+        <td><strong>Delphi 12.1–12.3 Athens</strong></td>
+        <td>29.0</td><td><code>290</code></td>
+        <td><span class="badge">✓</span></td>
+        <td><span class="badge">✓</span></td>
         <td><span class="badge">✓</span></td>
         <td><span class="badge badge-gray">—</span></td>
       </tr>
       <tr>
-        <td><strong>Delphi 10.3</strong></td>
-        <td>20.0</td>
-        <td><code>270</code></td>
-        <td><span class="badge badge-gray">—</span></td>
+        <td><strong>Delphi 12.0 Athens</strong></td>
+        <td>29.0</td><td><code>290</code></td>
         <td><span class="badge">✓</span></td>
+        <td><span class="badge">✓</span></td>
+        <td><span class="badge badge-gray">—</span></td>
         <td><span class="badge badge-gray">—</span></td>
       </tr>
       <tr>
-        <td><strong>Delphi 10.2</strong></td>
-        <td>19.0</td>
-        <td><code>260</code></td>
+        <td><strong>Delphi 11.x Alexandria</strong></td>
+        <td>28.0</td><td><code>280</code></td>
+        <td><span class="badge">✓</span></td>
+        <td><span class="badge">✓</span></td>
+        <td><span class="badge badge-gray">—</span></td>
+        <td><span class="badge badge-gray">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>Delphi 10.4.x Sydney</strong></td>
+        <td>27.0</td><td><code>270</code></td>
         <td><span class="badge badge-gray">—</span></td>
         <td><span class="badge">✓</span></td>
+        <td><span class="badge badge-gray">—</span></td>
+        <td><span class="badge badge-gray">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>Delphi 10.3 Rio</strong></td>
+        <td>26.0</td><td><code>260</code></td>
+        <td><span class="badge badge-gray">—</span></td>
+        <td><span class="badge">✓</span></td>
+        <td><span class="badge badge-gray">—</span></td>
+        <td><span class="badge badge-gray">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>Delphi 10.2 Tokyo</strong></td>
+        <td>25.0</td><td><code>250</code></td>
+        <td><span class="badge badge-gray">—</span></td>
+        <td><span class="badge">✓</span></td>
+        <td><span class="badge badge-gray">—</span></td>
         <td><span class="badge badge-gray">—</span></td>
       </tr>
     </tbody>
   </table>
 </div>
+<p style="font-size:0.85rem; color:#666; margin-top:10px;">
+  Win64 Modern (Win64x) requires <strong>Delphi 12.1+</strong>.
+  WinARM64EC requires <strong>Delphi 13.1+</strong>.
+  Sub-version is detected from the <code>BDS.EXE</code> build number at install time.
+</p>
 
 
 <!-- ── Installation ── -->

@@ -56,14 +56,28 @@ All controls install directly into the Delphi IDE component palette.
 
 ## Delphi Version Support
 
-| Delphi Version | BDS Key | Package Suffix | Win32 | Win64 | Win64x |
-|---|---|---|:---:|:---:|:---:|
-| Delphi 13 | 37.0 | `370` | ✓ | ✓ | ✓ |
-| Delphi 12 | 29.0 | `360` | ✓ | ✓ | — |
-| Delphi 11 | 22.0 | `290` | ✓ | ✓ | — |
-| Delphi 10.4 | 21.0 | `280` | — | ✓ | — |
-| Delphi 10.3 | 20.0 | `270` | — | ✓ | — |
-| Delphi 10.2 | 19.0 | `260` | — | ✓ | — |
+The installer reads the `BDS.EXE` build number to identify the exact Delphi sub-version and enable only the platforms that release supports.
+
+| Delphi Release | BDS Key | Package Suffix | Win32 | Win64 | Win64 Modern | WinARM64EC |
+|---|---|---|:---:|:---:|:---:|:---:|
+| Delphi 13.1 Florence | 37.0 | `370` | ✓ | ✓ | ✓ | ✓ |
+| Delphi 13.0 Florence | 37.0 | `370` | ✓ | ✓ | ✓ | — |
+| Delphi 12.3 Athens | 29.0 | `290` | ✓ | ✓ | ✓ | — |
+| Delphi 12.2.1 Athens | 29.0 | `290` | ✓ | ✓ | ✓ | — |
+| Delphi 12.2 Athens | 29.0 | `290` | ✓ | ✓ | ✓ | — |
+| Delphi 12.1 Athens | 29.0 | `290` | ✓ | ✓ | ✓ | — |
+| Delphi 12.0 Athens | 29.0 | `290` | ✓ | ✓ | — | — |
+| Delphi 11.2 Alexandria | 28.0 | `280` | ✓ | ✓ | — | — |
+| Delphi 11.1 Alexandria | 28.0 | `280` | ✓ | ✓ | — | — |
+| Delphi 11.0 Alexandria | 28.0 | `280` | ✓ | ✓ | — | — |
+| Delphi 10.4.2 Sydney | 27.0 | `270` | — | ✓ | — | — |
+| Delphi 10.4.1 Sydney | 27.0 | `270` | — | ✓ | — | — |
+| Delphi 10.4.0 Sydney | 27.0 | `270` | — | ✓ | — | — |
+| Delphi 10.3 Rio | 26.0 | `260` | — | ✓ | — | — |
+| Delphi 10.2 Tokyo | 25.0 | `250` | — | ✓ | — | — |
+
+> Win64 Modern (Win64x) requires **Delphi 12.1 or later**.
+> WinARM64EC requires **Delphi 13.1 or later**.
 
 ---
 
