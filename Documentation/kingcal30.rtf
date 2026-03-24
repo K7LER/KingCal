@@ -1,522 +1,863 @@
-{\rtf1\ansi\deff0
-{\fonttbl
-{\f0\fswiss\fcharset0 Segoe UI;}
-{\f1\fmodern\fcharset0 Courier New;}
-}
-{\colortbl ;
-\red0\green0\blue0;
-\red0\green70\blue127;
-\red80\green80\blue80;
-\red240\green240\blue248;
-}
-\paperw12240\paperh15840\margl1440\margr1440\margt1440\margb1440
-\widowctrl\hyphauto
-
-\pard\qc\sb480\sa240\cf2\f0\fs48\b KingCalendar Components for Delphi\par
-\pard\qc\sb0\sa120\cf2\f0\fs32\b Release v3.0 \emdash  Open Source\par
-\pard\qc\sb0\sa480\cf3\f0\fs22 https://github.com/K7LER/KingCal\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 1. License\par
-\pard\sb0\sa160\cf1\f0\fs22 MIT License\par
-\pard\sb0\sa160\cf1\f0\fs22 Copyright (c) 1995\endash 2023 Mark Lussier and AppVision.\par
-\pard\sb0\sa160\cf1\f0\fs22 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \'93Software\'94), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\par
-\pard\sb0\sa160\cf1\f0\fs22 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\par
-\pard\sb0\sa160\cf1\f0\fs22 THE SOFTWARE IS PROVIDED \'93AS IS\'94, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 2. Welcome\par
-\pard\sb0\sa160\cf1\f0\fs22 KingCalendar is a comprehensive set of VCL calendar controls for Embarcadero Delphi. Originally created by Mark Lussier and AppVision in 1995, the library was released as open source in 2018 and is currently maintained by Lance Rasmussen at:\par
-\pard\sb0\sa80\cf3\f1\fs20 https://github.com/K7LER/KingCal\par
-\pard\sb0\sa160\cf1\f0\fs22 Because these are 100% native VCL controls, they compile directly into your application \emdash  no extra DLLs to distribute. The library supports Delphi 10.2 through 13 and targets both Win32 and Win64. It also supports High DPI displays and Delphi VCL Styles (light and dark themes).\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 3. What\'92s New in v3.0\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab High DPI support: all controls scale correctly at 125%, 150%, 200% and beyond.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab VCL Styles support: all painting routes through StyleServices so light and dark themes render correctly. Tested with the Glow dark theme.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab New \cf3\f1\fs20 StyleName\cf1\f0\fs22  property on TKingCalendar: set a specific VCL style name for the component to use, regardless of the application-wide style.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Default fonts changed to Segoe UI throughout.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Default colors updated to system color constants (\cf3\f1\fs20 clBtnFace\cf1\f0\fs22 , \cf3\f1\fs20 clBtnShadow\cf1\f0\fs22 , \cf3\f1\fs20 clWindowText\cf1\f0\fs22 ) so they adapt to themes automatically.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab New component \cf3\f1\fs20 TKingWeekLabel\cf1\f0\fs22  to display the ISO week number of the linked calendar\'92s date.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Support for Delphi 13 Florence, Delphi 12 Athens, and Delphi 11 Alexandria added.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab All source builds for Delphi 10.2 through 13.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 4. Component Overview\par
-\pard\sb0\sa160\cf1\f0\fs22 The library provides the following components, all installed into the {\b KingCalendar} section of the Delphi Tool Palette:\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingCalendar\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Full month calendar grid. This is the core component that all navigation and companion controls link to.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingPopup\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Drop-down popup calendar, similar to a date-picker combo box.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingDateDialog\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Standalone modal date-picker dialog. Call Execute and read the Date property.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TDBKingDlg\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Database-aware date picker. Links to a TField and updates it automatically when the user picks a date.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingNavigator\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Panel with four navigation buttons: previous month, next month, previous year, next year.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TMonthBar\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 A row of twelve month-name buttons. Clicking one sets the linked calendar to that month.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TMonthSpin / TMonthCombo\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Spin control or combo box for selecting a month.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TYearSpin / TYearCombo\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Spin control or combo box for selecting a year.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TDaySpin / TDayCombo\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Spin control or combo box for selecting a day of the month.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingLabel\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 A label that automatically displays the linked calendar\'92s current date, formatted using its DateFormat property.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingWeekLabel\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 A label that shows the ISO week number of the linked calendar\'92s current date.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingDateSpin\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 An edit box with up/down arrows for entering a date value.\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingTimeSpin\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 An edit box with up/down arrows for entering a time value (hours, minutes, seconds).\par
-
-\pard\sb120\sa60\cf2\f0\fs24\b TKingMDYSpin\par
-\pard\sb0\sa80\li720\cf1\f0\fs22 Three combined spin boxes in one control for month, day, and year entry simultaneously.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 5. Installation\par
-\pard\sb0\sa160\cf1\f0\fs22 {\b What is a package?} In Delphi, a {\i package} is a special project that compiles your component library and registers it in the IDE so you can drag components onto forms. There are two kinds:\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab {\b Runtime package} \emdash  compiled into or linked with your application. Contains all the implementation units.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab {\b Design-time package} \emdash  used only by the IDE. Registers the components in the Tool Palette. Always 32-bit.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b Package Version Map\par
-\pard\sb0\sa60\cf1\f0\fs22 Each Delphi version uses a different package suffix and folder:\par
-
-\pard\sb0\sa60\li360\cf3\f1\fs20 Delphi 10.2 Rio      | suffix 260 | packages/102  | LIBD26x64\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Delphi 10.3 Rio      | suffix 270 | packages/103  | LIBD27x32, LIBD27x64\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Delphi 10.4 Sydney   | suffix 280 | packages/104  | LIBD28x64\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Delphi 11 Alexandria | suffix 290 | packages/110  | LIBD29x32, LIBD29x64\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Delphi 12 Athens     | suffix 360 | packages/12   | LIBD36x32, LIBD36x64\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Delphi 13 Florence   | suffix 370 | packages/13   | LIBD37x32, LIBD37x64\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b Option A \emdash  Use Pre-compiled Binaries (Recommended for Beginners)\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 1.\tab Download or clone the repository from {\cf3\f1\fs20 https://github.com/K7LER/KingCal}\cf1\f0\fs22 .\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 2.\tab Open Delphi.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 3.\tab Go to {\b Tools > Options > Language > Delphi > Library} and select your target platform (Win32 or Win64).\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 4.\tab Under {\b Library path}, click the {\b ...} button and add the path to the appropriate LIB folder.\par
-\pard\fi-360\li1440\sb0\sa60\cf3\f1\fs20 Example for Delphi 13, 64-bit:  C:\KingCal\LIBD37x64\RELEASE\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 5.\tab Under {\b Browsing path}, add the path to the {\cf3\f1\fs20 source\cf1\f0\fs22 } folder.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 6.\tab Click OK. The components now appear in the Tool Palette under {\b KingCalendar}.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b Option B \emdash  Compile from Source\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 1.\tab Download or clone the repository.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 2.\tab Open Delphi and configure the Library path and Browsing path as described in Option A (steps 3\endash 5).\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 3.\tab Open the group project for your Delphi version. Example for Delphi 13:\par
-\pard\fi-360\li1440\sb0\sa60\cf3\f1\fs20 packages\13\D13All.groupproj\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 4.\tab In the Project Manager, right-click the {\b runtime package} (e.g. {\cf3\f1\fs20 KingCalendar370.dpk}\cf1\f0\fs22 ) and choose {\b Build}.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 5.\tab Right-click the {\b design-time package} (e.g. {\cf3\f1\fs20 dclKingCalendar370.dpk}\cf1\f0\fs22 ) and choose {\b Build}.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 6.\tab Right-click the design-time package again and choose {\b Install}. Delphi will confirm the components were registered.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 7.\tab To build for 64-bit, change the active platform in the Project Manager to Win64 and build the runtime package again.\par
-
-\pard\sb0\sa160\cf1\f0\fs22 {\b Note:} The design-time package is always 32-bit (it runs inside the IDE itself). You only need to build the runtime package for each platform your application targets.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 6. Quick Start: Adding Your First Calendar\par
-\pard\sb0\sa160\cf1\f0\fs22 {\b New to Delphi? Here are the key terms:}\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab A {\b component} is a reusable building block you drag onto a form from the Tool Palette.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab A {\b property} is a setting you can change in the Object Inspector or in code.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab An {\b event} is code that runs automatically when something happens (for example, when the user clicks a date).\par
-
-\pard\sb120\sa120\cf2\f0\fs28\b Step-by-step\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 1.\tab Start Delphi and create a new VCL Forms Application ({\b File > New > VCL Forms Application}).\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 2.\tab In the Tool Palette, find the {\b KingCalendar} section. If you do not see it, re-check the installation steps in Section 5.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 3.\tab Double-click {\b TKingCalendar} to place it on your form.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 4.\tab In the Object Inspector, change properties such as {\cf3\f1\fs20 CellColor\cf1\f0\fs22 }, {\cf3\f1\fs20 TitleColor\cf1\f0\fs22 }, and {\cf3\f1\fs20 Font\cf1\f0\fs22 } to customise the appearance.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 5.\tab To respond when the user clicks a date, switch to the {\b Events} tab of the Object Inspector and double-click the {\cf3\f1\fs20 OnClick\cf1\f0\fs22 } event. Add your code:\par
-
-\pard\sb0\sa60\li720\cf3\f1\fs20 procedure TForm1.KingCalendar1Click(Sender: TObject);\par
-\pard\sb0\sa60\li720\cf3\f1\fs20 begin\par
-\pard\sb0\sa60\li720\cf3\f1\fs20   ShowMessage('You selected: ' + DateToStr(KingCalendar1.Date));\par
-\pard\sb0\sa60\li720\cf3\f1\fs20 end;\par
-
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 6.\tab Press {\b F9} to run. Click any day to trigger your event.\par
-
-\pard\sb0\sa160\cf1\f0\fs22 {\b Linking navigation controls:} To connect a {\cf3\f1\fs20 TMonthSpin\cf1\f0\fs22 }, {\cf3\f1\fs20 TKingNavigator\cf1\f0\fs22 }, or other companion control to your calendar, drop it on the form. It will automatically link to the first {\cf3\f1\fs20 TKingCalendar\cf1\f0\fs22  }it finds. If you have more than one calendar, set the control\'92s {\cf3\f1\fs20 CalendarLink\cf1\f0\fs22  }property in the Object Inspector, or right-click the control and choose {\b Attach to Calendar...} to pick from a list.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 7. TKingCalendar \emdash  Main Calendar Component\par
-\pard\sb0\sa160\cf1\f0\fs22 TKingCalendar inherits from TCustomGrid and is the central component. It renders the month grid, handles day selection, blocked days, per-cell colors, and fires all calendar events. Every other component in the library links to a TKingCalendar instance.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 7.1  Properties\par
-\pard\sb0\sa160\cf1\f0\fs22 The following are the key properties you will use most often. Properties not listed here are inherited from TCustomGrid or TControl and behave in the standard Delphi way.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Day\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property Day : Integer;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The currently selected day of the month (1\endash 31). Changing this property updates the calendar display and fires OnDayChange.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Month\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property Month : Integer;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The currently selected month (1\endash 12). Changing this property navigates the calendar to that month and fires OnMonthChange.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Year\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property Year : Integer;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The currently selected year. Fires OnYearChange when changed.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Date\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property Date : TDateTime;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The full date as a TDateTime value. Setting this property updates Day, Month, and Year simultaneously. Read this property in your OnClick event to get the selected date.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b CellColor\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property CellColor : TColor;  { default: clBtnFace }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Background color of the day cells in the calendar grid.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b TitleColor\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property TitleColor : TColor;  { default: clBtnShadow }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Background color of the day-of-week header row.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b GridLineColor\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property GridLineColor : TColor;  { default: clBtnShadow }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Color of the lines drawn between cells. Set ShowGridLines to False to hide them entirely.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b ShowGridLines\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property ShowGridLines : Boolean;  { default: True }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Show or hide the grid lines between day cells.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Highlight\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property Highlight : TColor;  { default: clHighlight }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Background color of the focused (selected) day cell.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b HighlightText\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property HighlightText : TColor;  { default: clHighlightText }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Text color of the selected day number.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b TodayColor\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property TodayColor : TColor;  { default: clWindowText }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Color used to draw today\'92s date number, making it stand out from other days.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b IsActive\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property IsActive : Boolean;  { default: True }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 When True, the focused day cell is highlighted using the Highlight color. Set to False to render all cells with the same background.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b TextPlacement\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property TextPlacement : TKingText;  { default: ktTopLeft }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Controls where the day number is drawn inside each cell. Options: ktCenter, ktTopLeft, ktTopRight, ktLowerLeft, ktLowerRight.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b ColorCellDay\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property ColorCellDay : Boolean;  { default: True }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 When True, day numbers are drawn using the colors defined by ColorSet1\endash ColorSet9 and TodayColor. When False, all day numbers use the calendar\'92s default Font color.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Font\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property Font : TFont;  { default: Segoe UI, clWindowText }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Font used to draw the day numbers in the cells. For best VCL Style compatibility, set Font.Color to clWindowText rather than clBlack.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b TitleFont\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property TitleFont : TFont;  { default: Segoe UI, clWindowText }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Font used in the day-of-week header row.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b TextFont\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property TextFont : TFont;  { default: Segoe UI }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Font used to draw additional text lines inside cells (set via SetDateFlag).\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b DowNames\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property DowNames : TStrings;  { default: Sun Mon Tue Wed Thu Fri Sat }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The seven day-of-week abbreviations shown in the header row. Change these to localise the calendar to any language.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b StartingDay\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property StartingDay : Integer;  { default: 0 (Sunday) }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The first day of the week shown in the leftmost column. 0 = Sunday, 1 = Monday, and so on. Useful for European locales where Monday is the first day.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b BlockedBkGnd\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property BlockedBkGnd : TColor;  { default: clBtnFace }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Background color for days that have been blocked (disabled for selection).\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b BlockedFrGnd\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property BlockedFrGnd : TColor;  { default: clGrayText }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Text color for blocked day numbers.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b StyleName\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property StyleName : String;  { default: '' }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The name of a VCL Style to use when painting this component. Leave blank to follow the application-wide active style. See Section 13 for details.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b ColorSet1 through ColorSet9\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property ColorSet1 : TColor;\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property ColorSet2 : TColor;\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 { ... through ColorSet9 }\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Nine user-defined colors used to color-code individual days. Assign a color set number (1\endash 9) to a day using SetDateFlag; the day number is then drawn in the corresponding ColorSet color.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b About\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 property About : String;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Read-only. Displays the library version number in the Object Inspector.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 7.2  Events\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnClick\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Fires when the user clicks any day cell. Read the Date property inside the handler to get the selected date.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnDayChange\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure(Sender: TObject; Day: Integer) of object;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Fires when the selected day changes. The new day number is passed as the Day parameter.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnMonthChange\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure(Sender: TObject; Month: Integer) of object;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Fires when the calendar navigates to a different month.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnYearChange\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure(Sender: TObject; Year: Integer) of object;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Fires when the calendar navigates to a different year.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnDateChange\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure(Sender: TObject; Date: TDateTime) of object;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Fires when the full date (day, month, or year) changes. This is the most convenient single event for most use cases.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnChange\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 General change notification. Fires after any date-related property changes.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b OnFlaggedDay\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Fires while the calendar is drawing a day that has a flag (appointment level > 0) set via SetDateFlag. Use this event to customise the painting of flagged days.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 7.3  Methods\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b SetDateFlag\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure SetDateFlag(nDay, Flag: Integer; Text: String);\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Assigns a color flag (1\endash 9, corresponding to ColorSet1\endash 9) and optional cell text to a specific day number in the current month. Call this to mark appointments, holidays, or any significant days.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b ClearDay\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure ClearDay(nDay: Integer);\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Removes the flag and text from a specific day.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b ClearAllDays\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure ClearAllDays;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Removes all flags and text from every day in the current month. Call this before repopulating the calendar when the month changes.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b AddColorBar\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure AddColorBar(nDay: Integer; nColor: TColor);\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Adds a colored bar inside a day cell. Useful for visually indicating appointments without replacing the day number.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b NextMonth / PrevMonth\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure NextMonth;\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure PrevMonth;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Navigates the calendar forward or back one month.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b NextYear / PrevYear\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure NextYear;\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure PrevYear;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Navigates the calendar forward or back one year.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b Today\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure Today;\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Jumps the calendar to today\'92s date.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b ColorDateRange\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure ColorDateRange(nStart, nEnd: Integer; nBack, nFore: TColor);\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Sets the background and foreground colors for all days in the range nStart through nEnd in the current month. Useful for highlighting date ranges such as vacations or booking periods.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b AcceptDropped\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 procedure AcceptDropped(X, Y, Tag: Integer; Text: String);\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Call this from your OnDragDrop event handler to place dropped text into the calendar cell at the given coordinates. See the DragDrop demo for a worked example.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 8. TKingPopup \emdash  Popup Calendar\par
-\pard\sb0\sa160\cf1\f0\fs22 TKingPopup is a drop-down calendar control. The user clicks a button to reveal the calendar, selects a date, and the calendar closes automatically. It behaves similarly to a date-picker combo box.\par
-
-\pard\sb0\sa160\cf1\f0\fs22 {\b Key properties:}\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 Date : TDateTime\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 The currently selected date.\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 DateFormat : String\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 Format string used to display the selected date in the edit area.\par
-
-\pard\sb0\sa160\cf1\f0\fs22 {\b Key events:}\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 OnChange\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 Fires when the user selects a new date. Read the Date property inside the handler.\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 OnClose\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 Fires when the popup calendar closes.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 9. TKingDateDialog \emdash  Date Picker Dialog\par
-\pard\sb0\sa160\cf1\f0\fs22 TKingDateDialog presents a modal dialog containing a calendar. The user selects a date and clicks OK or Cancel.\par
-
-\pard\sb0\sa160\cf1\f0\fs22 {\b Typical usage:}\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 if KingDateDialog1.Execute then\par
-\pard\sb0\sa60\li360\cf3\f1\fs20   ShowMessage('Selected: ' + DateToStr(KingDateDialog1.Date));\par
-
-\pard\sb0\sa160\cf1\f0\fs22 {\b Key properties:}\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 Date : TDateTime\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 Set this before calling Execute to pre-select a date. Read it after Execute returns True.\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 Caption : String\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 The dialog window title.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 10. Navigation Controls\par
-\pard\sb0\sa160\cf1\f0\fs22 All navigation and companion controls share a common design: they have a {\cf3\f1\fs20 CalendarLink\cf1\f0\fs22 } property that you set to the {\cf3\f1\fs20 TKingCalendar\cf1\f0\fs22 } instance they should control. When you drop one of these controls onto a form that already contains a TKingCalendar, the CalendarLink is set automatically.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 10.1  TKingNavigator\par
-\pard\sb0\sa160\cf1\f0\fs22 A panel containing four arrow buttons: {\b previous month}, {\b next month}, {\b previous year}, {\b next year}. Drop it on a form, set {\cf3\f1\fs20 CalendarLink\cf1\f0\fs22 }, and it is immediately functional. No code required.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 10.2  TMonthBar\par
-\pard\sb0\sa160\cf1\f0\fs22 A row of twelve month-name buttons (Jan through Dec). Clicking a button navigates the linked calendar to that month. The current month button is automatically highlighted.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 10.3  TMonthSpin / TMonthCombo\par
-\pard\sb0\sa160\cf1\f0\fs22 TMonthSpin shows the current month name with up/down arrows to change it. TMonthCombo shows the same as a drop-down combo box. Both update the linked TKingCalendar when changed, and both update when the calendar navigates to a new month.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 10.4  TYearSpin / TYearCombo\par
-\pard\sb0\sa160\cf1\f0\fs22 Same concept as TMonthSpin/TMonthCombo, but for the year. TYearCombo shows a configurable range of years. Key property: {\cf3\f1\fs20 YearRange\cf1\f0\fs22 } (number of years before and after current year to include in the list).\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 10.5  TDaySpin / TDayCombo\par
-\pard\sb0\sa160\cf1\f0\fs22 Same concept for the day of the month. Automatically adjusts the maximum value for the number of days in the current month.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 10.6  TKingLabel / TKingWeekLabel\par
-\pard\sb0\sa160\cf1\f0\fs22 {\b TKingLabel} displays the linked calendar\'92s current date as a formatted string. Use the {\cf3\f1\fs20 DateFormat\cf1\f0\fs22 } property to control the format (e.g. {\cf3\f1\fs20 'dddd, mmmm d, yyyy'\cf1\f0\fs22 }).\par
-\pard\sb0\sa160\cf1\f0\fs22 {\b TKingWeekLabel} shows the ISO week number of the linked calendar\'92s current date. The label updates automatically whenever the calendar date changes.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 11. Spin and Date Entry Controls\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 11.1  TKingDateSpin\par
-\pard\sb0\sa160\cf1\f0\fs22 An edit box with up/down spin arrows for entering a date value. The user can type a date directly or click the arrows to increment/decrement the currently focused date part (day, month, or year). Key properties:\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 Date : TDateTime\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 The current date value.\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 DateFormat : String\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 Display format for the date (e.g. {\cf3\f1\fs20 'dd/mm/yyyy'\cf1\f0\fs22 }).\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 11.2  TKingTimeSpin\par
-\pard\sb0\sa160\cf1\f0\fs22 Same concept as TKingDateSpin but for time values. The user can tab between hours, minutes, and seconds and spin each field independently. Key property:\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 Time : TDateTime\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 The current time value.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 11.3  TKingMDYSpin\par
-\pard\sb0\sa160\cf1\f0\fs22 Combines three spin boxes in a single control: one each for month, day, and year. The user can edit each field independently. Useful when you want more explicit separated entry than a single formatted edit box provides.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 12. Database Controls\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b 12.1  TDBKingDlg\par
-\pard\sb0\sa160\cf1\f0\fs22 TDBKingDlg is a database-aware version of TKingDateDialog. Link it to a dataset field by setting:\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 DataSource : TDataSource\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 The data source component connected to your dataset.\par
-\pard\fi-360\li720\sb0\sa80\cf3\f1\fs20 DataField : String\par
-\pard\sb0\sa80\li1080\cf1\f0\fs22 The name of the date field in the dataset.\par
-\pard\sb0\sa160\cf1\f0\fs22 When the user picks a date and clicks OK, the field is updated automatically. The current field value is pre-selected when the dialog opens.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 13. VCL Styles and Theming\par
-\pard\sb0\sa160\cf1\f0\fs22 KingCalendar v3.0 and later fully supports Delphi VCL Styles. All calendar drawing routes through Delphi\'92s {\cf3\f1\fs20 StyleServices\cf1\f0\fs22 } API, so the calendar automatically adapts to light and dark themes.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b Using the Application-Wide Style\par
-\pard\sb0\sa160\cf1\f0\fs22 Add {\cf3\f1\fs20 Vcl.Themes\cf1\f0\fs22 } and {\cf3\f1\fs20 Vcl.Styles\cf1\f0\fs22 } to your project\'92s uses clause. In your DPR file, before {\cf3\f1\fs20 Application.Run\cf1\f0\fs22 }, call:\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 TStyleManager.TrySetStyle('Glow');  // switch to a dark theme\par
-\pard\sb0\sa160\cf1\f0\fs22 The calendar will repaint automatically to match the new style.\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b Using Per-Component Styles\par
-\pard\sb0\sa160\cf1\f0\fs22 Set the {\cf3\f1\fs20 StyleName\cf1\f0\fs22 } property on any TKingCalendar to the name of a registered VCL Style:\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 KingCalendar1.StyleName := 'Glow';    // always paints in Glow\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 KingCalendar2.StyleName := '';         // follows app-wide style\par
-\pard\sb0\sa160\cf1\f0\fs22 The style must be registered in the application (either bundled via a styles package or loaded at startup). A blank StyleName means \'93follow whatever the application is currently using.\'94\par
-
-\pard\sb240\sa120\cf2\f0\fs28\b Tips for Dark Themes\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Set {\cf3\f1\fs20 Font.Color\cf1\f0\fs22 }, {\cf3\f1\fs20 TitleFont.Color\cf1\f0\fs22 }, and {\cf3\f1\fs20 TextFont.Color\cf1\f0\fs22 } to {\cf3\f1\fs20 clWindowText\cf1\f0\fs22 } (not {\cf3\f1\fs20 clBlack\cf1\f0\fs22 }) so the style engine maps them to an appropriate light color in dark themes.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Set {\cf3\f1\fs20 CellColor\cf1\f0\fs22 } to {\cf3\f1\fs20 clBtnFace\cf1\f0\fs22 } and {\cf3\f1\fs20 TitleColor\cf1\f0\fs22 } to {\cf3\f1\fs20 clBtnShadow\cf1\f0\fs22 } so they adapt with the theme.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Avoid hard-coded color values (e.g. {\cf3\f1\fs20 RGB(0,0,0)\cf1\f0\fs22 }) for any element that should change with the theme.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 14. Demos\par
-\pard\sb0\sa160\cf1\f0\fs22 The repository includes demo projects demonstrating the key features of the library. Each demo is available for Delphi 10.2, 10.3, 10.4, and 13. Open the {\cf3\f1\fs20 .dpr\cf1\f0\fs22 } file in Delphi, ensure KingCalendar is installed, and press F9 to run.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b KingCal Demo\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Demos\Delphi13\Demo\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 The main feature showcase. Demonstrates cell coloring, text in cells, font and color customisation, navigation controls, and a VCL Style selector drop-down so you can see the calendar under multiple themes.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b NavEmpl\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Demos\Delphi13\NavEmpl\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Demonstrates linking TKingCalendar to TKingNavigator, TMonthSpin, TYearSpin, TMonthBar, TKingLabel, and TKingWeekLabel. Useful if you want to build a navigation bar around the calendar.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b PickDate\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Demos\Delphi13\PickDate\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Shows how to use TKingDateDialog and TKingPopup to pick a date and return it to a form.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b DragDrop\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Demos\Delphi13\DragDrop\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Demonstrates drag-and-drop of text from a list box into calendar cells, using the AcceptDropped method.\par
-
-\pard\sb120\sa40\cf2\f0\fs24\b StartDay\par
-\pard\sb0\sa60\li360\cf3\f1\fs20 Demos\Delphi13\Startday\par
-\pard\sb0\sa120\li360\cf1\f0\fs22 Shows the StartingDay property in action, allowing the user to switch the first day of the week at runtime.\par
-
-\pard\sb240\sa0\cf3\f0\fs16 ____________________________________________\par
-
-\page
-
-\pard\sb240\sa120\cf2\f0\fs36\b 15. Version History\par
-
-\pard\sb120\sa60\cf2\f0\fs28\b v3.0 (March 2026)\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab High DPI support for all controls.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Full VCL Styles support (light and dark themes). Painting routes through StyleServices.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab New {\cf3\f1\fs20 StyleName\cf1\f0\fs22 } per-component style property on TKingCalendar.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Default fonts changed to Segoe UI. Default colors updated to system color constants for theme compatibility.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Support for Delphi 13 Florence, 12 Athens, and 11 Alexandria.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab TKingWeekLabel component added.\par
-
-\pard\sb120\sa60\cf2\f0\fs28\b v2.08 (December 2018)\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Support for Delphi 10.3 Rio.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Extended TKingLabel to optionally append the ISO week number to the caption.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Initial VCL Style compatibility adjustments.\par
-
-\pard\sb120\sa60\cf2\f0\fs28\b v2.0 (June 2018)\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Support for Delphi 10.2 Tokyo.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Moved to open source under the MIT license.\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Repository created on GitHub. Maintained by Lance Rasmussen.\par
-
-\pard\sb120\sa60\cf2\f0\fs28\b v1.3 (May 1997)\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Full Delphi 1.x, 2.x, and 3.x support.\par
-
-\pard\sb120\sa60\cf2\f0\fs28\b v1.0 \emdash  v1.2 (1995\endash 1997)\par
-\pard\fi-360\li720\sb0\sa80\cf1\f0\fs22 \'95\tab Original implementation by Mark Lussier and AppVision.\par
-
-\pard\sb480\sa120\qc\cf3\f0\fs20 KingCalendar \emdash  Open Source \emdash  https://github.com/K7LER/KingCal\par
-
-}
+{\rtf1\ansi\deff3\adeflang1025
+{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset0 Liberation Serif{\*\falt Times New Roman};}{\f4\fswiss\fprq2\fcharset0 Liberation Sans{\*\falt Arial};}{\f5\froman\fprq2\fcharset0 Segoe UI;}{\f6\froman\fprq2\fcharset0 Courier New;}{\f7\fnil\fprq2\fcharset0 Microsoft YaHei;}{\f8\fnil\fprq2\fcharset0 Arial;}{\f9\fswiss\fprq0\fcharset128 Arial;}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;\red0\green70\blue127;\red80\green80\blue80;}
+{\stylesheet{\s0\snext0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033 Normal;}
+{\s15\sbasedon0\snext16\sb240\sa120\keepn\rtlch\af8\afs28\ltrch\hich\af4\afs28\dbch\af7\loch\f4\fs28 Heading;}
+{\s16\sbasedon0\snext16\sl276\slmult1\sb0\sa140 Body Text;}
+{\s17\sbasedon16\snext17\rtlch\af9\ltrch List;}
+{\s18\sbasedon0\snext18\sb120\sa120\noline\rtlch\af9\afs24\ai\ltrch\fs24\i caption;}
+{\s19\sbasedon0\snext19\noline\rtlch\af9\ltrch Index;}
+}{\*\listtable{\list\listtemplateid1
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}
+{\listlevel\levelnfc255\leveljc0\levelstartat1\levelfollow2{\leveltext \'00;}{\levelnumbers;}\fi0\li0}\listid1}
+}{\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}{\*\generator LibreOffice/26.2.1.2$Windows_X86_64 LibreOffice_project/620$Build-2}{\info{\creatim\yr0\mo0\dy0\hr0\min0}{\revtim\yr2026\mo3\dy23\hr23\min16}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops}\deftab720
+\hyphauto1\viewscale280\formshade\paperh15840\paperw12240\margl1440\margr1440\margt1440\margb1440\sectd\sbknone\sftnnar\saftnnrlc\sectunlocked1\pgwsxn12240\pghsxn15840\marglsxn1440\margrsxn1440\margtsxn1440\margbsxn1440\ftnbj\ftnstart1\ftnrstcont\ftnnar\fet\aftnrstcont\aftnstart1\aftnnrlc
+{\*\ftnsep\chftnsep}\pgndec\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\qc\sb480\sa240\ltrpar{\cf17\f5\fs48\b
+KingCalendar Components for Delphi}
+{\cf17\hich\af5\afs48\ab\dbch\afs48\ab\loch\f5\fs48\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\qc\sb0\sa120\ltrpar{\cf17\f5\fs32\b
+Release v3.0 \u8212\'97 Open Source}
+{\cf17\hich\af5\afs32\ab\dbch\afs32\ab\loch\f5\fs32\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\qc\sb0\sa480\ltrpar{\cf18\f5\fs22\b
+https://github.com/K7LER/KingCal}
+{\cf18\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+1. License}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+MIT License}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Copyright (c) 1995\u8211\'962023 Mark Lussier and AppVision.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \u8220\'93Software\u8221\'94), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+THE SOFTWARE IS PROVIDED \u8220\'93AS IS\u8221\'94, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+2. Welcome}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+KingCalendar is a comprehensive set of VCL calendar controls for Embarcadero Delphi. Originally created by Mark Lussier and AppVision in 1995, the library was released as open source in 2018 and is currently maintained by Lance Rasmussen at:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+https://github.com/K7LER/KingCal}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Because these are 100% native VCL controls, they compile directly into your application \u8212\'97 no extra DLLs to distribute. The library supports Delphi 10.2 through 13 and targets both Win32 and Win64. It also supports High DPI displays and Delphi VCL Styles (light and dark themes).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+3. What\u8217\'92s New in v3.0}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab High DPI support: all controls scale correctly at 125%, 150%, 200% and beyond.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab VCL Styles support: all painting routes through StyleServices so light and dark themes render correctly. Tested with the Glow dark theme.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab New }{\cf18\f6\fs20\b
+StyleName}{\cf1\f5\fs22\b
+ property on TKingCalendar: set a specific VCL style name for the component to use, regardless of the application-wide style.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Default fonts changed to Segoe UI throughout.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Default colors updated to system color constants (}{\cf18\f6\fs20\b
+clBtnFace}{\cf1\f5\fs22\b
+, }{\cf18\f6\fs20\b
+clBtnShadow}{\cf1\f5\fs22\b
+, }{\cf18\f6\fs20\b
+clWindowText}{\cf1\f5\fs22\b
+) so they adapt to themes automatically.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab New component }{\cf18\f6\fs20\b
+TKingWeekLabel}{\cf1\f5\fs22\b
+ to display the ISO week number of the linked calendar\u8217\'92s date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Support for Delphi 13 Florence, Delphi 12 Athens, and Delphi 11 Alexandria added.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab All source builds for Delphi 10.2 through 13.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+4. Component Overview}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+The library provides the following components, all installed into the KingCalendar section of the Delphi Tool Palette:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingCalendar}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Full month calendar grid. This is the core component that all navigation and companion controls link to.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingPopup}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Drop-down popup calendar, similar to a date-picker combo box.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingDateDialog}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Standalone modal date-picker dialog. Call Execute and read the Date property.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TDBKingDlg}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Database-aware date picker. Links to a TField and updates it automatically when the user picks a date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingNavigator}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Panel with four navigation buttons: previous month, next month, previous year, next year.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TMonthBar}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+A row of twelve month-name buttons. Clicking one sets the linked calendar to that month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TMonthSpin / TMonthCombo}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Spin control or combo box for selecting a month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TYearSpin / TYearCombo}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Spin control or combo box for selecting a year.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TDaySpin / TDayCombo}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Spin control or combo box for selecting a day of the month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingLabel}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+A label that automatically displays the linked calendar\u8217\'92s current date, formatted using its DateFormat property.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingWeekLabel}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+A label that shows the ISO week number of the linked calendar\u8217\'92s current date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingDateSpin}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+An edit box with up/down arrows for entering a date value.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingTimeSpin}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+An edit box with up/down arrows for entering a time value (hours, minutes, seconds).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs24\b
+TKingMDYSpin}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Three combined spin boxes in one control for month, day, and year entry simultaneously.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+5. Installation}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+What is a package? In Delphi, a }{\cf1\f5\fs22\i\b
+package}{\cf1\f5\fs22\b
+ is a special project that compiles your component library and registers it in the IDE so you can drag components onto forms. There are two kinds:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Runtime package \u8212\'97 compiled into or linked with your application. Contains all the implementation units.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Design-time package \u8212\'97 used only by the IDE. Registers the components in the Tool Palette. Always 32-bit.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+Package Version Map}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa60\ltrpar{\cf1\f5\fs22\b
+Each Delphi version uses a different package suffix and folder:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Delphi 10.2 Rio      | suffix 260 | packages/102  | LIBD2}{\cf18\f6\fs20\b
+5}{\cf18\f6\fs20\b
+x64, LIBD2}{\cf18\f6\fs20\b
+5}{\cf18\f6\fs20\b
+x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Delphi 10.3 Rio      | suffix 270 | packages/103  | LIBD2}{\cf18\f6\fs20\b
+6}{\cf18\f6\fs20\b
+x32, LIBD2}{\cf18\f6\fs20\b
+6}{\cf18\f6\fs20\b
+x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Delphi 10.4 Sydney   | suffix 280 | packages/104  | LIBD2}{\cf18\f6\fs20\b
+7}{\cf18\f6\fs20\b
+x64, LIBD2}{\cf18\f6\fs20\b
+7}{\cf18\f6\fs20\b
+x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Delphi 11 Alexandria | suffix 290 | packages/110  | LIBD2}{\cf18\f6\fs20\b
+8}{\cf18\f6\fs20\b
+x32, LIBD2}{\cf18\f6\fs20\b
+8}{\cf18\f6\fs20\b
+x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Delphi 12 Athens     | suffix 360 | packages/12   | LIBD}{\cf18\f6\fs20\b
+29}{\cf18\f6\fs20\b
+x32, LIBD}{\cf18\f6\fs20\b
+29}{\cf18\f6\fs20\b
+x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Delphi 13 Florence   | suffix 370 | packages/13   | LIBD37x32, LIBD37x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+Option A \u8212\'97 Use Pre-compiled Binaries (Recommended for Beginners)}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+1.\tab Download or clone the repository from }{\cf18\f6\fs20\b
+https://github.com/K7LER/KingCal}{\cf1\f5\fs22\b
+.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+2.\tab Open Delphi.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+3.\tab Go to Tools > Options > Language > Delphi > Library and select your target platform (Win32 or Win64).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+4.\tab Under Library path, click the ... button and add the path to the appropriate LIB folder.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li1440\lin1440\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Example for Delphi 13, 64-bit:  C:x64}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+5.\tab Under Browsing path, add the path to the }{\cf18\f6\fs20\b
+source}{\cf1\f5\fs22\b
+ folder.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+6.\tab Click OK. The components now appear in the Tool Palette under KingCalendar.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+Option B \u8212\'97 Compile from Source}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+1.\tab Download or clone the repository.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+2.\tab Open Delphi and configure the Library path and Browsing path as described in Option A (steps 3\u8211\'965).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+3.\tab Open the group project for your Delphi version. Example for Delphi 13:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li1440\lin1440\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+packages3All.groupproj}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+4.\tab In the Project Manager, right-click the runtime package (e.g. }{\cf18\f6\fs20\b
+KingCalendar370.dpk}{\cf1\f5\fs22\b
+) and choose Build.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+5.\tab Right-click the design-time package (e.g. }{\cf18\f6\fs20\b
+dclKingCalendar370.dpk}{\cf1\f5\fs22\b
+) and choose Build.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+6.\tab Right-click the design-time package again and choose Install. Delphi will confirm the components were registered.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+7.\tab To build for 64-bit, change the active platform in the Project Manager to Win64 and build the runtime package again.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Note: The design-time package is always 32-bit (it runs inside the IDE itself). You only need to build the runtime package for each platform your application targets.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+6. Quick Start: Adding Your First Calendar}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+New to Delphi? Here are the key terms:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab A component is a reusable building block you drag onto a form from the Tool Palette.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab A property is a setting you can change in the Object Inspector or in code.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab An event is code that runs automatically when something happens (for example, when the user clicks a date).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa120\ltrpar{\cf17\f5\fs28\b
+Step-by-step}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+1.\tab Start Delphi and create a new VCL Forms Application (File > New > VCL Forms Application).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+2.\tab In the Tool Palette, find the KingCalendar section. If you do not see it, re-check the installation steps in Section 5.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+3.\tab Double-click TKingCalendar to place it on your form.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+4.\tab In the Object Inspector, change properties such as }{\cf18\f6\fs20\b
+CellColor}{\cf1\f5\fs22\b
+, }{\cf18\f6\fs20\b
+TitleColor}{\cf1\f5\fs22\b
+, and }{\cf18\f6\fs20\b
+Font}{\cf1\f5\fs22\b
+ to customise the appearance.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+5.\tab To respond when the user clicks a date, switch to the Events tab of the Object Inspector and double-click the }{\cf18\f6\fs20\b
+OnClick}{\cf1\f5\fs22\b
+ event. Add your code:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure TForm1.KingCalendar1Click(Sender: TObject);}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+begin}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+  }{\cf18\f6\fs20\b
+ShowMessage('You selected: ' + DateToStr(KingCalendar1.Date));}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li720\lin720\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+end;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+6.\tab Press F9 to run. Click any day to trigger your event.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Linking navigation controls: To connect a }{\cf18\f6\fs20\b
+TMonthSpin}{\cf1\f5\fs22\b
+, }{\cf18\f6\fs20\b
+TKingNavigator}{\cf1\f5\fs22\b
+, or other companion control to your calendar, drop it on the form. It will automatically link to the first }{\cf18\f6\fs20\b
+TKingCalendar}{\cf1\f5\fs22\b
+ it finds. If you have more than one calendar, set the control\u8217\'92s }{\cf18\f6\fs20\b
+CalendarLink}{\cf1\f5\fs22\b
+ property in the Object Inspector, or right-click the control and choose Attach to Calendar... to pick from a list.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+7. TKingCalendar \u8212\'97 Main Calendar Component}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TKingCalendar inherits from TCustomGrid and is the central component. It renders the month grid, handles day selection, blocked days, per-cell colors, and fires all calendar events. Every other component in the library links to a TKingCalendar instance.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+7.1\u8198\'20 \u8198\'20 Properties}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+The following are the key properties you will use most often. Properties not listed here are inherited from TCustomGrid or TControl and behave in the standard Delphi way.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Day}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property Day : Integer;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The currently selected day of the month (1\u8211\'9631). Changing this property updates the calendar display and fires OnDayChange.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Month}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property Month : Integer;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The currently selected month (1\u8211\'9612). Changing this property navigates the calendar to that month and fires OnMonthChange.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Year}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property Year : Integer;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The currently selected year. Fires OnYearChange when changed.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Date}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property Date : TDateTime;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The full date as a TDateTime value. Setting this property updates Day, Month, and Year simultaneously. Read this property in your OnClick event to get the selected date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+CellColor}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property CellColor : TColor;   default: clBtnFace }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Background color of the day cells in the calendar grid.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+TitleColor}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property TitleColor : TColor;   default: clBtnShadow }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Background color of the day-of-week header row.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+GridLineColor}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property GridLineColor : TColor;   default: clBtnShadow }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Color of the lines drawn between cells. Set ShowGridLines to False to hide them entirely.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+ShowGridLines}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property ShowGridLines : Boolean;   default: True }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Show or hide the grid lines between day cells.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Highlight}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property Highlight : TColor;   default: clHighlight }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Background color of the focused (selected) day cell.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+HighlightText}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property HighlightText : TColor;   default: clHighlightText }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Text color of the selected day number.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+TodayColor}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property TodayColor : TColor;   default: clWindowText }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Color used to draw today\u8217\'92s date number, making it stand out from other days.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+IsActive}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property IsActive : Boolean;   default: True }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+When True, the focused day cell is highlighted using the Highlight color. Set to False to render all cells with the same background.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+TextPlacement}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property TextPlacement : TKingText;   default: ktTopLeft }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Controls where the day number is drawn inside each cell. Options: ktCenter, ktTopLeft, ktTopRight, ktLowerLeft, ktLowerRight.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+ColorCellDay}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property ColorCellDay : Boolean;   default: True }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+When True, day numbers are drawn using the colors defined by ColorSet1\u8211\'96ColorSet9 and TodayColor. When False, all day numbers use the calendar\u8217\'92s default Font color.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Font}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property Font : TFont;   default: Segoe UI, clWindowText }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Font used to draw the day numbers in the cells. For best VCL Style compatibility, set Font.Color to clWindowText rather than clBlack.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+TitleFont}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property TitleFont : TFont;   default: Segoe UI, clWindowText }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Font used in the day-of-week header row.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+TextFont}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property TextFont : TFont;   default: Segoe UI }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Font used to draw additional text lines inside cells (set via SetDateFlag).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+DowNames}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property DowNames : TStrings;   default: Sun Mon Tue Wed Thu Fri Sat }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The seven day-of-week abbreviations shown in the header row. Change these to localise the calendar to any language.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+StartingDay}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property StartingDay : Integer;   default: 0 (Sunday) }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The first day of the week shown in the leftmost column. 0 = Sunday, 1 = Monday, and so on. Useful for European locales where Monday is the first day.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+BlockedBkGnd}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property BlockedBkGnd : TColor;   default: clBtnFace }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Background color for days that have been blocked (disabled for selection).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+BlockedFrGnd}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property BlockedFrGnd : TColor;   default: clGrayText }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Text color for blocked day numbers.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+StyleName}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property StyleName : String;   default: '' }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The name of a VCL Style to use when painting this component. Leave blank to follow the application-wide active style. See Section 13 for details.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+ColorSet1 through ColorSet9}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property ColorSet1 : TColor;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property ColorSet2 : TColor;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+ }{\cf18\f6\fs20\b
+... through ColorSet9 }
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Nine user-defined colors used to color-code individual days. Assign a color set number (1\u8211\'969) to a day using SetDateFlag; the day number is then drawn in the corresponding ColorSet color.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+About}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+property About : String;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Read-only. Displays the library version number in the Object Inspector.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+7.2\u8198\'20 \u8198\'20 Events}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnClick}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Fires when the user clicks any day cell. Read the Date property inside the handler to get the selected date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnDayChange}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure(Sender: TObject; Day: Integer) of object;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Fires when the selected day changes. The new day number is passed as the Day parameter.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnMonthChange}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure(Sender: TObject; Month: Integer) of object;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Fires when the calendar navigates to a different month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnYearChange}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure(Sender: TObject; Year: Integer) of object;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Fires when the calendar navigates to a different year.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnDateChange}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure(Sender: TObject; Date: TDateTime) of object;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Fires when the full date (day, month, or year) changes. This is the most convenient single event for most use cases.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnChange}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+General change notification. Fires after any date-related property changes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+OnFlaggedDay}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Fires while the calendar is drawing a day that has a flag (appointment level > 0) set via SetDateFlag. Use this event to customise the painting of flagged days.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+7.3\u8198\'20 \u8198\'20 Methods}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+SetDateFlag}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure SetDateFlag(nDay, Flag: Integer; Text: String);}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Assigns a color flag (1\u8211\'969, corresponding to ColorSet1\u8211\'969) and optional cell text to a specific day number in the current month. Call this to mark appointments, holidays, or any significant days.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+ClearDay}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure ClearDay(nDay: Integer);}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Removes the flag and text from a specific day.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+ClearAllDays}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure ClearAllDays;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Removes all flags and text from every day in the current month. Call this before repopulating the calendar when the month changes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+AddColorBar}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure AddColorBar(nDay: Integer; nColor: TColor);}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Adds a colored bar inside a day cell. Useful for visually indicating appointments without replacing the day number.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+NextMonth / PrevMonth}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure NextMonth;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure PrevMonth;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Navigates the calendar forward or back one month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+NextYear / PrevYear}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure NextYear;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure PrevYear;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Navigates the calendar forward or back one year.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+Today}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure Today;}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Jumps the calendar to today\u8217\'92s date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+ColorDateRange}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure ColorDateRange(nStart, nEnd: Integer; nBack, nFore: TColor);}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Sets the background and foreground colors for all days in the range nStart through nEnd in the current month. Useful for highlighting date ranges such as vacations or booking periods.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+AcceptDropped}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+procedure AcceptDropped(X, Y, Tag: Integer; Text: String);}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Call this from your OnDragDrop event handler to place dropped text into the calendar cell at the given coordinates. See the DragDrop demo for a worked example.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+8. TKingPopup \u8212\'97 Popup Calendar}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TKingPopup is a drop-down calendar control. The user clicks a button to reveal the calendar, selects a date, and the calendar closes automatically. It behaves similarly to a date-picker combo box.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Key properties:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+Date : TDateTime}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+The currently selected date.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+DateFormat : String}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Format string used to display the selected date in the edit area.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Key events:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+OnChange}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Fires when the user selects a new date. Read the Date property inside the handler.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+OnClose}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Fires when the popup calendar closes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+9. TKingDateDialog \u8212\'97 Date Picker Dialog}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TKingDateDialog presents a modal dialog containing a calendar. The user selects a date and clicks OK or Cancel.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Typical usage:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+if KingDateDialog1.Execute then}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+  }{\cf18\f6\fs20\b
+ShowMessage('Selected: ' + DateToStr(KingDateDialog1.Date));}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Key properties:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+Date : TDateTime}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Set this before calling Execute to pre-select a date. Read it after Execute returns True.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+Caption : String}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+The dialog window title.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+10. Navigation Controls}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+All navigation and companion controls share a common design: they have a }{\cf18\f6\fs20\b
+CalendarLink}{\cf1\f5\fs22\b
+ property that you set to the }{\cf18\f6\fs20\b
+TKingCalendar}{\cf1\f5\fs22\b
+ instance they should control. When you drop one of these controls onto a form that already contains a TKingCalendar, the CalendarLink is set automatically.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+10.1\u8198\'20 \u8198\'20 TKingNavigator}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+A panel containing four arrow buttons: previous month, next month, previous year, next year. Drop it on a form, set }{\cf18\f6\fs20\b
+CalendarLink}{\cf1\f5\fs22\b
+, and it is immediately functional. No code required.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+10.2\u8198\'20 \u8198\'20 TMonthBar}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+A row of twelve month-name buttons (Jan through Dec). Clicking a button navigates the linked calendar to that month. The current month button is automatically highlighted.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+10.3\u8198\'20 \u8198\'20 TMonthSpin / TMonthCombo}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TMonthSpin shows the current month name with up/down arrows to change it. TMonthCombo shows the same as a drop-down combo box. Both update the linked TKingCalendar when changed, and both update when the calendar navigates to a new month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+10.4\u8198\'20 \u8198\'20 TYearSpin / TYearCombo}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Same concept as TMonthSpin/TMonthCombo, but for the year. TYearCombo shows a configurable range of years. Key property: }{\cf18\f6\fs20\b
+YearRange}{\cf1\f5\fs22\b
+ (number of years before and after current year to include in the list).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+10.5\u8198\'20 \u8198\'20 TDaySpin / TDayCombo}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Same concept for the day of the month. Automatically adjusts the maximum value for the number of days in the current month.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+10.6\u8198\'20 \u8198\'20 TKingLabel / TKingWeekLabel}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TKingLabel displays the linked calendar\u8217\'92s current date as a formatted string. Use the }{\cf18\f6\fs20\b
+DateFormat}{\cf1\f5\fs22\b
+ property to control the format (e.g. }{\cf18\f6\fs20\b
+'dddd, mmmm d, yyyy'}{\cf1\f5\fs22\b
+).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TKingWeekLabel shows the ISO week number of the linked calendar\u8217\'92s current date. The label updates automatically whenever the calendar date changes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+11. Spin and Date Entry Controls}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+11.1\u8198\'20 \u8198\'20 TKingDateSpin}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+An edit box with up/down spin arrows for entering a date value. The user can type a date directly or click the arrows to increment/decrement the currently focused date part (day, month, or year). Key properties:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+Date : TDateTime}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+The current date value.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+DateFormat : String}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+Display format for the date (e.g. }{\cf18\f6\fs20\b
+'dd/mm/yyyy'}{\cf1\f5\fs22\b
+).}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+11.2\u8198\'20 \u8198\'20 TKingTimeSpin}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Same concept as TKingDateSpin but for time values. The user can tab between hours, minutes, and seconds and spin each field independently. Key property:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+Time : TDateTime}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+The current time value.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+11.3\u8198\'20 \u8198\'20 TKingMDYSpin}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Combines three spin boxes in a single control: one each for month, day, and year. The user can edit each field independently. Useful when you want more explicit separated entry than a single formatted edit box provides.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+12. Database Controls}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+12.1\u8198\'20 \u8198\'20 TDBKingDlg}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+TDBKingDlg is a database-aware version of TKingDateDialog. Link it to a dataset field by setting:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+DataSource : TDataSource}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+The data source component connected to your dataset.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf18\f6\fs20\b
+DataField : String}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li1080\lin1080\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+The name of the date field in the dataset.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+When the user picks a date and clicks OK, the field is updated automatically. The current field value is pre-selected when the dialog opens.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+13. VCL Styles and Theming}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+KingCalendar v3.0 and later fully supports Delphi VCL Styles. All calendar drawing routes through Delphi\u8217\'92s }{\cf18\f6\fs20\b
+StyleServices}{\cf1\f5\fs22\b
+ API, so the calendar automatically adapts to light and dark themes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+Using the Application-Wide Style}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Add }{\cf18\f6\fs20\b
+Vcl.Themes}{\cf1\f5\fs22\b
+ and }{\cf18\f6\fs20\b
+Vcl.Styles}{\cf1\f5\fs22\b
+ to your project\u8217\'92s uses clause. In your DPR file, before }{\cf18\f6\fs20\b
+Application.Run}{\cf1\f5\fs22\b
+, call:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+TStyleManager.TrySetStyle('Glow');  // switch to a dark theme}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+The calendar will repaint automatically to match the new style.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+Using Per-Component Styles}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+Set the }{\cf18\f6\fs20\b
+StyleName}{\cf1\f5\fs22\b
+ property on any TKingCalendar to the name of a registered VCL Style:}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+KingCalendar1.StyleName := 'Glow';    // always paints in Glow}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+KingCalendar2.StyleName := '';         // follows app-wide style}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+The style must be registered in the application (either bundled via a styles package or loaded at startup). A blank StyleName means \u8220\'93follow whatever the application is currently using.\u8221\'94}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa120\ltrpar{\cf17\f5\fs28\b
+Tips for Dark Themes}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Set }{\cf18\f6\fs20\b
+Font.Color}{\cf1\f5\fs22\b
+, }{\cf18\f6\fs20\b
+TitleFont.Color}{\cf1\f5\fs22\b
+, and }{\cf18\f6\fs20\b
+TextFont.Color}{\cf1\f5\fs22\b
+ to }{\cf18\f6\fs20\b
+clWindowText}{\cf1\f5\fs22\b
+ (not }{\cf18\f6\fs20\b
+clBlack}{\cf1\f5\fs22\b
+) so the style engine maps them to an appropriate light color in dark themes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Set }{\cf18\f6\fs20\b
+CellColor}{\cf1\f5\fs22\b
+ to }{\cf18\f6\fs20\b
+clBtnFace}{\cf1\f5\fs22\b
+ and }{\cf18\f6\fs20\b
+TitleColor}{\cf1\f5\fs22\b
+ to }{\cf18\f6\fs20\b
+clBtnShadow}{\cf1\f5\fs22\b
+ so they adapt with the theme.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Avoid hard-coded color values (e.g. }{\cf18\f6\fs20\b
+RGB(0,0,0)}{\cf1\f5\fs22\b
+) for any element that should change with the theme.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+14. Demos}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb0\sa160\ltrpar{\cf1\f5\fs22\b
+The repository includes demo projects demonstrating the key features of the library. Each demo is available for Delphi 10.2, 10.3, 10.4, and 13. Open the }{\cf18\f6\fs20\b
+.dpr}{\cf1\f5\fs22\b
+ file in Delphi, ensure KingCalendar is installed, and press F9 to run.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+KingCal Demo}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Demos}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+The main feature showcase. Demonstrates cell coloring, text in cells, font and color customisation, navigation controls, and a VCL Style selector drop-down so you can see the calendar under multiple themes.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+NavEmpl}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Demos}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Demonstrates linking TKingCalendar to TKingNavigator, TMonthSpin, TYearSpin, TMonthBar, TKingLabel, and TKingWeekLabel. Useful if you want to build a navigation bar around the calendar.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+PickDate}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Demos}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Shows how to use TKingDateDialog and TKingPopup to pick a date and return it to a form.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+DragDrop}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Demos}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Demonstrates drag-and-drop of text from a list box into calendar cells, using the AcceptDropped method.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa40\ltrpar{\cf17\f5\fs24\b
+StartDay}
+{\cf17\hich\af5\afs24\ab\dbch\afs24\ab\loch\f5\fs24\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa60\ltrpar{\cf18\f6\fs20\b
+Demos}
+{\cf18\hich\af6\afs20\ab\dbch\afs20\ab\loch\f6\fs20\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi0\li360\lin360\sb0\sa120\ltrpar{\cf1\f5\fs22\b
+Shows the StartingDay property in action, allowing the user to switch the first day of the week at runtime.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb240\sa0\ltrpar{\cf18\f5\fs16\b
+____________________________________________}
+{\cf18\hich\af5\afs16\ab\dbch\afs16\ab\loch\f5\fs16\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\pagebb\ql\sb240\sa120\ltrpar{\cf17\f5\fs36\b
+15. Version History}
+{\cf17\hich\af5\afs36\ab\dbch\afs36\ab\loch\f5\fs36\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs28\b
+v3.0 (March 2026)}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab High DPI support for all controls.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Full VCL Styles support (light and dark themes). Painting routes through StyleServices.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab New }{\cf18\f6\fs20\b
+StyleName}{\cf1\f5\fs22\b
+ per-component style property on TKingCalendar.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Default fonts changed to Segoe UI. Default colors updated to system color constants for theme compatibility.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Support for Delphi 13 Florence, 12 Athens, and 11 Alexandria.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab TKingWeekLabel component added.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs28\b
+v2.08 (December 2018)}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Support for Delphi 10.3 Rio.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Extended TKingLabel to optionally append the ISO week number to the caption.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Initial VCL Style compatibility adjustments.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs28\b
+v2.0 (June 2018)}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Support for Delphi 10.2 Tokyo.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Moved to open source under the MIT license.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Repository created on GitHub. Maintained by Lance Rasmussen.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs28\b
+v1.3 (May 1997)}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Full Delphi 1.x, 2.x, and 3.x support.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\sb120\sa60\ltrpar{\cf17\f5\fs28\b
+v1.0 \u8212\'97 v1.2 (1995\u8211\'961997)}
+{\cf17\hich\af5\afs28\ab\dbch\afs28\ab\loch\f5\fs28\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\ql\fi-360\li720\lin720\sb0\sa80\ltrpar{\cf1\f5\fs22\b
+\u8226\'95}{\cf1\f5\fs22\b
+\tab Original implementation by Mark Lussier and AppVision.}
+{\cf1\hich\af5\afs22\ab\dbch\afs22\ab\loch\f5\fs22\b\par}\pard\plain \s0\widctlpar\hyphpar1\ltrpar\cf0\kerning1\rtlch\af8\afs24\alang1081\ltrch\hich\af3\afs24\alang1033\dbch\af10\langfe2052\loch\f3\fs24\lang1033\qc\sb480\sa120\ltrpar{\cf18\f5\fs20\b
+KingCalendar \u8212\'97 Open Source \u8212\'97 https://github.com/K7LER/KingCal}
+{\cf18\hich\af5\afs20\ab\dbch\afs20\ab\loch\f5\fs20\b\par}}
