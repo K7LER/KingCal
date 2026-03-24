@@ -1,7 +1,7 @@
 { *                                                                                * }
 { *  unit KingCore                                                                 * }
 { *  Fixed Information Unit                                                        * }
-{ *  KingCalendar Components v2.0 for Delphi                                       * }
+{ *  KingCalendar Components v3.0 for Delphi                                       * }
 { *                                                                                * }
 { * ***** BEGIN LICENSE BLOCK *****                                                * }
 { * MIT License                                                                    * }
@@ -41,8 +41,8 @@ unit KingCore;
 interface
 
 const
-  vcdVersion = 'v26.1.1'; { * KingCalendar Version Number   * }
-  vcdBuildDate = '01/01/26'; { * KingCalendar Build Date       * }
+  vcdVersion = 'v2026.0324.0008'; { * KingCalendar Version Number   * }
+  vcdBuildDate = '03/24/26'; { * KingCalendar Build Date       * }
 
 implementation
 

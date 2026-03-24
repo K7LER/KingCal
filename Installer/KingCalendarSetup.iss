@@ -7,18 +7,18 @@
 ; =============================================================================
 
 #define AppName    "KingCalendar"
-#define AppVersion "2.1"
-#define AppPublisher "AppVision"
+#define AppVersion "2026.0324.0008"
+#define AppPublisher "Lance Rasmussen"
 
 [Setup]
 AppId={{3F8A2D1B-7C45-4E9F-B6D2-1A5E8C934F70}
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppPublisher={#AppPublisher}
-AppCopyright=Copyright (C) 1995-2026 Mark Lussier and AppVision
+AppCopyright=Copyright (C) 1995-2026 Lance Rasmussen, Mark Lussier and AppVision
 DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
-AllowNoIcons=yes
+AllowNoIcons=no
 OutputDir=.
 OutputBaseFilename=KingCalendarSetup
 Compression=lzma2/ultra
@@ -43,42 +43,87 @@ Source: "..\packages\104\*";  DestDir: "{app}\packages\104";  Flags: ignoreversi
 Source: "..\packages\110\*";  DestDir: "{app}\packages\110";  Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\packages\12\*";   DestDir: "{app}\packages\12";   Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\packages\13\*";   DestDir: "{app}\packages\13";   Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Pre-compiled DCU libraries (Delphi 10.2 / BDS 19) ---
-Source: "..\LIBD25x32\*";     DestDir: "{app}\LIBD25x32";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD25x64\*";     DestDir: "{app}\LIBD25x64";     Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Pre-compiled DCU libraries (Delphi 10.3 / BDS 20) ---
-Source: "..\LIBD26x32\*";     DestDir: "{app}\LIBD26x32";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD26x64\*";     DestDir: "{app}\LIBD26x64";     Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Pre-compiled DCU libraries (Delphi 10.4 / BDS 21) ---
-Source: "..\LIBD27x32\*";     DestDir: "{app}\LIBD27x32";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD27x64\*";     DestDir: "{app}\LIBD27x64";     Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Pre-compiled DCU libraries (Delphi 11 / BDS 22) ---
-Source: "..\LIBD28x32\*";     DestDir: "{app}\LIBD28x32";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD28x64\*";     DestDir: "{app}\LIBD28x64";     Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Pre-compiled DCU libraries (Delphi 12 / BDS 23) ---
-Source: "..\LIBD29x32\*";     DestDir: "{app}\LIBD29x32";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD29x64\*";     DestDir: "{app}\LIBD29x64";     Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Pre-compiled DCU libraries (Delphi 13 / BDS 24) ---
-Source: "..\LIBD37x32\*";     DestDir: "{app}\LIBD37x32";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD37x64\*";     DestDir: "{app}\LIBD37x64";     Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\LIBD37x64x\*";    DestDir: "{app}\LIBD37x64x";    Flags: ignoreversion recursesubdirs createallsubdirs
+; --- Library support files — DCUs excluded (compiled from source post-install) ---
+; --- Delphi 10.2 / BDS 19 ---
+Source: "..\LIBD25x32\*";     DestDir: "{app}\LIBD25x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD25x64\*";     DestDir: "{app}\LIBD25x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+; --- Delphi 10.3 / BDS 20 ---
+Source: "..\LIBD26x32\*";     DestDir: "{app}\LIBD26x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD26x64\*";     DestDir: "{app}\LIBD26x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+; --- Delphi 10.4 / BDS 21 ---
+Source: "..\LIBD27x32\*";     DestDir: "{app}\LIBD27x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD27x64\*";     DestDir: "{app}\LIBD27x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+; --- Delphi 11 / BDS 22 ---
+Source: "..\LIBD28x32\*";     DestDir: "{app}\LIBD28x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD28x64\*";     DestDir: "{app}\LIBD28x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+; --- Delphi 12 / BDS 23 ---
+Source: "..\LIBD29x32\*";     DestDir: "{app}\LIBD29x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD29x64\*";     DestDir: "{app}\LIBD29x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+; --- Delphi 13 / BDS 24 ---
+Source: "..\LIBD37x32\*";     DestDir: "{app}\LIBD37x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD37x64\*";     DestDir: "{app}\LIBD37x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+Source: "..\LIBD37x64x\*";    DestDir: "{app}\LIBD37x64x";    Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
 ; --- Documentation ---
 Source: "..\Documentation\*"; DestDir: "{app}\Documentation"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; --- Demos ---
 Source: "..\Demos\*";         DestDir: "{app}\Demos";         Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\KingCalendar Documentation"; Filename: "{app}\Documentation\kingcal30.rtf"
-Name: "{group}\Uninstall KingCalendar";      Filename: "{uninstallexe}"
+Name: "{group}\KingCalendar Documentation"; \
+  Filename: "{app}\Documentation\kingcal30.rtf"; \
+  WorkingDir: "{app}\Documentation"; \
+  Comment: "Open the KingCalendar component reference guide"
+Name: "{group}\Uninstall KingCalendar"; \
+  Filename: "{uninstallexe}"; \
+  Comment: "Remove KingCalendar from this computer"
 
 [Code]
+
+// =============================================================================
+// Windows API import
+// Second parameter declared as LongInt so we can pass 0 (NULL) to match any
+// window title when only the class name matters.
+// =============================================================================
+
+function FindWindowW(lpClassName: String; lpWindowName: LongInt): THandle;
+  external 'FindWindowW@user32.dll stdcall';
+
+
+// Returns True if any instance of the Delphi IDE is currently running.
+// The IDE main window always registers the class name 'TAppBuilder'.
+function IsBDSRunning: Boolean;
+begin
+  Result := FindWindowW('TAppBuilder', 0) <> 0;
+end;
+
+
+// Called once before the wizard is shown.
+// Loops until the user closes the IDE or cancels the installation.
+function InitializeSetup: Boolean;
+begin
+  Result := True;
+  while IsBDSRunning do
+  begin
+    if MsgBox(
+         'The Delphi IDE (BDS.EXE) is currently running.' + #13#10 + #13#10 +
+         'Please save your work and close the Delphi IDE before continuing,' + #13#10 +
+         'then click Retry.  Click Cancel to abort the installation.',
+         mbError, MB_RETRYCANCEL
+       ) = IDCANCEL then
+    begin
+      Result := False;
+      Exit;
+    end;
+  end;
+end;
+
 
 // =============================================================================
 // Constants and types
 // =============================================================================
 
 const
-  NUM_VERSIONS = 6;
+  MAX_VERSIONS  = 16; // maximum number of detectable BDS installations
 
   // Platform array indices
   PLT_WIN32     = 0;
@@ -88,15 +133,17 @@ const
   NUM_PLATFORMS = 4;
 
 type
-  TDelphiVersionInfo = record
+  // One detected Delphi installation (populated dynamically at runtime)
+  TDetectedDelphi = record
+    BDSVer      : String;  // registry subkey, e.g. '24.0'
+    BDSRoot     : String;  // IDE root directory
     DisplayName : String;  // e.g. 'Delphi 13 Florence'
-    BDSVer      : String;  // e.g. '24.0'
     PkgSuffix   : String;  // e.g. '370'
     PkgFolder   : String;  // e.g. '13'
-    LibPrefix   : String;  // e.g. 'LIBD37'  (empty = no dedicated LIB folder for that platform)
-    Has64x      : Boolean; // supports Win64x platform
-    HasARM64EC  : Boolean; // supports WinARM64EC platform
-    HasBin64IDE : Boolean; // whether to check for 64-bit IDE (D12+)
+    LibPrefix   : String;  // e.g. 'LIBD37'
+    HasBin64    : Boolean; // bin64\bds.exe present (64-bit IDE)
+    Has64x      : Boolean; // Win64x platform available
+    HasARM64EC  : Boolean; // WinARM64EC platform available
   end;
 
 var
@@ -111,141 +158,124 @@ var
   BuildReleaseRB : TRadioButton;
   BuildDebugRB   : TRadioButton;
 
-  // Detected Delphi state (indexed 0..NUM_VERSIONS-1)
-  DelphiRoots      : array[0..NUM_VERSIONS-1] of String;
-  DelphiInstalled  : array[0..NUM_VERSIONS-1] of Boolean;
-  DelphiHasBin64   : array[0..NUM_VERSIONS-1] of Boolean;
+  // All detected Delphi installs (populated in DetectDelphiInstalls)
+  Versions     : array[0..MAX_VERSIONS-1] of TDetectedDelphi;
+  VersionCount : Integer;
 
-  // Maps checkbox list index → version array index (populated during page build)
-  CheckToVersion   : array[0..NUM_VERSIONS-1] of Integer;
-  CheckCount       : Integer;
+  // Maps checkbox list index → Versions[] index
+  CheckToVersion : array[0..MAX_VERSIONS-1] of Integer;
+  CheckCount     : Integer;
 
 
 // =============================================================================
-// Static version table
+// Compiler-version → package info lookup
+// Detection reads dcc32.exe file version; major version identifies the release.
 // =============================================================================
 
-function GetVersionInfo(Idx: Integer): TDelphiVersionInfo;
+// Returns False if this compiler major version is not supported by this installer.
+function GetPkgInfoByCompilerMajor(CompMajor: Cardinal;
+  var PkgSuffix, PkgFolder, LibPrefix, DisplayName: String): Boolean;
 begin
-  case Idx of
-    0: begin
-         Result.DisplayName := 'Delphi 10.2 Tokyo';
-         Result.BDSVer      := '19.0';
-         Result.PkgSuffix   := '250';
-         Result.PkgFolder   := '102';
-         Result.LibPrefix   := 'LIBD25';
-         Result.Has64x      := False;
-         Result.HasARM64EC  := False;
-         Result.HasBin64IDE := False;
-       end;
-    1: begin
-         Result.DisplayName := 'Delphi 10.3 Rio';
-         Result.BDSVer      := '20.0';
-         Result.PkgSuffix   := '260';
-         Result.PkgFolder   := '103';
-         Result.LibPrefix   := 'LIBD26';
-         Result.Has64x      := False;
-         Result.HasARM64EC  := False;
-         Result.HasBin64IDE := False;
-       end;
-    2: begin
-         Result.DisplayName := 'Delphi 10.4 Sydney';
-         Result.BDSVer      := '21.0';
-         Result.PkgSuffix   := '270';
-         Result.PkgFolder   := '104';
-         Result.LibPrefix   := 'LIBD27';
-         Result.Has64x      := False;
-         Result.HasARM64EC  := False;
-         Result.HasBin64IDE := False;
-       end;
-    3: begin
-         Result.DisplayName := 'Delphi 11 Alexandria';
-         Result.BDSVer      := '22.0';
-         Result.PkgSuffix   := '280';
-         Result.PkgFolder   := '110';
-         Result.LibPrefix   := 'LIBD28';
-         Result.Has64x      := False;
-         Result.HasARM64EC  := False;
-         Result.HasBin64IDE := False;
-       end;
-    4: begin
-         Result.DisplayName := 'Delphi 12 Athens';
-         Result.BDSVer      := '23.0';
-         Result.PkgSuffix   := '290';
-         Result.PkgFolder   := '12';
-         Result.LibPrefix   := 'LIBD29';
-         Result.Has64x      := False;
-         Result.HasARM64EC  := False;
-         Result.HasBin64IDE := True;
-       end;
-    5: begin
-         Result.DisplayName := 'Delphi 13 Florence';
-         Result.BDSVer      := '24.0';
-         Result.PkgSuffix   := '370';
-         Result.PkgFolder   := '13';
-         Result.LibPrefix   := 'LIBD37';
-         Result.Has64x      := True;
-         Result.HasARM64EC  := True;
-         Result.HasBin64IDE := True;
-       end;
+  Result := True;
+  case CompMajor of
+    25: begin PkgSuffix := '250'; PkgFolder := '102'; LibPrefix := 'LIBD25'; DisplayName := 'Delphi 10.2 Tokyo';     end;
+    26: begin PkgSuffix := '260'; PkgFolder := '103'; LibPrefix := 'LIBD26'; DisplayName := 'Delphi 10.3 Rio';       end;
+    27: begin PkgSuffix := '270'; PkgFolder := '104'; LibPrefix := 'LIBD27'; DisplayName := 'Delphi 10.4 Sydney';    end;
+    28: begin PkgSuffix := '280'; PkgFolder := '110'; LibPrefix := 'LIBD28'; DisplayName := 'Delphi 11 Alexandria';  end;
+    29: begin PkgSuffix := '290'; PkgFolder := '12';  LibPrefix := 'LIBD29'; DisplayName := 'Delphi 12 Athens';      end;
+    37: begin PkgSuffix := '370'; PkgFolder := '13';  LibPrefix := 'LIBD37'; DisplayName := 'Delphi 13 Florence';    end;
+  else
+    Result := False; // Unknown / unsupported compiler version
   end;
 end;
 
 
 // =============================================================================
-// Delphi detection
+// Delphi detection — scans all BDS registry subkeys dynamically
 // =============================================================================
 
 procedure DetectDelphiInstalls;
 var
-  I       : Integer;
-  Root    : String;
-  RegBase : String;
-  Info    : TDelphiVersionInfo;
+  BDSKey    : String;
+  SubKeys   : TArrayOfString;
+  I         : Integer;
+  BDSVer    : String;
+  BDSRoot   : String;
+  Dcc32Path : String;
+  VerMS, VerLS   : Cardinal;
+  CompMajor      : Cardinal;
+  PkgSuffix, PkgFolder, LibPrefix, DisplayName : String;
+  Info      : TDetectedDelphi;
 begin
-  for I := 0 to NUM_VERSIONS - 1 do
+  VersionCount := 0;
+  BDSKey := 'Software\Embarcadero\BDS';
+
+  // Enumerate all installed BDS versions; try HKCU then HKLM
+  if not RegGetSubkeyNames(HKCU, BDSKey, SubKeys) then
+    if not RegGetSubkeyNames(HKLM, BDSKey, SubKeys) then
+      Exit;
+
+  for I := 0 to GetArrayLength(SubKeys) - 1 do
   begin
-    Info    := GetVersionInfo(I);
-    RegBase := 'Software\Embarcadero\BDS\' + Info.BDSVer;
-    Root    := '';
+    if VersionCount >= MAX_VERSIONS then Break;
+    BDSVer  := SubKeys[I];
+    BDSRoot := '';
 
-    // Try HKCU first (per-user install), then HKLM (system-wide)
-    if not RegQueryStringValue(HKCU, RegBase, 'RootDir', Root) then
-      RegQueryStringValue(HKLM, RegBase, 'RootDir', Root);
+    // Read RootDir from HKCU first, then HKLM
+    if not RegQueryStringValue(HKCU, BDSKey + '\' + BDSVer, 'RootDir', BDSRoot) then
+      RegQueryStringValue(HKLM, BDSKey + '\' + BDSVer, 'RootDir', BDSRoot);
 
-    if (Root <> '') and DirExists(Root) then
+    if (BDSRoot = '') or not DirExists(BDSRoot) then Continue;
+
+    // Strip trailing backslash if present
+    if Copy(BDSRoot, Length(BDSRoot), 1) = '\' then
+      BDSRoot := Copy(BDSRoot, 1, Length(BDSRoot) - 1);
+
+    // Confirm this is a Delphi install (not C++Builder-only etc.)
+    Dcc32Path := BDSRoot + '\bin\dcc32.exe';
+    if not FileExists(Dcc32Path) then Continue;
+
+    // Read the compiler file version to identify which Delphi release this is
+    if not GetVersionNumbers(Dcc32Path, VerMS, VerLS) then Continue;
+    CompMajor := VerMS shr 16; // high word of MS = major version
+
+    // Map compiler major version to our package set
+    if not GetPkgInfoByCompilerMajor(CompMajor, PkgSuffix, PkgFolder, LibPrefix, DisplayName) then
     begin
-      DelphiRoots[I]     := Root;
-      DelphiInstalled[I] := True;
-      // 64-bit IDE is only present from D12 onwards
-      if Info.HasBin64IDE then
-        DelphiHasBin64[I] := FileExists(Root + '\bin64\bds.exe')
-      else
-        DelphiHasBin64[I] := False;
-    end
-    else
-    begin
-      DelphiRoots[I]     := '';
-      DelphiInstalled[I] := False;
-      DelphiHasBin64[I]  := False;
+      Log('Skipping BDS ' + BDSVer + ': dcc32 v' + IntToStr(CompMajor) + ' not supported.');
+      Continue;
     end;
+
+    // Detect available platforms via presence of BDS lib sub-directories
+    Info.BDSVer      := BDSVer;
+    Info.BDSRoot     := BDSRoot;
+    Info.DisplayName := DisplayName;
+    Info.PkgSuffix   := PkgSuffix;
+    Info.PkgFolder   := PkgFolder;
+    Info.LibPrefix   := LibPrefix;
+    Info.HasBin64    := FileExists(BDSRoot + '\bin64\bds.exe');
+    Info.Has64x      := DirExists(BDSRoot + '\lib\Win64x');
+    Info.HasARM64EC  := DirExists(BDSRoot + '\lib\WinARM64EC');
+
+    Versions[VersionCount] := Info;
+    Inc(VersionCount);
+
+    Log('Detected: ' + DisplayName + ' [BDS ' + BDSVer + '] at ' + BDSRoot);
   end;
 end;
 
 
-// Returns True if the given platform compiler is present for that BDS root.
+// Returns True if the given platform is available for this installation.
 function PlatformAvailable(const BDSRoot: String; PlatIdx: Integer;
-                           const Info: TDelphiVersionInfo): Boolean;
+                           const Info: TDetectedDelphi): Boolean;
 begin
   Result := False;
   if BDSRoot = '' then Exit;
   case PlatIdx of
     PLT_WIN32   : Result := FileExists(BDSRoot + '\bin\dcc32.exe');
     PLT_WIN64   : Result := FileExists(BDSRoot + '\bin\dcc64.exe');
-    PLT_WIN64X  : Result := Info.Has64x and
-                            FileExists(BDSRoot + '\bin\dcc64.exe');
-    PLT_ARM64EC : Result := Info.HasARM64EC and
-                            FileExists(BDSRoot + '\bin\dcca64ec.exe');
+    PLT_WIN64X  : Result := Info.Has64x;
+    PLT_ARM64EC : Result := Info.HasARM64EC;
   end;
 end;
 
@@ -256,9 +286,9 @@ end;
 
 procedure BuildVersionPage;
 var
-  I, J     : Integer;
-  Info     : TDelphiVersionInfo;
-  AnyFound : Boolean;
+  I         : Integer;
+  AnyFound  : Boolean;
+  ItemLabel : String;
 begin
   PageVersions := CreateCustomPage(
     wpSelectDir,
@@ -277,28 +307,15 @@ begin
   AnyFound   := False;
   CheckCount := 0;
 
-  for I := 0 to NUM_VERSIONS - 1 do
+  for I := 0 to VersionCount - 1 do
   begin
-    if not DelphiInstalled[I] then Continue;
-    Info := GetVersionInfo(I);
-    J    := VersionChecks.Items.Count;
+    ItemLabel := Versions[I].DisplayName + '   [' + Versions[I].BDSRoot + ']';
+    if Versions[I].HasBin64 then ItemLabel := ItemLabel + '   (+64-bit IDE)';
 
-    VersionChecks.AddCheckBox(
-      Info.DisplayName + '   [' + DelphiRoots[I] + ']',
-      '', 0, True, True, False, True, nil
-    );
+    VersionChecks.AddCheckBox(ItemLabel, '', 0, True, True, False, True, nil);
 
-    // Record which version index this checkbox corresponds to
     CheckToVersion[CheckCount] := I;
     Inc(CheckCount);
-
-    // Annotate 64-bit IDE detection result in the label
-    if DelphiHasBin64[I] then
-    begin
-      VersionChecks.Items[J] :=
-        VersionChecks.Items[J] + '   (+64-bit IDE)';
-    end;
-
     AnyFound := True;
   end;
 
@@ -388,7 +405,6 @@ var
   CanPlt      : array[0..NUM_PLATFORMS-1] of Boolean;
   AnyVer      : Boolean;
   AnyPlt      : Boolean;
-  Info        : TDelphiVersionInfo;
 begin
   Result := False;
 
@@ -402,13 +418,11 @@ begin
     begin
       if not VersionChecks.Checked[I] then Continue;
       VerIdx := CheckToVersion[I];
-      if not DelphiInstalled[VerIdx] then Continue;
-      Info   := GetVersionInfo(VerIdx);
       AnyVer := True;
-      if PlatformAvailable(DelphiRoots[VerIdx], PLT_WIN32,   Info) then CanPlt[PLT_WIN32]   := True;
-      if PlatformAvailable(DelphiRoots[VerIdx], PLT_WIN64,   Info) then CanPlt[PLT_WIN64]   := True;
-      if PlatformAvailable(DelphiRoots[VerIdx], PLT_WIN64X,  Info) then CanPlt[PLT_WIN64X]  := True;
-      if PlatformAvailable(DelphiRoots[VerIdx], PLT_ARM64EC, Info) then CanPlt[PLT_ARM64EC] := True;
+      if PlatformAvailable(Versions[VerIdx].BDSRoot, PLT_WIN32,   Versions[VerIdx]) then CanPlt[PLT_WIN32]   := True;
+      if PlatformAvailable(Versions[VerIdx].BDSRoot, PLT_WIN64,   Versions[VerIdx]) then CanPlt[PLT_WIN64]   := True;
+      if PlatformAvailable(Versions[VerIdx].BDSRoot, PLT_WIN64X,  Versions[VerIdx]) then CanPlt[PLT_WIN64X]  := True;
+      if PlatformAvailable(Versions[VerIdx].BDSRoot, PLT_ARM64EC, Versions[VerIdx]) then CanPlt[PLT_ARM64EC] := True;
     end;
 
     for I := 0 to NUM_PLATFORMS - 1 do
@@ -520,18 +534,46 @@ end;
 // Write and execute a batch file that calls rsvars.bat then MSBuild.
 // Compiles runtime package (all selected platforms) and design-time package (Win32 only).
 // Returns True if the build completed without error.
+// Maps a platform name to its LIBD folder suffix (e.g. 'Win32' -> 'x32').
+// Returns '' for platforms with no dedicated LIB folder (ARM64EC).
+function GetPlatLibSuffix(const PlatformName: String): String;
+begin
+  if      PlatformName = 'Win32'      then Result := 'x32'
+  else if PlatformName = 'Win64'      then Result := 'x64'
+  else if PlatformName = 'Win64x'     then Result := 'x64x'
+  else                                     Result := '';
+end;
+
+
+// Returns a quoted /p:DCC_DcuOutput=... argument safe for cmd.exe
+function DcuArg(const Path: String): String;
+begin
+  Result := ' "/p:DCC_DcuOutput=' + Path + '"';
+end;
+
+
+// Compile runtime package for both Debug and Release.
+// For Win32, also compiles the design-time (dcl) package for both configs.
+// DCC_DcuOutput is overridden on the MSBuild command line so DCUs always land
+// in the correct LIBD subfolder, regardless of what the dproj contains.
 function CompilePackages(const AppDir, BDSRoot, BDSVer,
                          PkgFolder, PkgSuffix, PlatformName,
-                         Config: String): Boolean;
+                         LibPrefix: String): Boolean;
 var
-  RsVars     : String;
-  BatchPath  : String;
-  RuntimeDpr : String;
-  DesignDpr  : String;
-  Lines      : TStringList;
-  ExitCode   : Integer;
+  RsVars      : String;
+  BatchPath   : String;
+  RuntimeDpr  : String;
+  DesignDpr   : String;
+  Lines       : TStringList;
+  ExitCode    : Integer;
+  PlatSuffix  : String;
+  DcuPathD    : String;
+  DcuPathR    : String;
+  Dcu32PathD  : String;
+  Dcu32PathR  : String;
+
 begin
-  Result    := False;
+  Result := False;
   RsVars := BDSRoot + '\bin\rsvars.bat';
   if not FileExists(RsVars) then
   begin
@@ -548,24 +590,56 @@ begin
     Exit;
   end;
 
+  // Compute DCU output paths for this platform
+  PlatSuffix := GetPlatLibSuffix(PlatformName);
+  if PlatSuffix <> '' then
+  begin
+    DcuPathD := AppDir + '\' + LibPrefix + PlatSuffix + '\Debug';
+    DcuPathR := AppDir + '\' + LibPrefix + PlatSuffix + '\Release';
+  end
+  else
+  begin
+    // ARM64EC: no dedicated LIB folder — output within packages tree
+    DcuPathD := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\Debug';
+    DcuPathR := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\Release';
+  end;
+
+  // Win32 dcl DCU paths (always x32)
+  Dcu32PathD := AppDir + '\' + LibPrefix + 'x32\Debug';
+  Dcu32PathR := AppDir + '\' + LibPrefix + 'x32\Release';
+
   BatchPath := ExpandConstant('{tmp}') + '\KCBuild_' + PkgSuffix + '_' + PlatformName + '.bat';
   Lines     := TStringList.Create;
   try
     Lines.Add('@echo off');
     Lines.Add('call "' + RsVars + '"');
-    // Compile runtime package for the requested platform
+    Lines.Add('if errorlevel 1 exit /b %errorlevel%');
+
+    // --- Runtime: Debug ---
     Lines.Add('msbuild "' + RuntimeDpr + '"' +
-              ' /t:Build' +
-              ' /p:Config=' + Config +
-              ' /p:Platform=' + PlatformName +
+              ' /t:Build /p:Config=Debug /p:Platform=' + PlatformName +
+              DcuArg(DcuPathD) +
               ' /nologo /v:minimal');
-    // Compile design-time package only for Win32 (IDE is 32-bit for most versions)
+
+    // --- Runtime: Release ---
+    Lines.Add('msbuild "' + RuntimeDpr + '"' +
+              ' /t:Build /p:Config=Release /p:Platform=' + PlatformName +
+              DcuArg(DcuPathR) +
+              ' /nologo /v:minimal');
+
+    // --- Design-time (Win32 only): Debug + Release ---
     if (PlatformName = 'Win32') and FileExists(DesignDpr) then
+    begin
       Lines.Add('msbuild "' + DesignDpr + '"' +
-                ' /t:Build' +
-                ' /p:Config=' + Config +
-                ' /p:Platform=Win32' +
+                ' /t:Build /p:Config=Debug /p:Platform=Win32' +
+                DcuArg(Dcu32PathD) +
                 ' /nologo /v:minimal');
+      Lines.Add('msbuild "' + DesignDpr + '"' +
+                ' /t:Build /p:Config=Release /p:Platform=Win32' +
+                DcuArg(Dcu32PathR) +
+                ' /nologo /v:minimal');
+    end;
+
     Lines.SaveToFile(BatchPath);
   finally
     Lines.Free;
@@ -580,72 +654,93 @@ begin
 end;
 
 
-// Register the design-time (dcl) BPL in the IDE's Known Packages registry key.
-// The BPL is in packages/<folder>/Win32/<Config>/ (MSBuild DCC_ExeOutput).
-procedure RegisterBPL(const AppDir, BDSVer, PkgFolder, PkgSuffix, Config: String);
+// Copy compiled BPLs for the selected config to the BDS bin folders so the
+// IDE can locate them as dependencies, then register the design-time BPL.
+//
+//   Win32 runtime BPL  → {BDSRoot}\bin\
+//   Win32 dcl BPL      → {BDSRoot}\bin\   + Known Packages
+//   Win64 runtime BPL  → {BDSRoot}\bin64\ (if 64-bit IDE present)
+procedure CopyAndRegisterBPLs(const AppDir, BDSRoot, BDSVer,
+                               PkgFolder, PkgSuffix, Config: String;
+                               HasBin64: Boolean);
 var
-  BplPath : String;
-  RegKey  : String;
+  PkgBase   : String;
+  BinDir    : String;
+  Bin64Dir  : String;
+  RuntimeBpl: String;
+  DclBpl    : String;
+  RegKey    : String;
 begin
-  BplPath := AppDir + '\packages\' + PkgFolder +
-             '\Win32\' + Config +
-             '\dclKingCalendar' + PkgSuffix + '.bpl';
+  PkgBase  := AppDir + '\packages\' + PkgFolder;
+  BinDir   := BDSRoot + '\bin\';
+  Bin64Dir := BDSRoot + '\bin64\';
 
-  if not FileExists(BplPath) then
+  // --- Win32 runtime BPL ---
+  RuntimeBpl := PkgBase + '\Win32\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
+  if FileExists(RuntimeBpl) then
+    FileCopy(RuntimeBpl, BinDir + 'KingCalendar' + PkgSuffix + '.bpl', False)
+  else
+    Log('Win32 runtime BPL not found: ' + RuntimeBpl);
+
+  // --- Win32 design-time BPL: copy to bin\ and register ---
+  DclBpl := PkgBase + '\Win32\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
+  if FileExists(DclBpl) then
   begin
-    Log('Design-time BPL not found, skipping Known Packages: ' + BplPath);
-    Exit;
-  end;
+    FileCopy(DclBpl, BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl', False);
+    RegKey := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages';
+    RegWriteStringValue(HKCU, RegKey,
+      BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl',
+      'KingCalendar Components');
+    Log('Registered BPL: ' + BinDir + 'dclKingCalendar' + PkgSuffix + '.bpl');
+  end
+  else
+    Log('Win32 design-time BPL not found: ' + DclBpl);
 
-  RegKey := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages';
-  RegWriteStringValue(HKCU, RegKey, BplPath, 'KingCalendar Components');
-  Log('Registered BPL: ' + BplPath);
+  // --- Win64 runtime BPL (needed by the 64-bit IDE) ---
+  if HasBin64 and DirExists(Bin64Dir) then
+  begin
+    RuntimeBpl := PkgBase + '\Win64\' + Config + '\KingCalendar' + PkgSuffix + '.bpl';
+    if FileExists(RuntimeBpl) then
+      FileCopy(RuntimeBpl, Bin64Dir + 'KingCalendar' + PkgSuffix + '.bpl', False)
+    else
+      Log('Win64 runtime BPL not found: ' + RuntimeBpl);
+  end;
 end;
 
 
-// Add the pre-compiled DCU library folder and the source folder to the
-// Delphi library and browsing paths for the given BDS version + platform.
+// Add the compiled DCU folder (selected config only) and the source folder to
+// the Delphi library and browsing paths for the given BDS version + platform.
 procedure UpdatePaths(const AppDir, BDSVer, LibPrefix,
-                      PlatformName, Config: String);
+                      PlatformName, Config, PkgFolder: String);
 var
   LibDir    : String;
   SrcDir    : String;
   LibKey    : String;
-  PltSuffix : String;
+  PlatSuffix: String;
 begin
-  // Map platform name to the LIB folder name suffix
-  if      PlatformName = 'Win32'      then PltSuffix := 'x32'
-  else if PlatformName = 'Win64'      then PltSuffix := 'x64'
-  else if PlatformName = 'Win64x'     then PltSuffix := 'x64x'
-  else if PlatformName = 'WinARM64EC' then PltSuffix := ''    // no dedicated LIB folder
-  else PltSuffix := '';
+  PlatSuffix := GetPlatLibSuffix(PlatformName);
+  SrcDir     := AppDir + '\source';
+  LibKey     := 'Software\Embarcadero\BDS\' + BDSVer + '\Library\' + PlatformName;
 
-  SrcDir := AppDir + '\source';
-  LibKey := 'Software\Embarcadero\BDS\' + BDSVer + '\Library\' + PlatformName;
-
-  // Add source to browsing path for all platforms (source is platform-neutral)
+  // Source browsing path is platform-neutral
   AppendRegPath(LibKey, 'Browsing Path', SrcDir);
 
-  // Add DCU library path when a dedicated LIB folder exists
-  if PltSuffix <> '' then
+  if PlatSuffix <> '' then
   begin
-    LibDir := AppDir + '\' + LibPrefix + PltSuffix + '\' + Config;
+    LibDir := AppDir + '\' + LibPrefix + PlatSuffix + '\' + Config;
     if DirExists(LibDir) then
       AppendRegPath(LibKey, 'Search Path', LibDir)
     else
-    begin
-      // LIB folder missing — fall back to MSBuild output folder inside packages
-      // (MSBuild DCC_ExeOutput = .\$(Platform)\$(Config) relative to dproj)
-      Log('LIB folder not found, paths not updated for ' + LibPrefix + PltSuffix);
-    end;
+      Log('LIB folder not found after compile, path not updated: ' + LibDir);
   end
   else
   begin
-    // ARM64EC: no dedicated LIB folder; point at the MSBuild output in packages/.
-    // The caller knows the PkgFolder for this — handled via a separate overload note:
-    // We just add the source to browsing; runtime BPL location is in packages/
-    // which MSBuild puts on PATH via the Delphi BDS environment.
-    Log('No dedicated LIB folder for ' + PlatformName + '; search path not updated.');
+    // ARM64EC — use the MSBuild output folder inside packages as the search path
+    LibDir := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\' + Config;
+    if DirExists(LibDir) then
+      AppendRegPath(LibKey, 'Search Path', LibDir)
+    else
+      Log('ARM64EC output folder not found: ' + LibDir);
   end;
 end;
 
@@ -658,13 +753,27 @@ procedure CurStepChanged(CurStep: TSetupStep);
 var
   I, J          : Integer;
   VerIdx        : Integer;
-  Info          : TDelphiVersionInfo;
   AppDir        : String;
   Config        : String;
   PlatNames     : array[0..NUM_PLATFORMS-1] of String;
   DoPlat        : array[0..NUM_PLATFORMS-1] of Boolean;
   AnyCompileErr : Boolean;
 begin
+  // Guard: re-check at the start of actual file installation in case the IDE
+  // was launched after the wizard was already open.
+  if CurStep = ssInstall then
+  begin
+    while IsBDSRunning do
+    begin
+      if MsgBox(
+           'The Delphi IDE (BDS.EXE) was opened after setup started.' + #13#10 + #13#10 +
+           'Please close the Delphi IDE, then click Retry to continue installation.',
+           mbError, MB_RETRYCANCEL
+         ) = IDCANCEL then
+        Abort;
+    end;
+  end;
+
   if CurStep <> ssPostInstall then Exit;
 
   AppDir := ExpandConstant('{app}');
@@ -685,46 +794,52 @@ begin
   begin
     if not VersionChecks.Checked[I] then Continue;
     VerIdx := CheckToVersion[I];
-    if not DelphiInstalled[VerIdx] then Continue;
-    Info := GetVersionInfo(VerIdx);
 
-    // --- Compile packages for each selected platform ---
+    // --- Compile both Debug + Release for each selected platform ---
     for J := 0 to NUM_PLATFORMS - 1 do
     begin
       if not DoPlat[J] then Continue;
-      if not PlatformAvailable(DelphiRoots[VerIdx], J, Info) then Continue;
+      if not PlatformAvailable(Versions[VerIdx].BDSRoot, J, Versions[VerIdx]) then Continue;
 
       if not CompilePackages(
                AppDir,
-               DelphiRoots[VerIdx],
-               Info.BDSVer,
-               Info.PkgFolder,
-               Info.PkgSuffix,
+               Versions[VerIdx].BDSRoot,
+               Versions[VerIdx].BDSVer,
+               Versions[VerIdx].PkgFolder,
+               Versions[VerIdx].PkgSuffix,
                PlatNames[J],
-               Config
+               Versions[VerIdx].LibPrefix
              ) then
         AnyCompileErr := True;
     end;
 
-    // --- Register design-time BPL (Win32 IDE, standard Known Packages) ---
+    // --- Copy BPLs to BDS bin and register design-time package ---
+    // Runs once per version (not per platform); uses the user-selected config.
     if DoPlat[PLT_WIN32] and
-       PlatformAvailable(DelphiRoots[VerIdx], PLT_WIN32, Info) then
-    begin
-      RegisterBPL(AppDir, Info.BDSVer, Info.PkgFolder, Info.PkgSuffix, Config);
-    end;
+       PlatformAvailable(Versions[VerIdx].BDSRoot, PLT_WIN32, Versions[VerIdx]) then
+      CopyAndRegisterBPLs(
+        AppDir,
+        Versions[VerIdx].BDSRoot,
+        Versions[VerIdx].BDSVer,
+        Versions[VerIdx].PkgFolder,
+        Versions[VerIdx].PkgSuffix,
+        Config,
+        Versions[VerIdx].HasBin64
+      );
 
-    // --- Update library and browsing paths ---
+    // --- Add selected-config DCU folder and source to library paths ---
     for J := 0 to NUM_PLATFORMS - 1 do
     begin
       if not DoPlat[J] then Continue;
-      if not PlatformAvailable(DelphiRoots[VerIdx], J, Info) then Continue;
+      if not PlatformAvailable(Versions[VerIdx].BDSRoot, J, Versions[VerIdx]) then Continue;
 
       UpdatePaths(
         AppDir,
-        Info.BDSVer,
-        Info.LibPrefix,
+        Versions[VerIdx].BDSVer,
+        Versions[VerIdx].LibPrefix,
         PlatNames[J],
-        Config
+        Config,
+        Versions[VerIdx].PkgFolder
       );
     end;
   end;
@@ -734,16 +849,56 @@ begin
     MsgBox(
       'KingCalendar was installed but one or more packages could not be compiled.' + #13#10 +
       'Check the setup log for details.' + #13#10 + #13#10 +
-      'You can compile the packages manually from the Delphi IDE using the' + #13#10 +
-      'group project in the packages\ folder.',
+      'You can compile the packages manually from the Delphi IDE by opening' + #13#10 +
+      'the group project in the packages\ subfolder.',
       mbInformation, MB_OK
     )
   else
     MsgBox(
       'KingCalendar has been installed successfully.' + #13#10 + #13#10 +
-      'Restart the Delphi IDE to see the components on the palette.' + #13#10 + #13#10 +
-      'NOTE: If you use the 64-bit IDE (Delphi 12+), you may need to' + #13#10 +
-      'manually install the design-time package via Component > Install Packages.',
+      'Restart the Delphi IDE to see the components on the palette.',
       mbInformation, MB_OK
     );
+end;
+
+
+// =============================================================================
+// Uninstall cleanup — remove compiled artifacts left by the post-install build
+// =============================================================================
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  AppDir   : String;
+  ExitCode : Integer;
+begin
+  if CurUninstallStep <> usPostUninstall then Exit;
+
+  AppDir := ExpandConstant('{app}');
+
+  // Delete all *.dcu files recursively (compiled units)
+  Exec(ExpandConstant('{cmd}'),
+       '/C del /s /f /q "' + AppDir + '\*.dcu"',
+       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
+
+  // Delete all *.o files recursively (linker object files, e.g. dpk.o)
+  Exec(ExpandConstant('{cmd}'),
+       '/C del /s /f /q "' + AppDir + '\*.o"',
+       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
+
+  // Delete all *.bpl files from the packages output subfolders
+  Exec(ExpandConstant('{cmd}'),
+       '/C del /s /f /q "' + AppDir + '\packages\*.bpl"',
+       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
+
+  // Delete all *.dcp files (Delphi compiled package descriptors)
+  Exec(ExpandConstant('{cmd}'),
+       '/C del /s /f /q "' + AppDir + '\*.dcp"',
+       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
+
+  // Remove empty platform/config output directories left inside packages\
+  Exec(ExpandConstant('{cmd}'),
+       '/C for /d /r "' + AppDir + '\packages" %D in' +
+       ' (Debug Release Win32 Win64 Win64x WinARM64EC) do' +
+       ' if exist "%D" rmdir /s /q "%D"',
+       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
 end;
