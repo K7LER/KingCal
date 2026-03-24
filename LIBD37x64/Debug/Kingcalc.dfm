@@ -11,7 +11,7 @@ object KcCalc: TKcCalc
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   Icon.Data = {
     0000010001002020100000000000E80200001600000028000000200000004000
@@ -50,7 +50,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -19
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -64,7 +64,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -19
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -81,7 +81,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGreen
     Font.Height = -19
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     ParentShowHint = False
@@ -130,7 +130,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -143,7 +143,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -156,7 +156,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -169,7 +169,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -182,7 +182,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -195,7 +195,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -208,7 +208,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -228,7 +228,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -265,7 +265,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -278,7 +278,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -291,7 +291,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -304,7 +304,7 @@ object KcCalc: TKcCalc
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumGlyphs = 2
     ParentFont = False
@@ -356,7 +356,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
@@ -369,7 +369,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 6
@@ -382,7 +382,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 7
@@ -405,7 +405,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 9
@@ -418,7 +418,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 10
@@ -431,7 +431,7 @@ object KcCalc: TKcCalc
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
-    Font.Name = 'System'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 11

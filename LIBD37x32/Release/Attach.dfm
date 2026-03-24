@@ -6,10 +6,10 @@ object FrmAttach: TFrmAttach
   ClientHeight = 193
   ClientWidth = 271
   Color = clBtnFace
-  Font.Charset = ANSI_CHARSET
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
   TextHeight = 13
@@ -22,7 +22,7 @@ object FrmAttach: TFrmAttach
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -34,7 +34,7 @@ object FrmAttach: TFrmAttach
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ItemHeight = 13
     ParentFont = False
@@ -51,7 +51,7 @@ object FrmAttach: TFrmAttach
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     NumGlyphs = 2
@@ -69,7 +69,7 @@ object FrmAttach: TFrmAttach
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 2
     NumGlyphs = 2
@@ -86,7 +86,7 @@ object FrmAttach: TFrmAttach
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumGlyphs = 2
     ParentFont = False

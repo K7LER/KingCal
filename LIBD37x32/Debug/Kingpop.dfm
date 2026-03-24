@@ -10,7 +10,7 @@ object KcPopup: TKcPopup
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   OnActivate = FormActivate
@@ -151,8 +151,8 @@ object KcPopup: TKcPopup
     Day = 30
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
-    Font.Name = 'Small Fonts'
+    Font.Height = -11
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Month = 12
     ParentFont = False
@@ -182,12 +182,12 @@ object KcPopup: TKcPopup
     TextFont.Charset = DEFAULT_CHARSET
     TextFont.Color = clWindowText
     TextFont.Height = -13
-    TextFont.Name = 'System'
+    TextFont.Name = 'Segoe UI'
     TextFont.Style = []
     TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
-    TitleFont.Height = -9
-    TitleFont.Name = 'Small Fonts'
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     RowHeights = (
       11

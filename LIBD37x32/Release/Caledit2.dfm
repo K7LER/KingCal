@@ -9,7 +9,7 @@ object FrmColor: TFrmColor
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'System'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
@@ -31,7 +31,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -44,7 +44,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -57,7 +57,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -70,7 +70,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -83,7 +83,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -96,7 +96,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -149,7 +149,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 2
     NumGlyphs = 2
@@ -166,7 +166,7 @@ object FrmColor: TFrmColor
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     NumGlyphs = 2
