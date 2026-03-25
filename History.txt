@@ -1,6 +1,16 @@
 King Calendar - Open Source Edition
 Version History
 ===================================
+v2026.0325.1613 (2026-03-25)
+  - Fixed: IDE crash on close (AV in UnhookEvent during TKingCalendar destruction)
+  - Replaced bitmap glyph resources with procedural drawing (DPI/theme aware)
+  - Navigator arrows drawn via Canvas.Polygon with StyleServices colors
+  - Calendar dialog button drawn procedurally with theme support
+  - Removed runtime dependency on KCAL32.RES and KDLG32.RES
+  - Regenerated palette icons (Kcal32.dcr) for all 24 components
+  - Added Kcal32DB.dcr palette icons for 6 DB components
+  - Version numbering: revision now uses HHMM (24-hour time) format
+
 v2026.0325.0010 (2026-03-25)
   - Added 6 database-aware components: TDBKingCalendar, TDBKingDateSpin,
     TDBKingTimeSpin, TDBKingMDYSpin, TDBKingHMSpin, TDBKingDateDialog

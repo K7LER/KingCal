@@ -41,9 +41,9 @@ unit KingCore;
 interface
 
 const
-  // LR20260325 - Version bump for final minor fixes
-  // vcdVersion = 'v2026.0325.0010';
-  vcdVersion = 'v2026.0325.0011'; { * KingCalendar Version Number   * }
+  // LR20260325 - Version bump; revision now uses HHMM (24h) format
+  // vcdVersion = 'v2026.0325.0011';
+  vcdVersion = 'v2026.0325.1613'; { * KingCalendar Version Number   * }
   vcdBuildDate = '03/25/26'; { * KingCalendar Build Date       * }
 
 implementation

@@ -1999,6 +1999,10 @@ procedure TKingCalendar.UnhookEvent(Value: TNotifyEvent);
 var
   LIdx: Integer;
 begin
+  // LR20260325 - Guard against FHooks already freed during destruction;
+  //              Notification fires after FHooks is freed in Destroy
+  if not Assigned(FHooks) then
+    Exit;
   LIdx := FHooks.IndexOf(Value);
   if LIdx >= 0 then
     FHooks.Delete(LIdx);

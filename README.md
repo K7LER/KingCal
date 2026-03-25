@@ -160,6 +160,7 @@ Bug reports and pull requests are welcome. Please open an issue first for anythi
 
 | Version | Date | Notes |
 |---|---|---|
+| v2026.0325.1613 | 2026-03-25 | Fixed IDE crash on close (AV in UnhookEvent during destruction), replaced bitmap glyph resources with procedural drawing (DPI/theme aware), removed runtime dependency on KCAL32.RES/KDLG32.RES, regenerated palette icons for all 24 components, version numbering revision now uses HHMM 24-hour format |
 | v2026.0325.0010 | 2026-03-25 | Added database-aware components (`TDBKingCalendar`, `TDBKingDateSpin`, `TDBKingTimeSpin`, `TDBKingMDYSpin`, `TDBKingHMSpin`, `TDBKingDateDialog`), LiveBindings support for all date/time controls, separate DB package (`KingCalendarDB`), architecture refactoring (`KingTool` split, `TKingBaseDateEdit` base class, hook mechanism modernization), multiple bug fixes |
 | 26.1.1 | 2026-01-01 | Added Delphi 13 support; Windows installer |
 | 2.1.1 | 2023-12-12 | Added Delphi 12 support |

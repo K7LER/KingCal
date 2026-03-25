@@ -21,7 +21,14 @@
       "Bash(find C:_cKCsource -name *.pas)",
       "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source/databinding' -name *.pas)",
       "Bash(find C:_cKC -type f \\\\\\(-name *.iss -o -name *setup* -o -name *install* -o -name *.inno* \\\\\\) -iname *)",
-      "Bash(find C:_cKC -type f \\\\\\(-name *.md -o -name *.rtf -o -name *.txt -o -name *.html \\\\\\))"
+      "Bash(find C:_cKC -type f \\\\\\(-name *.md -o -name *.rtf -o -name *.txt -o -name *.html \\\\\\))",
+      "Bash(find C:/_c/KC/source -name *.res -o -name *.dcr -o -name *.rc)",
+      "Bash(grep -E \"\\\\.\\(rc|dpk\\)$\")",
+      "Bash(file:*)",
+      "Bash(grep -r \"CNV_PREV\\\\|BTN_CALENDAR\\\\|KINGSPLASH\" C:/_c/KC --include=*.pas --include=*.rc)",
+      "Bash(grep -r \"NumGlyphs\\\\|Glyph\\\\|LoadBitmap\" C:/_c/KC/source --include=*.pas)",
+      "Bash(grep -n \"PNG\\\\|SVG\\\\|ImageList\\\\|HighDPI\" C:/_c/KC/source/*.pas)",
+      "Bash(grep -E \"\\\\.\\(pas|res\\)$\")"
     ]
   }
 }

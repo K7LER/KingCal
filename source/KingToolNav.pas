@@ -165,6 +165,9 @@ type
   TKingButton = class( TSpeedButton )
     private
       FIndex : TCalcBtn;
+      // LR20260325 - Procedural arrow drawing for DPI/theme support
+      procedure DrawArrow(ACanvas: TCanvas; ARect: TRect;
+        ADirection: Integer; ADoubleArrow: Boolean);
     protected
       procedure Paint; override;
     public
@@ -181,7 +184,8 @@ implementation
 uses
   KingTool;
 
-{$R KCAL32.RES}
+// LR20260325 - Bitmap resources no longer needed; glyphs drawn procedurally
+// {$R KCAL32.RES}
 
 const
 
@@ -274,9 +278,10 @@ procedure TKingNavigator.InitButtons;
       if ( I <> nbToday )
       then
       begin
-        Btn.Glyph.Handle := LoadBitmap( HInstance, StrFmt( ResName, 'CNV_%s',
-          [ BtnResName[ I ] ] ) );
-        Btn.NumGlyphs := 2;
+        // LR20260325 - Bitmap glyphs replaced with procedural drawing in TKingButton.Paint
+        // Btn.Glyph.Handle := LoadBitmap( HInstance, StrFmt( ResName, 'CNV_%s',
+        //   [ BtnResName[ I ] ] ) );
+        // Btn.NumGlyphs := 2;
       end
       else
       begin
@@ -713,6 +718,66 @@ procedure TKingNavigator.SetTodayStyle( Value : Boolean );
 { ===========================================================================
   TKingButton
   =========================================================================== }
+// LR20260325 - Procedural glyph drawing; replaces bitmap resources for DPI/theme support
+procedure TKingButton.DrawArrow(ACanvas: TCanvas; ARect: TRect;
+  ADirection: Integer; ADoubleArrow: Boolean);
+var
+  CX, CY, ArrowH, ArrowW, Offset, Gap: Integer;
+  Pts: array[0..2] of TPoint;
+  LStyleServices: TCustomStyleServices;
+begin
+  // LR20260325 - Use StyleServices for theme-aware arrow color
+  LStyleServices := StyleServices;
+  if Enabled then
+    ACanvas.Brush.Color := LStyleServices.GetSystemColor(clBtnText)
+  else
+    ACanvas.Brush.Color := LStyleServices.GetSystemColor(clGrayText);
+  ACanvas.Pen.Color := ACanvas.Brush.Color;
+
+  CX := (ARect.Left + ARect.Right) div 2;
+  CY := (ARect.Top + ARect.Bottom) div 2;
+  ArrowH := MulDiv(4, Screen.PixelsPerInch, 96);
+  ArrowW := MulDiv(3, Screen.PixelsPerInch, 96);
+  Gap := MulDiv(2, Screen.PixelsPerInch, 96);
+
+  if ADoubleArrow then
+    Offset := Gap
+  else
+    Offset := 0;
+
+  // ADirection: -1 = left, +1 = right
+  if ADirection < 0 then
+  begin
+    // Left-pointing arrow
+    Pts[0] := Point(CX - Offset, CY);
+    Pts[1] := Point(CX + ArrowW - Offset, CY - ArrowH);
+    Pts[2] := Point(CX + ArrowW - Offset, CY + ArrowH);
+    ACanvas.Polygon(Pts);
+    if ADoubleArrow then
+    begin
+      Pts[0] := Point(CX - Offset + Gap + ArrowW, CY);
+      Pts[1] := Point(CX - Offset + Gap + ArrowW + ArrowW, CY - ArrowH);
+      Pts[2] := Point(CX - Offset + Gap + ArrowW + ArrowW, CY + ArrowH);
+      ACanvas.Polygon(Pts);
+    end;
+  end
+  else
+  begin
+    // Right-pointing arrow
+    Pts[0] := Point(CX + Offset, CY);
+    Pts[1] := Point(CX - ArrowW + Offset, CY - ArrowH);
+    Pts[2] := Point(CX - ArrowW + Offset, CY + ArrowH);
+    ACanvas.Polygon(Pts);
+    if ADoubleArrow then
+    begin
+      Pts[0] := Point(CX + Offset - Gap - ArrowW, CY);
+      Pts[1] := Point(CX + Offset - Gap - ArrowW - ArrowW, CY - ArrowH);
+      Pts[2] := Point(CX + Offset - Gap - ArrowW - ArrowW, CY + ArrowH);
+      ACanvas.Polygon(Pts);
+    end;
+  end;
+end;
+
 procedure TKingButton.Paint;
   var
     R      : TRect;
@@ -721,14 +786,21 @@ procedure TKingButton.Paint;
     if ThemeControl(self) then
       PerformEraseBackground(Self, Canvas.Handle);
 
+    // LR20260325 - Draw procedural arrows instead of bitmap glyphs
+    // Inherited Paint draws the button face; we add arrows on top
     Inherited Paint;
 
-//      if ShowFocus and Focused and FShowFocusRect then
-//  begin
-//    Canvas.Brush.Color := Self.Color;
-//    R := Rect( FButtonWidth + 1, 2, Width - FButtonWidth -1, Height - 2 );
-//    Canvas.DrawFocusRect( R );
-//  end;
+    // Draw directional arrows for navigation buttons (not today button)
+    R := Bounds(0, 0, Width, Height);
+    if FState = bsDown then
+      OffsetRect(R, 1, 1);
+
+    case FIndex of
+      nbPrevYear:  DrawArrow(Canvas, R, -1, True);
+      nbPrevMonth: DrawArrow(Canvas, R, -1, False);
+      nbNextMonth: DrawArrow(Canvas, R, +1, False);
+      nbNextYear:  DrawArrow(Canvas, R, +1, True);
+    end;
 
     if ( GetFocus = Parent.Handle ) and
       ( FIndex = TKingNavigator( Parent ).FocusedButton )
@@ -736,8 +808,6 @@ procedure TKingButton.Paint;
     begin
       Canvas.Brush.Color := Self.Color;
       R := Bounds( 0, 0, Width, Height );
-      // LR20260323 - Scale focus rect inset for high DPI
-      // InflateRect( R, - 3, - 3 );
       Margin := MulDiv( 3, Screen.PixelsPerInch, 96 );
       InflateRect( R, -Margin, -Margin );
       IF FState = bsDown

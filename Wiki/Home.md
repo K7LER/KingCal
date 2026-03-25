@@ -680,6 +680,7 @@ Pre-compiled outputs go to `LIBD<prefix>x<plat>\<Config>`:
 
 | Version | Date | Notes |
 |---|---|---|
+| 2026.0325.1613 | 2026-03-25 | Fixed IDE crash on close (AV in UnhookEvent during destruction); replaced bitmap glyph resources with procedural drawing (DPI/theme aware via Canvas.Polygon + StyleServices); removed runtime dependency on KCAL32.RES and KDLG32.RES; regenerated palette icons (Kcal32.dcr, Kcal32DB.dcr) for all 24 components; version numbering revision now uses HHMM 24-hour format |
 | 2026.0325.0010 | 2026-03-25 | Database-aware components (TDBKingCalendar, TDBKingDateSpin, TDBKingTimeSpin, TDBKingMDYSpin, TDBKingHMSpin, TDBKingDateDialog) using TFieldDataLink; LiveBindings support for all date/time controls; 4-package layout (base + DB, runtime + design-time); legacy TDBKingDlg moved to source/legacy/ |
 | 26.1.1 | 2026-01-01 | Added support for Delphi 13; Windows installer |
 | 2.1.1 | 2023-12-12 | Added support for Delphi 12 |

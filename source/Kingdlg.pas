@@ -56,10 +56,18 @@ uses
   Vcl.Buttons,
   VCL.Samples.Spin,
   kingpop,
+  // LR20260325 - Added for procedural icon drawing with theme support
+  Vcl.Themes,
   // LR20260325 - Added KingBase for TKingBaseDateEdit base class
   KingBase;
 
 type
+
+  // LR20260325 - Custom button that draws a calendar icon procedurally for DPI/theme support
+  TKingDlgButton = class( TSpeedButton )
+  protected
+    procedure Paint; override;
+  end;
 
   // LR20260325 - Changed base class from TCustomEdit to TKingBaseDateEdit
   // TKingDateDialog = class( TCustomEdit )
@@ -127,7 +135,52 @@ type
 
 implementation
 
-{$R KDLG32.RES}
+// LR20260325 - Bitmap resources no longer needed; glyphs drawn procedurally
+// {$R KDLG32.RES}
+
+{ *************************************************************************** }
+// LR20260325 - Procedural calendar icon for DPI/theme compatibility
+procedure TKingDlgButton.Paint;
+var
+  R: TRect;
+  CX, CY, S, I, J: Integer;
+  LStyleServices: TCustomStyleServices;
+begin
+  inherited Paint;
+  LStyleServices := StyleServices;
+
+  R := Bounds(0, 0, Width, Height);
+  if FState = bsDown then
+    OffsetRect(R, 1, 1);
+
+  CX := (R.Left + R.Right) div 2;
+  CY := (R.Top + R.Bottom) div 2;
+  S := MulDiv(2, Screen.PixelsPerInch, 96);
+
+  // Draw calendar outline
+  if Enabled then
+    Canvas.Pen.Color := LStyleServices.GetSystemColor(clBtnText)
+  else
+    Canvas.Pen.Color := LStyleServices.GetSystemColor(clGrayText);
+  Canvas.Brush.Style := bsClear;
+  Canvas.Rectangle(CX - 3 * S, CY - 2 * S, CX + 3 * S, CY + 3 * S);
+
+  // Draw header bar
+  Canvas.Pen.Color := Canvas.Pen.Color;
+  Canvas.MoveTo(CX - 3 * S, CY - S);
+  Canvas.LineTo(CX + 3 * S, CY - S);
+
+  // Draw grid dots
+  Canvas.Brush.Color := Canvas.Pen.Color;
+  Canvas.Brush.Style := bsSolid;
+  for I := 0 to 2 do
+    for J := 0 to 1 do
+      Canvas.FillRect(Rect(
+        CX - 2 * S + I * 2 * S,
+        CY + J * S,
+        CX - 2 * S + I * 2 * S + S,
+        CY + J * S + S));
+end;
 
 // LR20260325 - Typed accessor for FButton (TControl in base)
 function TKingDateDialog.GetSpeedButton : TSpeedButton;
@@ -143,15 +196,17 @@ constructor TKingDateDialog.Create( AOwner : TComponent );
     LBtn : TSpeedButton;
   begin
     inherited Create( AOwner );
-    // LR20260325 - Create TSpeedButton and assign to inherited FButton (TControl)
-    LBtn := TSpeedButton.Create( Self );
+    // LR20260325 - Use TKingDlgButton for procedural calendar icon (DPI/theme aware)
+    // LBtn := TSpeedButton.Create( Self );
+    LBtn := TKingDlgButton.Create( Self );
     FButton := LBtn;
 
     LBtn.Width := 21;
     LBtn.Height := 17;
     LBtn.Visible := True;
-    LBtn.Glyph.Handle := LoadBitmap( HInstance, 'BTN_CALENDAR' );
-    LBtn.NumGlyphs := 1;
+    // LR20260325 - Bitmap glyph replaced with procedural drawing in TKingDlgButton.Paint
+    // LBtn.Glyph.Handle := LoadBitmap( HInstance, 'BTN_CALENDAR' );
+    // LBtn.NumGlyphs := 1;
     LBtn.OnClick := BtnClick;
     LBtn.Parent := Self;
 
