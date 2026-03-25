@@ -20,7 +20,8 @@
       "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source/vcl' -name *.pas)",
       "Bash(find C:_cKCsource -name *.pas)",
       "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source/databinding' -name *.pas)",
-      "Bash(find C:_cKC -type f \\\\\\(-name *.iss -o -name *setup* -o -name *install* -o -name *.inno* \\\\\\) -iname *)"
+      "Bash(find C:_cKC -type f \\\\\\(-name *.iss -o -name *setup* -o -name *install* -o -name *.inno* \\\\\\) -iname *)",
+      "Bash(find C:_cKC -type f \\\\\\(-name *.md -o -name *.rtf -o -name *.txt -o -name *.html \\\\\\))"
     ]
   }
 }

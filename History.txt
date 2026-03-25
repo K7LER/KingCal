@@ -1,6 +1,26 @@
 King Calendar - Open Source Edition
 Version History
 ===================================
+v2026.0325.0010 (2026-03-25)
+  - Added 6 database-aware components: TDBKingCalendar, TDBKingDateSpin,
+    TDBKingTimeSpin, TDBKingMDYSpin, TDBKingHMSpin, TDBKingDateDialog
+  - Added LiveBindings support for all date/time controls
+  - Separate DB package (KingCalendarDB) to keep base package dependency-free
+  - Separate DB design-time package (dclKingCalendarDB)
+  - Architecture: Split KingTool.pas into KingToolNav, KingToolMonth, KingToolCtrl
+  - Architecture: Extracted TKingBaseDateEdit base class (eliminates code duplication)
+  - Architecture: Modernized hook mechanism (TList<TNotifyEvent> with UnhookEvent)
+  - Architecture: Extracted DrawGridLines and DrawGridCells from Paint
+  - Fixed: TFont memory corruption in Caledit.pas design-time editor
+  - Fixed: kcDecDateBy was incrementing instead of decrementing
+  - Fixed: kcWorkDays dead code (nDays vs nStartDow comparison)
+  - Fixed: Global FormatSettings mutations replaced with local variables
+  - Fixed: TForm(AOwner) hard casts replaced with safe TComponent access
+  - Fixed: IsLeapYear method shadowing qualified with System.SysUtils
+  - Removed: Application.ProcessMessages from invalidation loops
+  - Removed: All 'with' statements from active source files
+  - Moved: DBKing.pas (legacy BDE) to source/legacy/
+
 26.1.1 - Update - 1/1/2026
 - Added support for Delphi 13
 

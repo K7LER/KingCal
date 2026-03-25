@@ -12,8 +12,9 @@ There is no CLI build system. Builds are done inside the Delphi IDE:
 
 1. Open the group project for the target Delphi version, e.g. `packages/13/D13All.groupproj`
 2. Compile the runtime package first (e.g. `KingCalendar370.dpk`)
-3. Compile the design-time package (e.g. `dclKingCalendar370.dpk`)
-4. Right-click the design-time package → **Install** to register components in the IDE
+3. Compile the DB runtime package (e.g. `KingCalendarDB370.dpk`)
+4. Compile the design-time package (e.g. `dclKingCalendar370.dpk`) → **Install** to register base components
+5. Compile the DB design-time package (e.g. `dclKingCalendarDB370.dpk`) → **Install** to register DB components
 
 Pre-compiled binaries live in `LIB<ver>x32/RELEASE` and `LIB<ver>x64/RELEASE` (e.g. `LIBD37x64`). To use them without recompiling, add the appropriate lib folder to the Delphi Library Path and add `source/` to the Browsing Path.
 
@@ -28,9 +29,11 @@ Pre-compiled binaries live in `LIB<ver>x32/RELEASE` and `LIB<ver>x64/RELEASE` (e
 | 12 | 29.0 | 290 | packages/12, LIBD29x32, LIBD29x64 |
 | 13 | 37.0 | 370 | packages/13, LIBD37x32, LIBD37x64 |
 
-Each version has two packages:
-- **Runtime** (`KingCalendar<ver>.dpk`) — `{$RUNONLY}`, contains all implementation units
-- **Design-time** (`dclKingCalendar<ver>.dpk`) — `{$DESIGNONLY}`, contains only `Kcal32.pas`
+Each version has four packages:
+- **Runtime** (`KingCalendar<ver>.dpk`) — `{$RUNONLY}`, contains all base implementation units + LiveBindings registration
+- **Runtime DB** (`KingCalendarDB<ver>.dpk`) — `{$RUNONLY}`, database-aware components (`DBKingSpin.pas`); requires `dbrtl`, `bindengine`, `bindcomp`
+- **Design-time** (`dclKingCalendar<ver>.dpk`) — `{$DESIGNONLY}`, contains `Kcal32.pas` (base component registration)
+- **Design-time DB** (`dclKingCalendarDB<ver>.dpk`) — `{$DESIGNONLY}`, contains `Kcal32DB.pas` (DB component registration)
 
 ## Architecture
 
@@ -38,24 +41,33 @@ Each version has two packages:
 
 **`source/Theking.pas`** — `TKingCalendar` inherits from `TCustomGrid`. This is the central class; it renders the month grid, handles day selection, blocked days, per-cell colors, and fires all calendar events. Every other unit is either a companion control or a support form.
 
-### Companion Controls (`source/KingTool.pas`)
+### Companion Controls (split units)
 
-Navigation and display controls that bind to a `TKingCalendar` instance:
-- `TKingLabel`, `TKingWeekLabel` — bound labels showing date/week info
-- `TMonthSpin`, `TYearSpin`, `TDaySpin` / `TMonthCombo`, `TYearCombo`, `TDayCombo` — spin and combo controls
-- `TKingNavigator` — panel with prev/next month/year buttons
-- `TMonthBar` — row of month-selection buttons
+Navigation and display controls that bind to a `TKingCalendar` instance. Originally in `KingTool.pas`, now split into focused units:
+- `source/KingToolCtrl.pas` — `TKingLabel`, `TKingWeekLabel`, `TKingBaseSpin`, `TMonthSpin`, `TYearSpin`, `TDaySpin`, `TKingBaseCombo`, `TMonthCombo`, `TYearCombo`, `TDayCombo`
+- `source/KingToolNav.pas` — `TKingNavigator` (prev/next month/year buttons), `TKingButton`
+- `source/KingToolMonth.pas` — `TMonthBar` (month-selection buttons), `TMonthButton`
+- `source/KingTool.pas` — utility functions only (`kcDateToStr`, `kcEaster`, `kcWorkDays`, etc.)
 
 ### Specialized Controls
 
 - `source/Kingpop.pas` — `TKingPopup`: popup calendar (dropdown style)
 - `source/Kingdlg.pas` — `TKingDateDialog`: standalone date-picker dialog
-- `source/DBKing.pas` — `TDBKingDlg`: database-bound date picker (links to a `TField`)
-- `source/Kingspin.pas`, `Kingspnt.pas`, `Kingspn1.pas` — date/time spin-button editors (`TKingDateSpin`, `TKingTimeSpin`, `TKingMDYSpin`)
+- `source/Kingspin.pas`, `Kingspnt.pas`, `Kingspn1.pas` — date/time spin-button editors (`TKingDateSpin`, `TKingTimeSpin`, `TKingMDYSpin`, `TKingHMSpin`)
+- `source/KingBase.pas` — `TKingBaseDateEdit`: shared base class for all spin/dialog editors
+
+### Database-Aware Controls
+
+- `source/DBKingSpin.pas` — `TDBKingCalendar`, `TDBKingDateSpin`, `TDBKingTimeSpin`, `TDBKingMDYSpin`, `TDBKingHMSpin`, `TDBKingDateDialog` — all use `TFieldDataLink` to bind to `TDataSource`/`TDataField`
+
+### LiveBindings Support
+
+- `source/KingBindEditors.pas` — registers observable members (`CalendarDate`, `Value`, `Text`) for Delphi's LiveBindings framework; included in the main runtime package
 
 ### Design-Time Layer
 
-- `source/Kcal32.pas` — `Register` procedure; registers every component into the IDE palette and installs property/component editors
+- `source/Kcal32.pas` — `Register` procedure; registers base components into the IDE palette and installs property/component editors
+- `source/Kcal32DB.pas` — `Register` procedure for DB-aware components (separate design-time package)
 - `source/Kccmpedt.pas` — component editor
 - `source/Caledit.pas`, `Caledit2.pas` — editor forms invoked from the component editor
 - `source/Kingprop.pas` — About box form

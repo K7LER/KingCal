@@ -30,16 +30,23 @@ KingCalendar is an open-source VCL calendar component library for Delphi 10.2 th
 6. [Popup and Dialog Controls](#popup-and-dialog-controls)
    - [TKingPopup](#tkingpopup)
    - [TKingDateDialog](#tkingdatedialog)
-   - [TDBKingDlg](#tdbkingdlg)
 7. [Spin Editors](#spin-editors)
    - [TKingDateSpin](#tkingdatespin)
    - [TKingTimeSpin](#tkingtimespin)
    - [TKingHMSpin](#tkinghmsspin)
    - [TKingMDYSpin](#tkingmdyspin)
-8. [Demo Projects](#demo-projects)
-9. [Building from Source](#building-from-source)
-10. [Version History](#version-history)
-11. [License and Credits](#license-and-credits)
+8. [Database-Aware Components](#database-aware-components)
+   - [TDBKingCalendar](#tdbkingcalendar)
+   - [TDBKingDateSpin](#tdbkingdatespin)
+   - [TDBKingTimeSpin](#tdbkingtimespin)
+   - [TDBKingMDYSpin](#tdbkingmdyspin)
+   - [TDBKingHMSpin](#tdbkingmhspin)
+   - [TDBKingDateDialog](#tdbkingdatedialog)
+9. [LiveBindings Support](#livebindings-support)
+10. [Demo Projects](#demo-projects)
+11. [Building from Source](#building-from-source)
+12. [Version History](#version-history)
+13. [License and Credits](#license-and-credits)
 
 ---
 
@@ -124,7 +131,12 @@ Pre-compiled DCU files for each version and platform live in `LIBD<prefix>x<plat
 | `TMonthBar` | `KingTool` | Row of 12 month-selection buttons |
 | `TKingPopup` | `Kingpop` | Non-visual popup calendar |
 | `TKingDateDialog` | `Kingdlg` | Edit control with calendar popup button |
-| `TDBKingDlg` | `DBKing` | Database-bound edit with calendar popup |
+| `TDBKingCalendar` | `DBKingCal` | Database-aware calendar grid bound to a date field |
+| `TDBKingDateSpin` | `DBKingSpin` | Database-aware date spin editor |
+| `TDBKingTimeSpin` | `DBKingSpin` | Database-aware time spin editor |
+| `TDBKingMDYSpin` | `DBKingSpin` | Database-aware month/day/year spin editor |
+| `TDBKingHMSpin` | `DBKingSpin` | Database-aware hour/minute/second spin editor |
+| `TDBKingDateDialog` | `DBKingDlg` | Database-aware date dialog with popup |
 | `TKingDateSpin` | `Kingspin` | Inline date spin editor |
 | `TKingTimeSpin` | `Kingspin` | Inline time spin editor |
 | `TKingHMSpin` | `Kingspnt` | Hour/minute/second field-by-field spin editor |
@@ -467,22 +479,7 @@ ShowMessage(KingDateDialog1.Text);   // formatted date string
 | `KingPopup` | `TKingPopup` | Popup component to use |
 | `Button` | `TSpeedButton` | Internal calendar button (for layout) |
 
-### TDBKingDlg
-
-A database-aware version of `TKingDateDialog`. Inherits from `TCustomMaskEdit` and binds directly to a `TDataSource` / field.
-
-```pascal
-DBKingDlg1.DataSource := DataSource1;
-DBKingDlg1.DataField  := 'InvoiceDate';
-DBKingDlg1.KingPopup  := KingPopup1;
-```
-
-| Property | Type | Description |
-|---|---|---|
-| `DataSource` | `TDataSource` | Dataset to bind to |
-| `DataField` | `String` | Field name within the dataset |
-| `KingPopup` | `TKingPopup` | Popup component to use |
-| `Field` | `TField` | Direct reference to the bound field (read) |
+> **Note:** The legacy `TDBKingDlg` (BDE-based) has been moved to `source/legacy/`. For database-aware controls, use the new DB components described in [Database-Aware Components](#database-aware-components) below.
 
 ---
 
@@ -545,6 +542,87 @@ Field-by-field date editing (month / day / year). Use Left/Right arrow keys to m
 
 ---
 
+## Database-Aware Components
+
+All database-aware components use `TFieldDataLink` to bind to a `TDataSource` and `TDataField`. They require no BDE dependency and work with any dataset (FireDAC, ClientDataSet, third-party ORMs, etc.).
+
+> **Package note:** The DB components live in a separate package (`KingCalendarDB<ver>.dpk`). Install both `dclKingCalendar` and `dclKingCalendarDB` to use them in the IDE.
+
+### Common Properties
+
+Every DB component exposes these properties:
+
+| Property | Type | Description |
+|---|---|---|
+| `DataSource` | `TDataSource` | The data source to bind to |
+| `DataField` | `String` | The field name within the dataset |
+| `ReadOnly` | `Boolean` | When `True`, the control displays the field value but does not post edits |
+| `Field` | `TField` | Direct reference to the bound field (read-only) |
+
+### Usage Example
+
+```pascal
+// Drop TDataSource, TClientDataSet, and TDBKingDateSpin on a form
+DataSource1.DataSet := ClientDataSet1;
+DBKingDateSpin1.DataSource := DataSource1;
+DBKingDateSpin1.DataField := 'BirthDate';
+// The spin editor now displays and edits the BirthDate field
+```
+
+### TDBKingCalendar
+
+A database-aware version of `TKingCalendar`. The calendar grid automatically navigates to the date stored in the bound field. When the user clicks a day, the field value is updated and posted to the dataset.
+
+All standard `TKingCalendar` features (color sets, blocked days, flagged days, color bars, annotations) remain available.
+
+### TDBKingDateSpin
+
+A database-aware version of `TKingDateSpin`. Displays and edits a date field using spin buttons to increment/decrement the date value. Supports the same `DateFormat` and `Increment` properties as `TKingDateSpin`.
+
+### TDBKingTimeSpin
+
+A database-aware version of `TKingTimeSpin`. Displays and edits a time field using spin buttons. Supports the same `TimeFormat` and `Increment` properties as `TKingTimeSpin`.
+
+### TDBKingMDYSpin
+
+A database-aware version of `TKingMDYSpin`. Provides field-by-field editing (month / day / year) of a date field. Arrow keys move between fields; Up/Down changes the focused field.
+
+### TDBKingHMSpin
+
+A database-aware version of `TKingHMSpin`. Provides field-by-field editing (hours / minutes / seconds) of a time field. Arrow keys move between fields; Up/Down changes the focused field.
+
+### TDBKingDateDialog
+
+A database-aware version of `TKingDateDialog`. Shows an edit control with a popup calendar button, bound to a date field. When the user picks a date from the popup or types one in, the field value is posted to the dataset.
+
+---
+
+## LiveBindings Support
+
+All date/time controls support Delphi's LiveBindings framework, allowing you to bind control properties to data sources visually in the LiveBindings Designer.
+
+### Bindable Properties
+
+| Component | Bindable Property | Type | Description |
+|---|---|---|---|
+| `TKingCalendar` | `CalendarDate` | `TDateTime` | The selected calendar date |
+| `TKingDateSpin` | `Value` | `TDateTime` | The current date value |
+| `TKingTimeSpin` | `Value` | `TDateTime` | The current time value |
+| `TKingMDYSpin` | `Value` | `TDateTime` | The current date value |
+| `TKingHMSpin` | `Value` | `TDateTime` | The current time value |
+| `TKingDateDialog` | `Text` | `String` | The formatted date string |
+
+### How to Use
+
+1. Drop a `TBindSourceDB` (or `TBindSourceAdapter`) and a KingCalendar control on your form.
+2. Open **View → LiveBindings Designer**.
+3. Drag a connection from the data source field to the bindable property on the KingCalendar control (e.g., drag a `TDateTime` field to `TKingDateSpin.Value`).
+4. The control will now read from and write to the data source automatically.
+
+> **No additional packages needed.** LiveBindings registration is included in the main runtime package (`KingCalendar<ver>.dpk`).
+
+---
+
 ## Demo Projects
 
 Five demo projects are included for Delphi 10.2, 10.3, 10.4, and 13. Open the group project for your version from the `Demos\` folder.
@@ -572,15 +650,19 @@ Demo source EXEs are not pre-compiled; compile the demos yourself after installi
 
 | Package | Type | Purpose |
 |---|---|---|
-| `KingCalendar<ver>.dpk` | `{$RUNONLY}` | Runtime — all implementation units |
-| `dclKingCalendar<ver>.dpk` | `{$DESIGNONLY}` | Design-time — only `Kcal32.pas` (registration) |
+| `KingCalendar<ver>.dpk` | `{$RUNONLY}` | Runtime — base components + LiveBindings registration |
+| `KingCalendarDB<ver>.dpk` | `{$RUNONLY}` | Runtime — database-aware components |
+| `dclKingCalendar<ver>.dpk` | `{$DESIGNONLY}` | Design-time — base component registration |
+| `dclKingCalendarDB<ver>.dpk` | `{$DESIGNONLY}` | Design-time — DB component registration |
 
 ### Build order
 
 1. Open the group project for your target version, e.g. `packages/13/D13All.groupproj`.
-2. Compile **runtime** package first.
-3. Compile **design-time** package.
-4. Right-click the design-time package → **Install**.
+2. Compile the **base runtime** package (`KingCalendar<ver>.dpk`) first.
+3. Compile the **DB runtime** package (`KingCalendarDB<ver>.dpk`).
+4. Compile the **base design-time** package (`dclKingCalendar<ver>.dpk`).
+5. Compile the **DB design-time** package (`dclKingCalendarDB<ver>.dpk`).
+6. Right-click each design-time package → **Install**.
 
 ### Library path conventions
 
@@ -598,6 +680,7 @@ Pre-compiled outputs go to `LIBD<prefix>x<plat>\<Config>`:
 
 | Version | Date | Notes |
 |---|---|---|
+| 2026.0325.0010 | 2026-03-25 | Database-aware components (TDBKingCalendar, TDBKingDateSpin, TDBKingTimeSpin, TDBKingMDYSpin, TDBKingHMSpin, TDBKingDateDialog) using TFieldDataLink; LiveBindings support for all date/time controls; 4-package layout (base + DB, runtime + design-time); legacy TDBKingDlg moved to source/legacy/ |
 | 26.1.1 | 2026-01-01 | Added support for Delphi 13; Windows installer |
 | 2.1.1 | 2023-12-12 | Added support for Delphi 12 |
 | 2.0.9 | 2022-12-01 | Added support for Delphi 11 |

@@ -51,6 +51,12 @@ All controls install directly into the Delphi IDE component palette.
 | `TKingTimeSpin` | Inline time spin editor |
 | `TKingHMSpin` | Hour/minute/second field-by-field spin editor |
 | `TKingMDYSpin` | Month/day/year field-by-field spin editor |
+| `TDBKingCalendar` | Database-aware calendar grid |
+| `TDBKingDateSpin` | Database-aware date spinner |
+| `TDBKingTimeSpin` | Database-aware time spinner |
+| `TDBKingMDYSpin` | Database-aware month/day/year selector |
+| `TDBKingHMSpin` | Database-aware hour/minute/second selector |
+| `TDBKingDateDialog` | Database-aware date dialog picker |
 
 ---
 
@@ -93,9 +99,15 @@ git clone https://github.com/K7LER/KingCal.git
 2. Add `LIBD<ver>x64\RELEASE` (and `LIBD<ver>x32\RELEASE` for 32-bit targets) to the **Library Path**.
 3. Add the `source\` folder to the **Browsing Path**.
 4. Open the group project for your version, e.g. `packages\13\D13All.groupproj`.
-5. Compile the runtime package (`KingCalendar370.dpk`) first.
-6. Compile the design-time package (`dclKingCalendar370.dpk`).
-7. Right-click the design-time package → **Install**.
+5. Compile the runtime packages first:
+   - `KingCalendar370.dpk` — base components + LiveBindings registration
+   - `KingCalendarDB370.dpk` — database-aware components
+6. Compile the design-time packages:
+   - `dclKingCalendar370.dpk` — base component registration
+   - `dclKingCalendarDB370.dpk` — DB component registration
+7. Right-click each design-time package → **Install**.
+
+> **Note:** The DB components require both the base and DB packages. The installer handles this automatically.
 
 See the [Wiki](https://github.com/K7LER/KingCal/wiki) for version-specific library folder names and detailed step-by-step instructions for each Delphi release.
 
@@ -120,7 +132,8 @@ Five ready-to-compile demo projects are included for Delphi 10.2, 10.3, 10.4, an
 - **Full month-grid calendar** with day selection, blocked days, flagged days, and per-cell color customization
 - **Nine built-in color sets** (`ColorSet1`–`ColorSet9`) configurable at design or runtime
 - **High DPI and VCL Styles** compatible
-- **Database binding** via `TDBKingDlg` linked to any `TDataSource` / `TField`
+- **Database-Aware Components** — `TDBKingCalendar`, `TDBKingDateSpin`, `TDBKingTimeSpin`, `TDBKingMDYSpin`, `TDBKingHMSpin`, and `TDBKingDateDialog` bind directly to `TDataSource`/`TDataField` for dataset integration
+- **LiveBindings Support** — All date/time components register observable members for Delphi's LiveBindings framework, enabling visual data binding in the designer
 - **Color bar overlays** for visualizing multi-day events or ranges
 - **No external dependencies** — pure Object Pascal, no third-party runtime required
 
@@ -147,6 +160,7 @@ Bug reports and pull requests are welcome. Please open an issue first for anythi
 
 | Version | Date | Notes |
 |---|---|---|
+| v2026.0325.0010 | 2026-03-25 | Added database-aware components (`TDBKingCalendar`, `TDBKingDateSpin`, `TDBKingTimeSpin`, `TDBKingMDYSpin`, `TDBKingHMSpin`, `TDBKingDateDialog`), LiveBindings support for all date/time controls, separate DB package (`KingCalendarDB`), architecture refactoring (`KingTool` split, `TKingBaseDateEdit` base class, hook mechanism modernization), multiple bug fixes |
 | 26.1.1 | 2026-01-01 | Added Delphi 13 support; Windows installer |
 | 2.1.1 | 2023-12-12 | Added Delphi 12 support |
 | 2.0.9 | 2022-12-01 | Added Delphi 11 support |
