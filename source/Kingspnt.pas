@@ -55,13 +55,17 @@ uses
   Vcl.StdCtrls,
   Vcl.Buttons,
   VCL.Samples.Spin,
-  TheKing;
+  TheKing,
+  // LR20260325 - Added KingBase for TKingBaseDateEdit base class
+  KingBase;
 
 type
   TTimeChangeType = ( yyHour, yyMin, yySec, yyMicroSec, yyDay, yyUnknown );
 
   { TKingHMSpin }
-  TKingHMSpin = class( TCustomEdit )
+  // LR20260325 - Changed base class from TCustomEdit to TKingBaseDateEdit
+  // TKingHMSpin = class( TCustomEdit )
+  TKingHMSpin = class( TKingBaseDateEdit )
     private
       fUseDay : boolean;
       fChange : TTimeChangeType;
@@ -73,10 +77,11 @@ type
       FAbout : String;
       FTimeFormat : String;
       FStartTime : String;
-      // hint    FCanvas: TCanvas;
       FIncrement : Integer;
-      FButton : TSpinButton;
-      function GetMinHeight : Integer;
+      // LR20260325 - FButton now inherited from TKingBaseDateEdit
+      // FButton : TSpinButton;
+      // LR20260325 - GetMinHeight now inherited from TKingBaseDateEdit
+      // function GetMinHeight : Integer;
       function GetValue : TDateTime;
       procedure SetValue( NewValue : TDateTime );
       function GetSelected : boolean;
@@ -84,8 +89,10 @@ type
       procedure GetDivOffset;
       procedure GotoPre( Sender : TObject );
       procedure GotoNxt( Sender : TObject );
-      procedure SetEditRect;
-      procedure WMSize( var Message : TWMSize ); message WM_SIZE;
+      // LR20260325 - SetEditRect now inherited from TKingBaseDateEdit
+      // procedure SetEditRect;
+      // LR20260325 - WMSize now inherited from TKingBaseDateEdit
+      // procedure WMSize( var Message : TWMSize ); message WM_SIZE;
       procedure CMEnter( var Message : TCMGotFocus ); message CM_ENTER;
       procedure CMExit( var Message : TCMExit ); message CM_EXIT;
     protected
@@ -97,15 +104,19 @@ type
         Button : TMouseButton;
         shift  : TShiftState;
         x, y   : Integer ); override;
-      function IsValidChar( Key : Char ) : boolean; virtual;
-      procedure UpClick( Sender : TObject ); virtual;
-      procedure DownClick( Sender : TObject ); virtual;
+      // LR20260325 - IsValidChar now inherited from TKingBaseDateEdit
+      // function IsValidChar( Key : Char ) : boolean; virtual;
+      procedure UpClick( Sender : TObject ); override;
+      procedure DownClick( Sender : TObject ); override;
       procedure KeyDown(
         var Key : Word;
         shift   : TShiftState ); override;
-      procedure KeyPress( var Key : Char ); override;
-      procedure CreateParams( var Params : TCreateParams ); override;
-      procedure CreateWnd; override;
+      // LR20260325 - KeyPress now inherited from TKingBaseDateEdit
+      // procedure KeyPress( var Key : Char ); override;
+      // LR20260325 - CreateParams now inherited from TKingBaseDateEdit
+      // procedure CreateParams( var Params : TCreateParams ); override;
+      // LR20260325 - CreateWnd now inherited from TKingBaseDateEdit
+      // procedure CreateWnd; override;
       function IncrementTime( nIncBy : Integer ) : TDateTime;
       function DecrementTime( nIncBy : Integer ) : TDateTime;
       function IncrementSelValue( nIncBy : Integer ) : TDateTime;
@@ -115,8 +126,10 @@ type
       procedure DecrementBy( nIncBy : Integer );
       constructor Create( AOwner : TComponent ); override;
       destructor Destroy; override;
+      // LR20260325 - FButton is now TControl in base; cast to TSpinButton
+      function GetSpinButton : TSpinButton;
       property Button : TSpinButton
-        read FButton;
+        read GetSpinButton;
       property Value : TDateTime
         read GetValue
         write SetValue;
@@ -169,17 +182,29 @@ type
 implementation
 
 { TKingHMSpin }
+
+// LR20260325 - Typed accessor for FButton (TControl in base)
+function TKingHMSpin.GetSpinButton : TSpinButton;
+  begin
+    Result := TSpinButton( FButton );
+  end;
+
 constructor TKingHMSpin.Create( AOwner : TComponent );
+  // LR20260325 - Local typed variable for TSpinButton-specific setup
+  var
+    LBtn : TSpinButton;
   begin
     inherited Create( AOwner );
-    FButton := TSpinButton.Create( Self );
-    FButton.Width := 17;
-    FButton.Height := 17;
-    FButton.Visible := True;
-    FButton.Parent := Self;
-    FButton.FocusControl := Self;
-    FButton.OnUpClick := UpClick;
-    FButton.OnDownClick := DownClick;
+    // LR20260325 - Create TSpinButton and assign to inherited FButton (TControl)
+    LBtn := TSpinButton.Create( Self );
+    FButton := LBtn;
+    LBtn.Width := 17;
+    LBtn.Height := 17;
+    LBtn.Visible := True;
+    LBtn.Parent := Self;
+    LBtn.FocusControl := Self;
+    LBtn.OnUpClick := UpClick;
+    LBtn.OnDownClick := DownClick;
     FTimeFormat := 'hh:mm AMPM';
     FStartTime := '06:00 AM';
     Text := FStartTime;
@@ -483,6 +508,9 @@ procedure TKingHMSpin.KeyDown(
     inherited KeyDown( Key, shift );
   end;
 
+// LR20260325 - KeyPress, IsValidChar, CreateParams, CreateWnd, SetEditRect,
+// WMSize, GetMinHeight now inherited from TKingBaseDateEdit
+{$IFDEF KINGBASE_LEGACY}
 procedure TKingHMSpin.KeyPress( var Key : Char );
   var
     OldKey : Char;
@@ -580,6 +608,7 @@ function TKingHMSpin.GetMinHeight : Integer;
     Result := Metrics.tmHeight + i div 4 + GetSystemMetrics
       ( SM_CYBORDER ) * 4 + 2;
   end;
+{$ENDIF KINGBASE_LEGACY}
 
 procedure TKingHMSpin.UpClick( Sender : TObject );
   begin
@@ -617,12 +646,18 @@ function TKingHMSpin.GetValue : TDateTime;
 procedure TKingHMSpin.SetValue( NewValue : TDateTime );
   var
     NewTime : String;
+    // LR20260325 - Use local format settings to avoid mutating global
+    LFormatSettings : TFormatSettings;
   begin
     // Furnish the locale format settings record
 {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+    // LR20260325 - Use local format settings to avoid mutating global
+    // formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+    LFormatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
 {$WARN SYMBOL_PLATFORM ON}
-    DateTimeToString( NewTime, TimeFormat, NewValue, formatSettings );
+    // LR20260325 - Use local format settings to avoid mutating global
+    // DateTimeToString( NewTime, TimeFormat, NewValue, formatSettings );
+    DateTimeToString( NewTime, TimeFormat, NewValue, LFormatSettings );
     // DateTimeToString( NewTime, TimeFormat, NewValue );
     Text := NewTime;
 

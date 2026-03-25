@@ -55,13 +55,17 @@ uses
   Vcl.StdCtrls,
   Vcl.Buttons,
   VCL.Samples.Spin,
-  TheKing;
+  TheKing,
+  // LR20260325 - Added KingBase for TKingBaseDateEdit base class
+  KingBase;
 
 type
   TDateChangeType = ( yyMonth, yyDay, yyYear, yyUnknown );
 
   { TKingMDYSpin }
-  TKingMDYSpin = class( TCustomEdit )
+  // LR20260325 - Changed base class from TCustomEdit to TKingBaseDateEdit
+  // TKingMDYSpin = class( TCustomEdit )
+  TKingMDYSpin = class( TKingBaseDateEdit )
     private
       fChange : TDateChangeType;
       FSelected : boolean;
@@ -73,22 +77,26 @@ type
       FAbout : String;
       FDateFormat : String;
       FStartDate : String;
-      // hint    FCanvas: TCanvas;
-      FButton : TSpinButton;
-      function GetMinHeight : Integer;
+      // LR20260325 - FButton now inherited from TKingBaseDateEdit
+      // FButton : TSpinButton;
+      // LR20260325 - GetMinHeight now inherited from TKingBaseDateEdit
+      // function GetMinHeight : Integer;
       function GetValue : TDateTime;
       procedure SetValue( NewValue : TDateTime );
       function GetSelValue : word;
       procedure SetSelValue( NewValue : word );
       function GetSelected : boolean;
-      procedure SetEditRect;
-      procedure WMSize( var Message : TWMSize ); message WM_SIZE;
+      // LR20260325 - SetEditRect now inherited from TKingBaseDateEdit
+      // procedure SetEditRect;
+      // LR20260325 - WMSize now inherited from TKingBaseDateEdit
+      // procedure WMSize( var Message : TWMSize ); message WM_SIZE;
       procedure CMEnter( var Message : TCMGotFocus ); message CM_ENTER;
       procedure CMExit( var Message : TCMExit ); message CM_EXIT;
       procedure WMKeyDown( var Message : TWMKeyDown ); message WM_KEYDOWN;
       procedure GetDivOffset;
     protected
-      function IsValidChar( Key : Char ) : boolean; virtual;
+      // LR20260325 - IsValidChar now inherited from TKingBaseDateEdit
+      // function IsValidChar( Key : Char ) : boolean; virtual;
       procedure MouseDown(
         Button : TMouseButton;
         shift  : TShiftState;
@@ -102,20 +110,25 @@ type
       }
       procedure GotoPre( Sender : TObject ); virtual;
       Procedure GotoNxt( Sender : TObject ); virtual;
-      procedure UpClick( Sender : TObject ); virtual;
-      procedure DownClick( Sender : TObject ); virtual;
+      procedure UpClick( Sender : TObject ); override;
+      procedure DownClick( Sender : TObject ); override;
       procedure KeyDown(
         var Key : word;
         shift   : TShiftState ); override;
-      procedure KeyPress( var Key : Char ); override;
-      procedure CreateParams( var Params : TCreateParams ); override;
-      procedure CreateWnd; override;
+      // LR20260325 - KeyPress now inherited from TKingBaseDateEdit
+      // procedure KeyPress( var Key : Char ); override;
+      // LR20260325 - CreateParams now inherited from TKingBaseDateEdit
+      // procedure CreateParams( var Params : TCreateParams ); override;
+      // LR20260325 - CreateWnd now inherited from TKingBaseDateEdit
+      // procedure CreateWnd; override;
       procedure SetFormat( NewValue : String );
     public
       constructor Create( AOwner : TComponent ); override;
       destructor Destroy; override;
+      // LR20260325 - FButton is now TControl in base; cast to TSpinButton
+      function GetSpinButton : TSpinButton;
       property Button : TSpinButton
-        read FButton;
+        read GetSpinButton;
       property Value : TDateTime
         read GetValue
         write SetValue;
@@ -187,26 +200,38 @@ function kcMonthDays( nMonth, nYear : Integer ) : Integer;
       Inc( Result );
   end;
 
+// LR20260325 - Typed accessor for FButton (TControl in base)
+function TKingMDYSpin.GetSpinButton : TSpinButton;
+  begin
+    Result := TSpinButton( FButton );
+  end;
+
 constructor TKingMDYSpin.Create( AOwner : TComponent );
+  var
+    LFormatSettings : TFormatSettings;
+    // LR20260325 - Local typed variable for TSpinButton-specific setup
+    LBtn : TSpinButton;
   begin
     inherited Create( AOwner );
-    FButton := TSpinButton.Create( Self );
-    FButton.Width := 17;
-    FButton.Height := 17;
-    FButton.Visible := True;
-    FButton.Parent := Self;
-    FButton.FocusControl := Self;
-    FButton.OnUpClick := UpClick;
-    FButton.OnDownClick := DownClick;
+    // LR20260325 - Create TSpinButton and assign to inherited FButton (TControl)
+    LBtn := TSpinButton.Create( Self );
+    FButton := LBtn;
+    LBtn.Width := 17;
+    LBtn.Height := 17;
+    LBtn.Visible := True;
+    LBtn.Parent := Self;
+    LBtn.FocusControl := Self;
+    LBtn.OnUpClick := UpClick;
+    LBtn.OnDownClick := DownClick;
     // Grab the local settings, in case International Formats
     // Furnish the locale format settings record
+    // LR20260325 - Use local format settings to avoid mutating global
 {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+    LFormatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
 {$WARN SYMBOL_PLATFORM ON}
-    FDateFormat := formatSettings.ShortDateFormat; { 'MM/DD/YY'; }
+    FDateFormat := LFormatSettings.ShortDateFormat; { 'MM/DD/YY'; }
 
-    DateTimeToString( FStartDate, FDateFormat, Date, formatSettings );
-    // DateTimeToString( FStartDate, FDateFormat, Date );
+    DateTimeToString( FStartDate, FDateFormat, Date, LFormatSettings );
     Text := FStartDate;
     Width := 89;
     ControlStyle := ControlStyle - [ csSetCaption ];
@@ -223,11 +248,8 @@ destructor TKingMDYSpin.Destroy;
 
 procedure TKingMDYSpin.GetDivOffset;
   var
-    // hint	tChk:Integer;
-    // hint	tPos : Integer;
     i : Integer;
     tText : String;
-    { This Offset counts from 0 }
   begin
     fOffset1 := 0;
     fOffset2 := 0;
@@ -363,6 +385,8 @@ procedure TKingMDYSpin.KeyDown(
     inherited KeyDown( Key, shift );
   end;
 
+// LR20260325 - KeyPress now inherited from TKingBaseDateEdit
+{$IFDEF KINGBASE_LEGACY}
 procedure TKingMDYSpin.KeyPress( var Key : Char );
   var
     OldKey : Char;
@@ -389,6 +413,7 @@ procedure TKingMDYSpin.KeyPress( var Key : Char );
     then
       inherited KeyPress( Key );
   end;
+{$ENDIF KINGBASE_LEGACY}
 
 procedure TKingMDYSpin.MouseUp(
   Button : TMouseButton;
@@ -435,10 +460,6 @@ procedure TKingMDYSpin.MouseDown(
   Button : TMouseButton;
   shift  : TShiftState;
   x, y   : Integer );
-  // hint var
-  // hint tStr : String;
-  // hint  tInt : Integer;
-  // hint    tChk : Integer;
   begin
     Inherited MouseDown( Button, shift, x, y );
 
@@ -482,6 +503,9 @@ procedure TKingMDYSpin.MouseDown(
     SelLength := FSelLength;
   end;
 
+// LR20260325 - IsValidChar, CreateParams, CreateWnd, SetEditRect,
+// WMSize, GetMinHeight now inherited from TKingBaseDateEdit
+{$IFDEF KINGBASE_LEGACY}
 function TKingMDYSpin.IsValidChar( Key : Char ) : boolean;
   begin
     Result := ( ( Key < #32 ) and ( Key <> Chr( VK_RETURN ) ) );
@@ -494,8 +518,6 @@ procedure TKingMDYSpin.CreateParams( var Params : TCreateParams );
   end;
 
 procedure TKingMDYSpin.CreateWnd;
-  // hint var
-  // hint	Loc: TRect;
   begin
     inherited CreateWnd;
     SetEditRect;
@@ -516,7 +538,6 @@ procedure TKingMDYSpin.SetEditRect;
 
 procedure TKingMDYSpin.WMSize( var Message : TWMSize );
   var
-    // hint  Loc: TRect;
     MinHeight : Integer;
   begin
     inherited;
@@ -553,6 +574,7 @@ function TKingMDYSpin.GetMinHeight : Integer;
     Result := Metrics.tmHeight + i div 4 + GetSystemMetrics
       ( SM_CYBORDER ) * 4 + 2;
   end;
+{$ENDIF KINGBASE_LEGACY}
 
 procedure TKingMDYSpin.UpClick( Sender : TObject );
   begin
@@ -579,6 +601,8 @@ procedure TKingMDYSpin.CMExit( var Message : TCMExit );
   end;
 
 function TKingMDYSpin.GetValue : TDateTime;
+  var
+    LFormatSettings : TFormatSettings;
   // var
   // cTemp : String;
   begin
@@ -586,29 +610,26 @@ function TKingMDYSpin.GetValue : TDateTime;
     then
       Text := FStartDate;
 
+    // LR20260325 - Use local format settings to avoid mutating global
     // Furnish the locale format settings record
 {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+    LFormatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
 {$WARN SYMBOL_PLATFORM ON}
-    // cTemp := FormatSettings.ShortDateFormat;
-    // FormatSettings.ShortDateFormat := FDateFormat;
-    Result := StrToDateTime( Text, formatSettings );
-    // Result := StrToDateTime( Text );
-
-    // FormatSettings.ShortDateFormat := cTemp;
+    Result := StrToDateTime( Text, LFormatSettings );
   end;
 
 procedure TKingMDYSpin.SetValue( NewValue : TDateTime );
   var
     NewDate : String;
+    LFormatSettings : TFormatSettings;
   begin
+    // LR20260325 - Use local format settings to avoid mutating global
     // Furnish the locale format settings record
 {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+    LFormatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
 {$WARN SYMBOL_PLATFORM ON}
-    DateTimeToString( NewDate, formatSettings.ShortDateFormat, NewValue,
-      formatSettings );
-    // DateTimeToString( NewDate, DateFormat, NewValue );
+    DateTimeToString( NewDate, LFormatSettings.ShortDateFormat, NewValue,
+      LFormatSettings );
 
     Text := NewDate;
 
@@ -636,10 +657,6 @@ procedure TKingMDYSpin.SetValue( NewValue : TDateTime );
   end;
 
 function TKingMDYSpin.GetSelected : boolean;
-  // var
-  // hint tInt : Integer;
-  // hint tStr : String;
-  // hint    sel : boolean;
   begin
     Result := ( SelText <> '' );
   end;

@@ -12,11 +12,9 @@ object KcPopup: TKcPopup
   Font.Height = -13
   Font.Name = 'Segoe UI'
   Font.Style = []
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnClose = FormClose
-  PixelsPerInch = 96
-  TextHeight = 16
+  TextHeight = 17
   object SpeedButton1: TSpeedButton
     Left = 2
     Top = 113
@@ -148,17 +146,18 @@ object KcPopup: TKcPopup
     Top = 1
     Width = 198
     Height = 110
-    Day = 30
+    Day = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
-    Month = 12
+    Month = 3
     ParentFont = False
-    Year = 2018
+    Year = 2026
     OnChange = KingCalendar1Change
     OnDblClick = KingCalendar1DblClick
+    StyleName = ''
     TabOrder = 0
     TextPlacement = ktTopLeft
     DowNames.Strings = (
@@ -190,13 +189,13 @@ object KcPopup: TKcPopup
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     RowHeights = (
-      11
-      14
-      14
-      14
-      14
-      14
-      14)
+      17
+      13
+      13
+      13
+      13
+      13
+      13)
   end
   object KingNavigator1: TKingNavigator
     Left = 29

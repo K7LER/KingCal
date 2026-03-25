@@ -176,12 +176,21 @@ procedure TFrmCalEdit.ColorGrid1Click( Sender : TObject );
           KingCalendar1.TitleColor := ColorGrid1.ForegroundColor;
         7 :
           begin
-            tempFont := KingCalendar1.TitleFont;
-            tempFont.Color := ColorGrid1.ForegroundColor;
-            KingCalendar1.TitleFont := tempFont;
-            if assigned( tempFont )
-            then
-              freeAndNil( tempFont );
+            // LR20260325 - Fixed memory corruption: was freeing component's internal TFont
+            // tempFont := KingCalendar1.TitleFont;
+            // tempFont.Color := ColorGrid1.ForegroundColor;
+            // KingCalendar1.TitleFont := tempFont;
+            // if assigned( tempFont )
+            // then
+            //   freeAndNil( tempFont );
+            tempFont := TFont.Create;
+            try
+              tempFont.Assign( KingCalendar1.TitleFont );
+              tempFont.Color := ColorGrid1.ForegroundColor;
+              KingCalendar1.TitleFont := tempFont;
+            finally
+              FreeAndNil( tempFont );
+            end;
           end;
         8 :
           KingCalendar1.TodayColor := ColorGrid1.ForegroundColor;
@@ -234,12 +243,15 @@ procedure TFrmCalEdit.Button1Click( Sender : TObject );
           KingCalendar1.TitleColor := clSilver;
         7 :
           begin
-            tempFont := KingCalendar1.TitleFont;
-            tempFont.Color := clBlack;
-            KingCalendar1.TitleFont := tempFont;
-            if assigned( tempFont )
-            then
-              freeAndNil( tempFont );
+            // LR20260325 - Fixed memory corruption: was freeing component's internal TFont
+            tempFont := TFont.Create;
+            try
+              tempFont.Assign( KingCalendar1.TitleFont );
+              tempFont.Color := clBlack;
+              KingCalendar1.TitleFont := tempFont;
+            finally
+              FreeAndNil( tempFont );
+            end;
           end;
         8 :
           KingCalendar1.TodayColor := clBlack;
@@ -296,12 +308,15 @@ procedure TFrmCalEdit.ListBox2Click( Sender : TObject );
           KingCalendar1.TitleColor := TColorByName[ ListBox2.ItemIndex ];
         7 :
           begin
-            tempFont := KingCalendar1.TitleFont;
-            tempFont.Color := TColorByName[ ListBox2.ItemIndex ];
-            KingCalendar1.TitleFont := tempFont;
-            if assigned( tempFont )
-            then
-              freeAndNil( tempFont );
+            // LR20260325 - Fixed memory corruption: was freeing component's internal TFont
+            tempFont := TFont.Create;
+            try
+              tempFont.Assign( KingCalendar1.TitleFont );
+              tempFont.Color := TColorByName[ ListBox2.ItemIndex ];
+              KingCalendar1.TitleFont := tempFont;
+            finally
+              FreeAndNil( tempFont );
+            end;
           end;
         8 :
           KingCalendar1.TodayColor := TColorByName[ ListBox2.ItemIndex ];
@@ -416,12 +431,15 @@ procedure TFrmCalEdit.Button2Click( Sender : TObject );
             KingCalendar1.TitleColor := nColor;
           7 :
             begin
-              tempFont := KingCalendar1.TitleFont;
-              tempFont.Color := nColor;
-              KingCalendar1.TitleFont := tempFont;
-              if assigned( tempFont )
-              then
-                freeAndNil( tempFont );
+              // LR20260325 - Fixed memory corruption: was freeing component's internal TFont
+              tempFont := TFont.Create;
+              try
+                tempFont.Assign( KingCalendar1.TitleFont );
+                tempFont.Color := nColor;
+                KingCalendar1.TitleFont := tempFont;
+              finally
+                FreeAndNil( tempFont );
+              end;
             end;
           8 :
             KingCalendar1.TodayColor := nColor;

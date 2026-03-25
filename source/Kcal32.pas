@@ -63,6 +63,10 @@ uses
   kccmpedt,
   TheKing,
   KingTool,
+  // LR20260325 - Added split units
+  KingToolNav,
+  KingToolMonth,
+  KingToolCtrl,
   KingPop,
   KingProp,
   KingSpin,
@@ -167,13 +171,19 @@ procedure TKingCalendarProperty.Edit;
   begin
     DialogBox := TVcdAboutBox.Create( Application );
     try
-      with DialogBox do begin
-        vcdEdition.Caption := 'Calendar Components for Delphi';
-        vcdRelease.Caption := 'Release ' + vcdVersion + ' (' + vcdBuildDate + ')';
-        vcdCopyright.Caption := 'Portions Copyright   1995,1996 AppVision Software - MPL 2.0 https://github.com/K7LER/KingCal.git';
-        vcdComponent.Caption := GetComponent( 0 ).ClassName + ' Component';
-        ShowModal;
-      end;
+      // LR20260325 - Removed with statement for clarity
+      // with DialogBox do begin
+      //   vcdEdition.Caption := 'Calendar Components for Delphi';
+      //   vcdRelease.Caption := 'Release ' + vcdVersion + ' (' + vcdBuildDate + ')';
+      //   vcdCopyright.Caption := 'Portions Copyright   1995,1996 AppVision Software - MPL 2.0 https://github.com/K7LER/KingCal.git';
+      //   vcdComponent.Caption := GetComponent( 0 ).ClassName + ' Component';
+      //   ShowModal;
+      // end;
+      DialogBox.vcdEdition.Caption := 'Calendar Components for Delphi';
+      DialogBox.vcdRelease.Caption := 'Release ' + vcdVersion + ' (' + vcdBuildDate + ')';
+      DialogBox.vcdCopyright.Caption := 'Portions Copyright   1995,1996 AppVision Software - MPL 2.0 https://github.com/K7LER/KingCal.git';
+      DialogBox.vcdComponent.Caption := GetComponent( 0 ).ClassName + ' Component';
+      DialogBox.ShowModal;
     finally
       DialogBox.Free;
     end;

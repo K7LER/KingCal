@@ -48,6 +48,8 @@ uses
   System.Variants,
   System.Classes,
   System.DateUtils,
+  // LR20260325 - Added for TList<TNotifyEvent> hook mechanism
+  System.Generics.Collections,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -87,7 +89,8 @@ type
 
   TColorarchy = (kcaSetColor, kcaTodayColor);
   TKingText = (ktCenter, ktLowerLeft, ktTopLeft, ktTopRight, ktLowerRight);
-  TKingHooks = array[1..20] of TNotifyEvent;
+  // LR20260325 - Replaced fixed hook array with TList<TNotifyEvent>
+  // TKingHooks = array[1..20] of TNotifyEvent;
 
   TKingToday = record
     Year, Month, Day: Word;
@@ -123,48 +126,56 @@ type
     Y: Longint;
   end;
 
+// LR20260325 - Number of color sets; change this constant to add more sets
+const
+  C_KING_COLOR_COUNT = 9;
+
+type
   { TKingColoring }
   TKingColoring = class(TPersistent)
   private
-    FColorSet1: TColor;
-    FColorSet2: TColor;
-    FColorSet3: TColor;
-    FColorSet4: TColor;
-    FColorSet5: TColor;
-    FColorSet6: TColor;
-    FColorSet7: TColor;
-    FColorSet8: TColor;
-    FColorSet9: TColor;
+    // LR20260325 - Replaced 9 individual fields with indexed array
+    // FColorSet1: TColor;
+    // ...
+    // FColorSet9: TColor;
+    FColors: array[1..C_KING_COLOR_COUNT] of TColor;
+    function GetColor(AIndex: Integer): TColor;
+    procedure SetColor(AIndex: Integer; AValue: TColor);
   protected
   public
+    // LR20260325 - Indexed access for code that needs dynamic color lookup
+    property Colors[AIndex: Integer]: TColor
+      read GetColor
+      write SetColor;
   published
-    property ColorSet1: TColor
-      read FColorSet1
-      write FColorSet1;
-    property ColorSet2: TColor
-      read FColorSet2
-      write FColorSet2;
-    property ColorSet3: TColor
-      read FColorSet3
-      write FColorSet3;
-    property ColorSet4: TColor
-      read FColorSet4
-      write FColorSet4;
-    property ColorSet5: TColor
-      read FColorSet5
-      write FColorSet5;
-    property ColorSet6: TColor
-      read FColorSet6
-      write FColorSet6;
-    property ColorSet7: TColor
-      read FColorSet7
-      write FColorSet7;
-    property ColorSet8: TColor
-      read FColorSet8
-      write FColorSet8;
-    property ColorSet9: TColor
-      read FColorSet9
-      write FColorSet9;
+    // LR20260325 - Individual properties kept for DFM streaming backward compatibility
+    property ColorSet1: TColor index 1
+      read GetColor
+      write SetColor;
+    property ColorSet2: TColor index 2
+      read GetColor
+      write SetColor;
+    property ColorSet3: TColor index 3
+      read GetColor
+      write SetColor;
+    property ColorSet4: TColor index 4
+      read GetColor
+      write SetColor;
+    property ColorSet5: TColor index 5
+      read GetColor
+      write SetColor;
+    property ColorSet6: TColor index 6
+      read GetColor
+      write SetColor;
+    property ColorSet7: TColor index 7
+      read GetColor
+      write SetColor;
+    property ColorSet8: TColor index 8
+      read GetColor
+      write SetColor;
+    property ColorSet9: TColor index 9
+      read GetColor
+      write SetColor;
   end;
 
   { TKingCalendar }
@@ -196,9 +207,11 @@ type
     FKingColors: TKingColoring;
     FTodayColor: TColor;
     FOnClick: TNotifyEvent;
-    FHookEvent: TNotifyEvent;
-    FHookCount: Integer;
-    FHooks: TKingHooks;
+    // LR20260325 - Replaced fixed hook array with dynamic list
+    // FHookEvent: TNotifyEvent;
+    // FHookCount: Integer;
+    // FHooks: TKingHooks;
+    FHooks: TList<TNotifyEvent>;
     FMonthChange: eMonthChange;
     FYearChange: eYearChange;
     FDayChange: eDayChange;
@@ -228,6 +241,13 @@ type
     FUpdating: Boolean;
     FTextFont: TFont;
     FTitleFont: TFont;
+    // LR20260325 - Extracted from Paint nested procedure for readability
+    procedure DrawGridLines(
+      const DrawInfo: TGridDrawInfo;
+      Horz, Vert: Boolean;
+      Col, Row: Longint;
+      StartX, StartY, StopX, StopY: Integer;
+      OnColor, OffColor: TColor);
     procedure CalcDrawInfo(var DrawInfo: TGridDrawInfo);
     procedure CalcDrawInfoXY(
       var DrawInfo: TGridDrawInfo;
@@ -327,6 +347,8 @@ type
     procedure ClearAllDays;
     property HookEvent: TNotifyEvent
       write SetHookEvent;
+    // LR20260325 - New method to remove a hook; prevents dangling pointer on companion destroy
+    procedure UnhookEvent(Value: TNotifyEvent);
     function GetApptLevel: Integer;
     function GetKingColor(Value: Integer): TColor;
     procedure SetShowText(Value: Boolean);
@@ -558,15 +580,19 @@ begin
   inherited Create(AOwner);
 
   FKingColors := TKingColoring.Create;
-  FKingColors.ColorSet1 := clPurple;
-  FKingColors.ColorSet2 := clBlue;
-  FKingColors.ColorSet3 := clAqua;
-  FKingColors.ColorSet4 := clGreen;
-  FKingColors.ColorSet5 := clLime;
-  FKingColors.ColorSet6 := clOlive;
-  FKingColors.ColorSet7 := clYellow;
-  FKingColors.ColorSet8 := clMaroon;
-  FKingColors.ColorSet9 := clRed;
+  // LR20260325 - Use indexed access for color set initialization
+  // FKingColors.ColorSet1 := clPurple;
+  // ...
+  // FKingColors.ColorSet9 := clRed;
+  FKingColors.Colors[1] := clPurple;
+  FKingColors.Colors[2] := clBlue;
+  FKingColors.Colors[3] := clAqua;
+  FKingColors.Colors[4] := clGreen;
+  FKingColors.Colors[5] := clLime;
+  FKingColors.Colors[6] := clOlive;
+  FKingColors.Colors[7] := clYellow;
+  FKingColors.Colors[8] := clMaroon;
+  FKingColors.Colors[9] := clRed;
 
   { defaults }
   FixedCols := 0;
@@ -602,7 +628,9 @@ begin
   FBlockWeekends := False;
   ClearAllDays; { Empty the HotSpot Array to all Flags = 0 }
 
-  FHookCount := 0;
+  // LR20260325 - Create dynamic hook list instead of zeroing fixed counter
+  // FHookCount := 0;
+  FHooks := TList<TNotifyEvent>.Create;
   // LR20260323 - Use system color constant for VCL Styles mapping
   // FTodayColor := clBlack;
   FTodayColor := clWindowText;
@@ -675,6 +703,8 @@ begin
   end;
   { //\\ }
   FreeAndNil(FCalendarObjects);
+  // LR20260325 - Free dynamic hook list
+  FreeAndNil(FHooks);
   inherited Destroy;
 end;
 
@@ -727,12 +757,15 @@ begin
   if Assigned(FOnChange) then
     FOnChange(Self);
 
-  if FHookCount > 0 then
-    for X := 1 to FHookCount do
-    begin
-      FHookEvent := FHooks[X];
-      FHookEvent(Self);
-    end;
+  // LR20260325 - Iterate dynamic hook list instead of fixed array
+  // if FHookCount > 0 then
+  //   for X := 1 to FHookCount do
+  //   begin
+  //     FHookEvent := FHooks[X];
+  //     FHookEvent(Self);
+  //   end;
+  for X := 0 to FHooks.Count - 1 do
+    FHooks[X](Self);
 end;
 
 { **************************************************************************** }
@@ -856,48 +889,49 @@ begin
 
   end;
 
-  with ARect, Canvas do
+  // LR20260325 - Removed with statement; use explicit ARect and Canvas references
+  // with ARect, Canvas do
   begin
 
     if (FTextPlacement = ktCenter) or (ARow = 0) then
       if (ARow = 0) then
-        TextRect(ARect, Left + (Right - Left - TextWidth(TheText)) div 2,
-          Top + (Bottom - Top - TextHeight(TheText)) div 2, TheText)
+        Canvas.TextRect(ARect, ARect.Left + (ARect.Right - ARect.Left - Canvas.TextWidth(TheText)) div 2,
+          ARect.Top + (ARect.Bottom - ARect.Top - Canvas.TextHeight(TheText)) div 2, TheText)
       else
-        TextOut(Left + (Right - Left - TextWidth(TheText)) div 2,
-          Top + (Bottom - Top - TextHeight(TheText)) div 2, TheText)
+        Canvas.TextOut(ARect.Left + (ARect.Right - ARect.Left - Canvas.TextWidth(TheText)) div 2,
+          ARect.Top + (ARect.Bottom - ARect.Top - Canvas.TextHeight(TheText)) div 2, TheText)
     else if (FTextPlacement = ktTopLeft) then
-      TextRect(ARect, (Left + 1), (Top + 1), TheText)
+      Canvas.TextRect(ARect, (ARect.Left + 1), (ARect.Top + 1), TheText)
     else if (FTextPlacement = ktTopRight) then
-      TextRect(ARect, (Right - TextWidth(TheText) - 2),
-        (Top + 1), TheText)
+      Canvas.TextRect(ARect, (ARect.Right - Canvas.TextWidth(TheText) - 2),
+        (ARect.Top + 1), TheText)
     else if (FTextPlacement = ktLowerLeft) then
-      TextRect(ARect, (Left + 1),
-        (Bottom - TextHeight(TheText) - 1), TheText)
+      Canvas.TextRect(ARect, (ARect.Left + 1),
+        (ARect.Bottom - Canvas.TextHeight(TheText) - 1), TheText)
     else if (FTextPlacement = ktLowerRight) then
-      TextRect(ARect, (Right - TextWidth(TheText) - 2),
-        (Bottom - TextHeight(TheText) - 1), TheText);
+      Canvas.TextRect(ARect, (ARect.Right - Canvas.TextWidth(TheText) - 2),
+        (ARect.Bottom - Canvas.TextHeight(TheText) - 1), TheText);
 
-    // hint	  nWidth  := ( Left + ( TextWidth( TheText ) + 2 ) );
+    // hint	  nWidth  := ( ARect.Left + ( Canvas.TextWidth( TheText ) + 2 ) );
 
-    nStart := TextHeight(TheText) + 1;
+    nStart := Canvas.TextHeight(TheText) + 1;
     OldFont := TFont.Create;
-    OldFont.Assign(Font);
-    Font.Assign(FTextFont);
-    nHeight := TextHeight(TheText);
+    OldFont.Assign(Canvas.Font);
+    Canvas.Font.Assign(FTextFont);
+    nHeight := Canvas.TextHeight(TheText);
 
     if (ARow > 0) and TextInCell and not (TheText = '') then
     begin
-      nLines := ((Bottom - (Top + nStart)) div nHeight);
+      nLines := ((ARect.Bottom - (ARect.Top + nStart)) div nHeight);
       for X := 1 to nLines do
       begin
         if FColorCellText then
-          Font.Color := GetKingColor(FKingTypes[nText][X]);
+          Canvas.Font.Color := GetKingColor(FKingTypes[nText][X]);
 
-        TextOut((Left + 2), ((Top + nStart) + (X * nHeight) -
+        Canvas.TextOut((ARect.Left + 2), ((ARect.Top + nStart) + (X * nHeight) -
           nHeight), string(FKingText[nText][X]));
       end;
-      Font.Assign(OldFont);
+      Canvas.Font.Assign(OldFont);
       FreeAndNil(OldFont); // .Free;
     end;
 
@@ -922,7 +956,7 @@ begin
           end;
 
         { Calc the Rect of the are we can draw bars in }
-        bRect.Top := ARect.Top + TextHeight(TheText);
+        bRect.Top := ARect.Top + Canvas.TextHeight(TheText);
         bRect.Left := ARect.Left + 1;
         bRect.Right := ARect.Right - 1;
         bRect.Bottom := ARect.Bottom - 1;
@@ -943,8 +977,8 @@ begin
           begin
             bRect.Bottom := nBottom - (X * nBarSize) - 1;
             bRect.Top := bRect.Bottom - nBarSize;
-            Brush.Color := aBars[(X + 1)];
-            FillRect(bRect);
+            Canvas.Brush.Color := aBars[(X + 1)];
+            Canvas.FillRect(bRect);
           end;
 
         end;
@@ -969,7 +1003,9 @@ end;
 { **************************************************************************** }
 function TKingCalendar.IsLeapYear(nYear: Integer): Boolean;
 begin
-  Result := IsLeapYear(nYear);
+  // LR20260325 - Qualify to avoid ambiguous resolution with this method's own name
+  // Result := IsLeapYear(nYear);
+  Result := System.SysUtils.IsLeapYear(nYear);
 
   // Use Delphi's built in check
 
@@ -1244,90 +1280,9 @@ var
   // hint  I: Integer;
   UpdateRect, FocRect: TRect;
   LineColor: TColor;
-  procedure DrawLines(
-    Horz, Vert: Boolean;
-    Col, Row: Longint;
-    StartX, StartY, StopX, StopY: Integer;
-    OnColor, OffColor: TColor);
-    // hint  var
-    // hint	  Line: Integer;
-
-    procedure DrawHorz;
-    var
-      Line: Integer;
-      ACol: Longint;
-    begin
-      with Canvas, DrawInfo do
-      begin
-        if EffectiveHorzLineWidth <> 0 then
-        begin
-          ACol := Col;
-          if Horz then
-            Pen.Color := OnColor
-          else
-            Pen.Color := OffColor;
-          Line := StartX + DrawInfo.EffectiveHorzLineWidth shr 1 +
-            ColWidths[ACol];
-          repeat
-            MoveTo(Line, StartY);
-            LineTo(Line, StopY);
-            Inc(ACol);
-            Inc(Line, ColWidths[ACol] +
-              DrawInfo.EffectiveHorzLineWidth);
-          until Line > StopX;
-        end;
-      end;
-    end;
-
-    procedure DrawVert;
-    var
-      Line: Integer;
-      ARow: Longint;
-    begin
-      with Canvas, DrawInfo do
-      begin
-        if EffectiveVertLineWidth <> 0 then
-        begin
-          ARow := Row;
-          if (ARow = 2) and (StartX = (TitleFont.Size + 4)) then
-            Dec(ARow);
-
-          if Vert then
-            Pen.Color := OnColor
-          else
-            Pen.Color := OffColor;
-          Line := StartY + DrawInfo.EffectiveVertLineWidth shr 1 +
-            RowHeights[ARow];
-          repeat
-            MoveTo(StartX, Line);
-            LineTo(StopX, Line);
-            Inc(ARow);
-            Inc(Line, RowHeights[ARow] +
-              DrawInfo.EffectiveVertLineWidth);
-          until Line > StopY;
-        end;
-      end;
-    end;
-
-  begin
-    with DrawInfo do
-    begin
-      if (EffectiveHorzLineWidth = 0) and (EffectiveVertLineWidth = 0)
-        or (StartX = StopX) or (StartY = StopY) then
-        Exit;
-      Canvas.Pen.Width := DrawInfo.EffectiveHorzLineWidth;
-      if not Horz then
-      begin
-        DrawHorz;
-        DrawVert;
-      end
-      else
-      begin
-        DrawVert;
-        DrawHorz;
-      end;
-    end;
-  end;
+  // LR20260325 - DrawLines nested procedure extracted to private method DrawGridLines
+  // procedure DrawLines( ... ) with nested DrawHorz/DrawVert removed;
+  // see TKingCalendar.DrawGridLines for the extracted implementation
 
   procedure DrawCells(
     ACol, ARow: Longint;
@@ -1364,43 +1319,44 @@ var
             or not FEditorMode or (csDesigning in ComponentState) then
           begin
             if DefaultDrawing or (csDesigning in ComponentState) then
-              with Canvas do
+              // LR20260325 - Removed with statement; use explicit Canvas reference
+              // with Canvas do
               begin
                 if (ARow = 0) then
-                  Font := FTitleFont
+                  Canvas.Font := FTitleFont
                 else
-                  Font := Self.Font;
+                  Canvas.Font := Self.Font;
                 // LR20260323 - Map base font color through VCL Styles so text is
                 //              visible on dark themes (e.g. Glow); raw clWindowText
                 //              resolves via GDI to the Windows system color (black),
                 //              not the active VCL Style's color
-                Font.Color :=
-                  GetEffectiveStyleServices.GetSystemColor(Font.Color);
+                Canvas.Font.Color :=
+                  GetEffectiveStyleServices.GetSystemColor(Canvas.Font.Color);
                 if (gdSelected in DrawState) and
                   (not (gdFocused in DrawState) or
                   (goDrawFocusSelected in Options)) then
                 begin
                   if (not FActive) then
                   begin
-                    Brush.Color := Color;
+                    Canvas.Brush.Color := Color;
                     if (FColorarchy = kcaSetColor) then
                       // LR20260323 - Map through VCL Styles (same as DrawCell fix)
-                      Font.Color :=
+                      Canvas.Font.Color :=
                         GetEffectiveStyleServices.GetSystemColor(
                         GetKingColor
                         (FHotSpots[StrToInt(CellText[CurRow,
                           CurCol])]))
                     else
-                      Font.Color := TodayColor;
+                      Canvas.Font.Color := TodayColor;
                   end
                   else
                   begin
                     // LR20260323 - Map selection colors through VCL Styles
                     // Brush.Color := FHighlight;
                     // Font.Color := FHighlightText;
-                    Brush.Color :=
+                    Canvas.Brush.Color :=
                       GetEffectiveStyleServices.GetSystemColor(FHighlight);
-                    Font.Color :=
+                    Canvas.Font.Color :=
                       GetEffectiveStyleServices.GetSystemColor(FHighlightText);
                   end
                 end
@@ -1414,7 +1370,7 @@ var
                     if FBlockedDays[nText] then
                       // LR20260323 - Map blocked background through VCL Styles
                       // Brush.Color := FBlockedBkgnd
-                      Brush.Color :=
+                      Canvas.Brush.Color :=
                         GetEffectiveStyleServices.GetSystemColor(FBlockedBkgnd)
                     else
                       { //\ 1.2 Code }
@@ -1422,30 +1378,31 @@ var
                       //              so default cells use the themed background
                       {// if FCellBackground[ nText ] <> Color} if
                         FCellBackground[nText] <> FCellColor then
-                        Brush.Color :=
+                        Canvas.Brush.Color :=
                           GetEffectiveStyleServices.GetSystemColor(FCellBackground[nText])
                           { //\\ }
                       else
-                        Brush.Color := Color;
+                        Canvas.Brush.Color := Color;
                   end
                   else
-                    Brush.Color := Color;
+                    Canvas.Brush.Color := Color;
 
                 end;
 
-                FillRect(Where);
+                Canvas.FillRect(Where);
 
               end;
 
             DrawCell(CurCol, CurRow, Where, DrawState);
             if DefaultDrawing and (gdFixed in DrawState) and Ctl3D then
-              with Canvas do
+              // LR20260325 - Removed with statement; use explicit Canvas reference
+              // with Canvas do
               begin
                 // LR20260323 - Use styled highlight color instead of hardcoded white
                 // Pen.Color := clWhite;
-                Pen.Color :=
+                Canvas.Pen.Color :=
                   GetEffectiveStyleServices.GetSystemColor(clBtnHighlight);
-                Polyline([Point(Where.Left, Where.Bottom),
+                Canvas.Polyline([Point(Where.Left, Where.Bottom),
                     Where.TopLeft, Point(Where.Right, Where.Top)]);
               end;
             if DefaultDrawing and not (csDesigning in ComponentState) and
@@ -1477,74 +1434,150 @@ begin
   SCellColor := GetEffectiveStyleServices.GetSystemColor(FCellColor);
   STextColor := GetEffectiveStyleServices.GetSystemColor(clWindowText);
 
-  with DrawInfo do
+  // LR20260325 - Removed with statement; use explicit DrawInfo reference
+  // with DrawInfo do
+  { Draw the grid line in the four areas (fixed, fixed), (variable, fixed),
+    (fixed, variable) and (variable, variable) }
+  // hint	  LineColor := clSilver;
+  // hint	  if ColorToRGB(Color) = clSilver then LineColor := clGray;
+  // LR20260323 - Use styled text and fixed colors for grid lines
+  // DrawLines( ..., clBlack, FixedColor );
+  DrawGridLines(DrawInfo, goFixedHorzLine in Options, goFixedVertLine in Options, 0, 0,
+    0, 0, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, STextColor, SFixedColor);
+  DrawGridLines(DrawInfo, goFixedHorzLine in Options, goFixedVertLine in Options,
+    LeftCol, 0, DrawInfo.FixedBoundaryX, 0, DrawInfo.GridBoundaryX, DrawInfo.FixedBoundaryY,
+    STextColor, SFixedColor);
+
+  { The following IF..ELSE block simple redraws the gridlines in a nonvisable
+    color. This was how I faked out the IDE }
+
+  if FGridLines then
+    // LR20260323 - Map grid line color through VCL Styles
+    LineColor := GetEffectiveStyleServices.GetSystemColor(GridLineColor)
+  else
+    LineColor := SCellColor;
+
+  DrawGridLines(DrawInfo, goFixedHorzLine in Options, goFixedVertLine in Options, 0,
+    TopRow, 0, DrawInfo.FixedBoundaryY, DrawInfo.FixedBoundaryX, DrawInfo.GridBoundaryY,
+    STextColor, SFixedColor);
+  // LR20260323 - Use styled colors for data-area grid lines
+  // DrawLines( ..., LineColor, Color );
+  DrawGridLines(DrawInfo, goHorzLine in Options, goVertLine in Options, LeftCol, TopRow,
+    DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, DrawInfo.GridBoundaryX, DrawInfo.GridBoundaryY,
+    LineColor, SCellColor);
+
+  { Draw the cells in the four areas }
+  Sel := Selection;
+  // LR20260323 - Pass styled colors so cells paint with theme-aware backgrounds
+  // DrawCells( ..., FixedColor, [gdFixed] );
+  // DrawCells( ..., CellColor, [] );
+  DrawCells(0, 0, 0, 0, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, SFixedColor,
+    [gdFixed]);
+  DrawCells(LeftCol, 0, DrawInfo.FixedBoundaryX, 0, DrawInfo.GridBoundaryX, DrawInfo.FixedBoundaryY,
+    SFixedColor, [gdFixed]);
+  DrawCells(0, TopRow, 0, DrawInfo.FixedBoundaryY, DrawInfo.FixedBoundaryX, DrawInfo.GridBoundaryY,
+    SFixedColor, [gdFixed]);
+  DrawCells(LeftCol, TopRow, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, DrawInfo.GridBoundaryX,
+    DrawInfo.GridBoundaryY, SCellColor, []);
+
+  if not (csDesigning in ComponentState) and (goRowSelect in Options)
+    and DefaultDrawing and Focused then
   begin
-    { Draw the grid line in the four areas (fixed, fixed), (variable, fixed),
-      (fixed, variable) and (variable, variable) }
-    // hint	  LineColor := clSilver;
-    // hint	  if ColorToRGB(Color) = clSilver then LineColor := clGray;
-    // LR20260323 - Use styled text and fixed colors for grid lines
-    // DrawLines( ..., clBlack, FixedColor );
-    DrawLines(goFixedHorzLine in Options, goFixedVertLine in Options, 0, 0,
-      0, 0, FixedBoundaryX, FixedBoundaryY, STextColor, SFixedColor);
-    DrawLines(goFixedHorzLine in Options, goFixedVertLine in Options,
-      LeftCol, 0, FixedBoundaryX, 0, GridBoundaryX, FixedBoundaryY,
-      STextColor, SFixedColor);
+    GridRectToScreenRect(GetSelection, FocRect, False);
+    Canvas.DrawFocusRect(FocRect);
 
-    { The following IF..ELSE block simple redraws the gridlines in a nonvisable
-      color. This was how I faked out the IDE }
+  end;
 
-    if FGridLines then
-      // LR20260323 - Map grid line color through VCL Styles
-      LineColor := GetEffectiveStyleServices.GetSystemColor(GridLineColor)
-    else
-      LineColor := SCellColor;
+  { Fill in area not occupied by cells }
+  // LR20260323 - Use styled cell color for empty areas
+  if DrawInfo.GridBoundaryX < DrawInfo.GridWidth then
+  begin
+    // Canvas.Brush.Color := Color;
+    Canvas.Brush.Color := SCellColor;
+    Canvas.FillRect(Rect(DrawInfo.GridBoundaryX, 0, DrawInfo.GridWidth, DrawInfo.GridBoundaryY));
+  end;
+  if DrawInfo.GridBoundaryY < DrawInfo.GridHeight then
+  begin
+    // Canvas.Brush.Color := Color;
+    Canvas.Brush.Color := SCellColor;
+    Canvas.FillRect(Rect(0, DrawInfo.GridBoundaryY, DrawInfo.GridWidth, DrawInfo.GridHeight));
+  end;
+end;
 
-    DrawLines(goFixedHorzLine in Options, goFixedVertLine in Options, 0,
-      TopRow, 0, FixedBoundaryY, FixedBoundaryX, GridBoundaryY,
-      STextColor, SFixedColor);
-    // LR20260323 - Use styled colors for data-area grid lines
-    // DrawLines( ..., LineColor, Color );
-    DrawLines(goHorzLine in Options, goVertLine in Options, LeftCol, TopRow,
-      FixedBoundaryX, FixedBoundaryY, GridBoundaryX, GridBoundaryY,
-      LineColor, SCellColor);
+{ **************************************************************************** }
+// LR20260325 - Extracted from Paint nested procedure for readability
+procedure TKingCalendar.DrawGridLines(
+  const DrawInfo: TGridDrawInfo;
+  Horz, Vert: Boolean;
+  Col, Row: Longint;
+  StartX, StartY, StopX, StopY: Integer;
+  OnColor, OffColor: TColor);
 
-    { Draw the cells in the four areas }
-    Sel := Selection;
-    // LR20260323 - Pass styled colors so cells paint with theme-aware backgrounds
-    // DrawCells( ..., FixedColor, [gdFixed] );
-    // DrawCells( ..., CellColor, [] );
-    DrawCells(0, 0, 0, 0, FixedBoundaryX, FixedBoundaryY, SFixedColor,
-      [gdFixed]);
-    DrawCells(LeftCol, 0, FixedBoundaryX, 0, GridBoundaryX, FixedBoundaryY,
-      SFixedColor, [gdFixed]);
-    DrawCells(0, TopRow, 0, FixedBoundaryY, FixedBoundaryX, GridBoundaryY,
-      SFixedColor, [gdFixed]);
-    DrawCells(LeftCol, TopRow, FixedBoundaryX, FixedBoundaryY, GridBoundaryX,
-      GridBoundaryY, SCellColor, []);
-
-    if not (csDesigning in ComponentState) and (goRowSelect in Options)
-      and DefaultDrawing and Focused then
+  procedure DrawHorz;
+  var
+    Line: Integer;
+    ACol: Longint;
+  begin
+    if DrawInfo.EffectiveHorzLineWidth <> 0 then
     begin
-      GridRectToScreenRect(GetSelection, FocRect, False);
-      Canvas.DrawFocusRect(FocRect);
+      ACol := Col;
+      if Horz then
+        Canvas.Pen.Color := OnColor
+      else
+        Canvas.Pen.Color := OffColor;
+      Line := StartX + DrawInfo.EffectiveHorzLineWidth shr 1 +
+        ColWidths[ACol];
+      repeat
+        Canvas.MoveTo(Line, StartY);
+        Canvas.LineTo(Line, StopY);
+        Inc(ACol);
+        Inc(Line, ColWidths[ACol] +
+          DrawInfo.EffectiveHorzLineWidth);
+      until Line > StopX;
+    end;
+  end;
 
-    end;
+  procedure DrawVert;
+  var
+    Line: Integer;
+    ARow: Longint;
+  begin
+    if DrawInfo.EffectiveVertLineWidth <> 0 then
+    begin
+      ARow := Row;
+      if (ARow = 2) and (StartX = (TitleFont.Size + 4)) then
+        Dec(ARow);
 
-    { Fill in area not occupied by cells }
-    // LR20260323 - Use styled cell color for empty areas
-    if GridBoundaryX < GridWidth then
-    begin
-      // Canvas.Brush.Color := Color;
-      Canvas.Brush.Color := SCellColor;
-      Canvas.FillRect(Rect(GridBoundaryX, 0, GridWidth, GridBoundaryY));
+      if Vert then
+        Canvas.Pen.Color := OnColor
+      else
+        Canvas.Pen.Color := OffColor;
+      Line := StartY + DrawInfo.EffectiveVertLineWidth shr 1 +
+        RowHeights[ARow];
+      repeat
+        Canvas.MoveTo(StartX, Line);
+        Canvas.LineTo(StopX, Line);
+        Inc(ARow);
+        Inc(Line, RowHeights[ARow] +
+          DrawInfo.EffectiveVertLineWidth);
+      until Line > StopY;
     end;
-    if GridBoundaryY < GridHeight then
-    begin
-      // Canvas.Brush.Color := Color;
-      Canvas.Brush.Color := SCellColor;
-      Canvas.FillRect(Rect(0, GridBoundaryY, GridWidth, GridHeight));
-    end;
+  end;
+
+begin
+  if (DrawInfo.EffectiveHorzLineWidth = 0) and (DrawInfo.EffectiveVertLineWidth = 0)
+    or (StartX = StopX) or (StartY = StopY) then
+    Exit;
+  Canvas.Pen.Width := DrawInfo.EffectiveHorzLineWidth;
+  if not Horz then
+  begin
+    DrawHorz;
+    DrawVert;
+  end
+  else
+  begin
+    DrawVert;
+    DrawHorz;
   end;
 end;
 
@@ -1562,38 +1595,37 @@ var
   I: Longint;
 begin
   CalcFixedInfo(DrawInfo);
-  with DrawInfo do
-  begin
-    GridHeight := UseHeight;
-    GridWidth := UseWidth;
+  // LR20260325 - Removed with statement; use explicit DrawInfo reference
+  // with DrawInfo do
+  DrawInfo.GridHeight := UseHeight;
+  DrawInfo.GridWidth := UseWidth;
 
-    { Calculate visible area }
-    GridBoundaryX := FixedBoundaryX;
-    LastFullVisibleCol := LeftCol;
-    for I := LeftCol to ColCount - 1 do
+  { Calculate visible area }
+  DrawInfo.GridBoundaryX := DrawInfo.FixedBoundaryX;
+  DrawInfo.LastFullVisibleCol := LeftCol;
+  for I := LeftCol to ColCount - 1 do
+  begin
+    Inc(DrawInfo.GridBoundaryX, ColWidths[I] + DrawInfo.EffectiveHorzLineWidth);
+    if DrawInfo.GridBoundaryX > DrawInfo.GridWidth then
     begin
-      Inc(GridBoundaryX, ColWidths[I] + EffectiveHorzLineWidth);
-      if GridBoundaryX > GridWidth then
-      begin
-        GridBoundaryX := GridWidth;
-        Break;
-      end;
-      LastFullVisibleCol := I;
-      FullVisBoundaryX := GridBoundaryX;
+      DrawInfo.GridBoundaryX := DrawInfo.GridWidth;
+      Break;
     end;
-    GridBoundaryY := FixedBoundaryY;
-    LastFullVisibleRow := TopRow;
-    for I := TopRow to RowCount - 1 do
+    DrawInfo.LastFullVisibleCol := I;
+    DrawInfo.FullVisBoundaryX := DrawInfo.GridBoundaryX;
+  end;
+  DrawInfo.GridBoundaryY := DrawInfo.FixedBoundaryY;
+  DrawInfo.LastFullVisibleRow := TopRow;
+  for I := TopRow to RowCount - 1 do
+  begin
+    Inc(DrawInfo.GridBoundaryY, RowHeights[I] + DrawInfo.EffectiveVertLineWidth);
+    if DrawInfo.GridBoundaryY > DrawInfo.GridHeight then
     begin
-      Inc(GridBoundaryY, RowHeights[I] + EffectiveVertLineWidth);
-      if GridBoundaryY > GridHeight then
-      begin
-        GridBoundaryY := GridHeight;
-        Break;
-      end;
-      LastFullVisibleRow := I;
-      FullVisBoundaryY := GridBoundaryY;
+      DrawInfo.GridBoundaryY := DrawInfo.GridHeight;
+      Break;
     end;
+    DrawInfo.LastFullVisibleRow := I;
+    DrawInfo.FullVisBoundaryY := DrawInfo.GridBoundaryY;
   end;
 end;
 
@@ -1602,24 +1634,23 @@ procedure TKingCalendar.CalcFixedInfo(var DrawInfo: TGridDrawInfo);
 var
   I: Integer;
 begin
-  with DrawInfo do
-  begin
-    { Calculate grid line widths }
-    EffectiveHorzLineWidth := 0;
-    if [goFixedHorzLine, goHorzLine] * Options <> [] then
-      EffectiveHorzLineWidth := GridLineWidth;
-    EffectiveVertLineWidth := 0;
-    if [goFixedVertLine, goVertLine] * Options <> [] then
-      EffectiveVertLineWidth := GridLineWidth;
+  // LR20260325 - Removed with statement; use explicit DrawInfo reference
+  // with DrawInfo do
+  { Calculate grid line widths }
+  DrawInfo.EffectiveHorzLineWidth := 0;
+  if [goFixedHorzLine, goHorzLine] * Options <> [] then
+    DrawInfo.EffectiveHorzLineWidth := GridLineWidth;
+  DrawInfo.EffectiveVertLineWidth := 0;
+  if [goFixedVertLine, goVertLine] * Options <> [] then
+    DrawInfo.EffectiveVertLineWidth := GridLineWidth;
 
-    { Calculate fixed boundaries }
-    FixedBoundaryX := 0;
-    for I := 0 to FixedCols - 1 do
-      Inc(FixedBoundaryX, ColWidths[I] + EffectiveHorzLineWidth);
-    FixedBoundaryY := 0;
-    for I := 0 to FixedRows - 1 do
-      Inc(FixedBoundaryY, RowHeights[I] + EffectiveVertLineWidth);
-  end;
+  { Calculate fixed boundaries }
+  DrawInfo.FixedBoundaryX := 0;
+  for I := 0 to FixedCols - 1 do
+    Inc(DrawInfo.FixedBoundaryX, ColWidths[I] + DrawInfo.EffectiveHorzLineWidth);
+  DrawInfo.FixedBoundaryY := 0;
+  for I := 0 to FixedRows - 1 do
+    Inc(DrawInfo.FixedBoundaryY, RowHeights[I] + DrawInfo.EffectiveVertLineWidth);
 end;
 
 { **************************************************************************** }
@@ -1678,51 +1709,50 @@ var
   I, Start, Stop: Longint;
   Line: Integer;
 begin
-  with DrawInfo do
+  // LR20260325 - Removed with statement; use explicit DrawInfo reference
+  // with DrawInfo do
+  if X < DrawInfo.FixedBoundaryX then
   begin
-    if X < FixedBoundaryX then
-    begin
-      Start := 0;
-      Stop := FixedCols - 1;
-      Line := 0;
-    end
-    else
-    begin
-      Start := LeftCol;
-      Stop := ColCount - 1;
-      Line := FixedBoundaryX;
-    end;
-    for I := Start to Stop do
-    begin
-      Result.X := I;
-      Inc(Line, ColWidths[I] + EffectiveHorzLineWidth);
-      if X < Line then
-        Break;
-    end;
-    if I > Stop then
-      Result.X := -1;
-    if Y < FixedBoundaryY then
-    begin
-      Start := 0;
-      Stop := FixedRows - 1;
-      Line := 0;
-    end
-    else
-    begin
-      Start := TopRow;
-      Stop := RowCount - 1;
-      Line := FixedBoundaryY;
-    end;
-    for I := Start to Stop do
-    begin
-      Result.Y := I;
-      Inc(Line, RowHeights[I] + EffectiveVertLineWidth);
-      if Y < Line then
-        Break;
-    end;
-    if I > Stop then
-      Result.Y := -1;
+    Start := 0;
+    Stop := FixedCols - 1;
+    Line := 0;
+  end
+  else
+  begin
+    Start := LeftCol;
+    Stop := ColCount - 1;
+    Line := DrawInfo.FixedBoundaryX;
   end;
+  for I := Start to Stop do
+  begin
+    Result.X := I;
+    Inc(Line, ColWidths[I] + DrawInfo.EffectiveHorzLineWidth);
+    if X < Line then
+      Break;
+  end;
+  if I > Stop then
+    Result.X := -1;
+  if Y < DrawInfo.FixedBoundaryY then
+  begin
+    Start := 0;
+    Stop := FixedRows - 1;
+    Line := 0;
+  end
+  else
+  begin
+    Start := TopRow;
+    Stop := RowCount - 1;
+    Line := DrawInfo.FixedBoundaryY;
+  end;
+  for I := Start to Stop do
+  begin
+    Result.Y := I;
+    Inc(Line, RowHeights[I] + DrawInfo.EffectiveVertLineWidth);
+    if Y < Line then
+      Break;
+  end;
+  if I > Stop then
+    Result.Y := -1;
   if Result.Y = -1 then
     Result.X := -1
   else if Result.X = -1 then
@@ -1917,8 +1947,22 @@ end;
 { **************************************************************************** }
 procedure TKingCalendar.SetHookEvent(Value: TNotifyEvent);
 begin
-  FHookCount := FHookCount + 1;
-  FHooks[FHookCount] := Value;
+  // LR20260325 - Use dynamic list with duplicate check instead of fixed array
+  // FHookCount := FHookCount + 1;
+  // FHooks[FHookCount] := Value;
+  if FHooks.IndexOf(Value) < 0 then
+    FHooks.Add(Value);
+end;
+
+{ **************************************************************************** }
+// LR20260325 - New method to safely remove a hook when companion is destroyed
+procedure TKingCalendar.UnhookEvent(Value: TNotifyEvent);
+var
+  LIdx: Integer;
+begin
+  LIdx := FHooks.IndexOf(Value);
+  if LIdx >= 0 then
+    FHooks.Delete(LIdx);
 end;
 
 { **************************************************************************** }
@@ -2022,40 +2066,38 @@ begin
 end;
 
 { **************************************************************************** }
+// LR20260325 - Indexed accessor for TKingColoring array
+function TKingColoring.GetColor(AIndex: Integer): TColor;
+begin
+  if (AIndex >= 1) and (AIndex <= C_KING_COLOR_COUNT) then
+    Result := FColors[AIndex]
+  else
+    Result := clWindowText;
+end;
+
+{ **************************************************************************** }
+// LR20260325 - Indexed setter for TKingColoring array
+procedure TKingColoring.SetColor(AIndex: Integer; AValue: TColor);
+begin
+  if (AIndex >= 1) and (AIndex <= C_KING_COLOR_COUNT) then
+    FColors[AIndex] := AValue;
+end;
+
+{ **************************************************************************** }
 function TKingCalendar.GetKingColor(Value: Integer): TColor;
 begin
-  case Value of
-    // LR20260323 - Changed default (flag 0) from clBlack to clWindowText so that
-    //              VCL Styles (e.g. Glow dark theme) can resolve the text color
-    //              correctly; clBlack is a literal RGB value that StyleServices
-    //              cannot remap, while clWindowText is a system color constant
-    // 0 :
-    //   Result := clBlack;
-    0:
-      Result := clWindowText;
-    1:
-      Result := FKingColors.ColorSet1;
-    2:
-      Result := FKingColors.ColorSet2;
-    3:
-      Result := FKingColors.ColorSet3;
-    4:
-      Result := FKingColors.ColorSet4;
-    5:
-      Result := FKingColors.ColorSet5;
-    6:
-      Result := FKingColors.ColorSet6;
-    7:
-      Result := FKingColors.ColorSet7;
-    8:
-      Result := FKingColors.ColorSet8;
-    9:
-      Result := FKingColors.ColorSet9;
+  // LR20260325 - Simplified using indexed Colors property
+  // case Value of
+  //   0: Result := clWindowText;
+  //   1: Result := FKingColors.ColorSet1;
+  //   ...
+  //   9: Result := FKingColors.ColorSet9;
+  // else Result := clWindowText;
+  // end;
+  if (Value >= 1) and (Value <= C_KING_COLOR_COUNT) then
+    Result := FKingColors.Colors[Value]
   else
-    // LR20260323 - Changed fallback from clBlack to clWindowText
-    // Result := clBlack;
     Result := clWindowText;
-  end;
 end;
 
 { **************************************************************************** }
@@ -2311,25 +2353,24 @@ var
   var
     Start, I: Longint;
   begin
-    with DrawInfo do
+    // LR20260325 - Removed with statement; use explicit DrawInfo reference
+    // with DrawInfo do
+    Result := 0;
+    if Col < FixedCols then
+      Start := 0
+    else
     begin
-      Result := 0;
-      if Col < FixedCols then
-        Start := 0
-      else
+      if Col >= LeftCol then
+        Result := DrawInfo.FixedBoundaryX;
+      Start := LeftCol;
+    end;
+    for I := Start to Col - 1 do
+    begin
+      Inc(Result, ColWidths[I] + DrawInfo.EffectiveHorzLineWidth);
+      if Result > DrawInfo.GridWidth then
       begin
-        if Col >= LeftCol then
-          Result := FixedBoundaryX;
-        Start := LeftCol;
-      end;
-      for I := Start to Col - 1 do
-      begin
-        Inc(Result, ColWidths[I] + EffectiveHorzLineWidth);
-        if Result > GridWidth then
-        begin
-          Result := 0;
-          Exit;
-        end;
+        Result := 0;
+        Exit;
       end;
     end;
   end;
@@ -2340,25 +2381,24 @@ var
   var
     Start, I: Longint;
   begin
-    with DrawInfo do
+    // LR20260325 - Removed with statement; use explicit DrawInfo reference
+    // with DrawInfo do
+    Result := 0;
+    if Row < FixedRows then
+      Start := 0
+    else
     begin
-      Result := 0;
-      if Row < FixedRows then
-        Start := 0
-      else
+      if Row >= TopRow then
+        Result := DrawInfo.FixedBoundaryY;
+      Start := TopRow;
+    end;
+    for I := Start to Row - 1 do
+    begin
+      Inc(Result, RowHeights[I] + DrawInfo.EffectiveVertLineWidth);
+      if Result > DrawInfo.GridHeight then
       begin
-        if Row >= TopRow then
-          Result := FixedBoundaryY;
-        Start := TopRow;
-      end;
-      for I := Start to Row - 1 do
-      begin
-        Inc(Result, RowHeights[I] + EffectiveVertLineWidth);
-        if Result > GridHeight then
-        begin
-          Result := 0;
-          Exit;
-        end;
+        Result := 0;
+        Exit;
       end;
     end;
   end;
@@ -2368,79 +2408,77 @@ begin
   if (GridRect.Left > GridRect.Right) or (GridRect.Top > GridRect.Bottom) then
     Exit;
   CalcDrawInfo(DrawInfo);
-  with DrawInfo do
+  // LR20260325 - Removed with statement; use explicit DrawInfo reference
+  // with DrawInfo do
+  if GridRect.Left > DrawInfo.LastFullVisibleCol + 1 then
+    Exit;
+  if GridRect.Top > DrawInfo.LastFullVisibleRow + 1 then
+    Exit;
+  if (GridRect.Left >= FixedCols) and (GridRect.Left < LeftCol) then
+    if GridRect.Right < LeftCol then
+      Exit
+    else
+      GridRect.Left := LeftCol;
+  if GridRect.Right > DrawInfo.LastFullVisibleCol then
   begin
-    if GridRect.Left > LastFullVisibleCol + 1 then
-      Exit;
-    if GridRect.Top > LastFullVisibleRow + 1 then
-      Exit;
-    if (GridRect.Left >= FixedCols) and (GridRect.Left < LeftCol) then
-      if GridRect.Right < LeftCol then
-        Exit
-      else
-        GridRect.Left := LeftCol;
-    if GridRect.Right > LastFullVisibleCol then
-    begin
-      GridRect.Right := LastFullVisibleCol;
-      if GridRect.Right < ColCount - 1 then
-        Inc(GridRect.Right);
-      if ColPos(GridRect.Right, DrawInfo) = 0 then
-        Dec(GridRect.Right);
-    end;
-    if (GridRect.Top >= FixedRows) and (GridRect.Top < TopRow) then
-      if GridRect.Bottom < TopRow then
-        Exit
-      else
-        GridRect.Top := TopRow;
-    if GridRect.Bottom > LastFullVisibleRow then
-    begin
-      GridRect.Bottom := LastFullVisibleRow;
-      if GridRect.Bottom < RowCount - 1 then
-        Inc(GridRect.Bottom);
-      if RowPos(GridRect.Bottom, DrawInfo) = 0 then
-        Dec(GridRect.Bottom);
-    end;
-    ScreenRect.Left := ColPos(GridRect.Left, DrawInfo);
-    ScreenRect.Right := ColPos(GridRect.Right, DrawInfo);
-    if ScreenRect.Right = 0 then
-      ScreenRect.Right := ScreenRect.Left + ColWidths[GridRect.Left]
-    else
-      Inc(ScreenRect.Right, ColWidths[GridRect.Right]);
-    if ScreenRect.Right > GridWidth then
-      ScreenRect.Right := GridWidth;
-    if IncludeLine then
-      Inc(ScreenRect.Right, EffectiveHorzLineWidth);
-    ScreenRect.Top := RowPos(GridRect.Top, DrawInfo);
-    ScreenRect.Bottom := RowPos(GridRect.Bottom, DrawInfo);
-    if ScreenRect.Bottom = 0 then
-      ScreenRect.Bottom := ScreenRect.Top + RowHeights[GridRect.Top]
-    else
-      Inc(ScreenRect.Bottom, RowHeights[GridRect.Bottom]);
-    if IncludeLine then
-      Inc(ScreenRect.Bottom, EffectiveVertLineWidth);
-    if ScreenRect.Bottom > GridHeight then
-      ScreenRect.Bottom := GridHeight;
+    GridRect.Right := DrawInfo.LastFullVisibleCol;
+    if GridRect.Right < ColCount - 1 then
+      Inc(GridRect.Right);
+    if ColPos(GridRect.Right, DrawInfo) = 0 then
+      Dec(GridRect.Right);
   end;
+  if (GridRect.Top >= FixedRows) and (GridRect.Top < TopRow) then
+    if GridRect.Bottom < TopRow then
+      Exit
+    else
+      GridRect.Top := TopRow;
+  if GridRect.Bottom > DrawInfo.LastFullVisibleRow then
+  begin
+    GridRect.Bottom := DrawInfo.LastFullVisibleRow;
+    if GridRect.Bottom < RowCount - 1 then
+      Inc(GridRect.Bottom);
+    if RowPos(GridRect.Bottom, DrawInfo) = 0 then
+      Dec(GridRect.Bottom);
+  end;
+  ScreenRect.Left := ColPos(GridRect.Left, DrawInfo);
+  ScreenRect.Right := ColPos(GridRect.Right, DrawInfo);
+  if ScreenRect.Right = 0 then
+    ScreenRect.Right := ScreenRect.Left + ColWidths[GridRect.Left]
+  else
+    Inc(ScreenRect.Right, ColWidths[GridRect.Right]);
+  if ScreenRect.Right > DrawInfo.GridWidth then
+    ScreenRect.Right := DrawInfo.GridWidth;
+  if IncludeLine then
+    Inc(ScreenRect.Right, DrawInfo.EffectiveHorzLineWidth);
+  ScreenRect.Top := RowPos(GridRect.Top, DrawInfo);
+  ScreenRect.Bottom := RowPos(GridRect.Bottom, DrawInfo);
+  if ScreenRect.Bottom = 0 then
+    ScreenRect.Bottom := ScreenRect.Top + RowHeights[GridRect.Top]
+  else
+    Inc(ScreenRect.Bottom, RowHeights[GridRect.Bottom]);
+  if IncludeLine then
+    Inc(ScreenRect.Bottom, DrawInfo.EffectiveVertLineWidth);
+  if ScreenRect.Bottom > DrawInfo.GridHeight then
+    ScreenRect.Bottom := DrawInfo.GridHeight;
 end;
 
 { **************************************************************************** }
 function GridRect(Coord1, Coord2: TGridCoord): TGridRect;
 begin
-  with Result do
-  begin
-    Left := Coord2.X;
-    if Coord1.X < Coord2.X then
-      Left := Coord1.X;
-    Right := Coord1.X;
-    if Coord1.X < Coord2.X then
-      Right := Coord2.X;
-    Top := Coord2.Y;
-    if Coord1.Y < Coord2.Y then
-      Top := Coord1.Y;
-    Bottom := Coord1.Y;
-    if Coord1.Y < Coord2.Y then
-      Bottom := Coord2.Y;
-  end;
+  // LR20260325 - Removed with statement; use explicit Result reference
+  // with Result do
+  Result.Left := Coord2.X;
+  if Coord1.X < Coord2.X then
+    Result.Left := Coord1.X;
+  Result.Right := Coord1.X;
+  if Coord1.X < Coord2.X then
+    Result.Right := Coord2.X;
+  Result.Top := Coord2.Y;
+  if Coord1.Y < Coord2.Y then
+    Result.Top := Coord1.Y;
+  Result.Bottom := Coord1.Y;
+  if Coord1.Y < Coord2.Y then
+    Result.Bottom := Coord2.Y;
 end;
 
 { **************************************************************************** }

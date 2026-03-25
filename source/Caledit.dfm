@@ -11,11 +11,9 @@ object FrmCalEdit: TFrmCalEdit
   Font.Height = -13
   Font.Name = 'Segoe UI'
   Font.Style = []
-  OldCreateOrder = True
   Position = poScreenCenter
   OnActivate = FormActivate
-  PixelsPerInch = 96
-  TextHeight = 16
+  TextHeight = 17
   object Bevel1: TBevel
     Left = 8
     Top = 8
@@ -44,28 +42,28 @@ object FrmCalEdit: TFrmCalEdit
       object Label1: TLabel
         Left = 8
         Top = 8
-        Width = 80
+        Width = 73
         Height = 13
         Caption = 'Color Settings'
       end
       object Label2: TLabel
         Left = 176
         Top = 8
-        Width = 93
+        Width = 86
         Height = 13
         Caption = 'Choose by Color'
       end
       object Label3: TLabel
         Left = 176
         Top = 128
-        Width = 90
+        Width = 81
         Height = 13
         Caption = 'Visual Example '
       end
       object Label4: TLabel
         Left = 376
         Top = 8
-        Width = 96
+        Width = 89
         Height = 13
         Caption = 'Choose by Name'
       end
@@ -116,9 +114,10 @@ object FrmCalEdit: TFrmCalEdit
         Top = 144
         Width = 317
         Height = 119
-        Day = 30
-        Month = 12
-        Year = 2018
+        Day = 25
+        Month = 3
+        Year = 2026
+        StyleName = ''
         TabOrder = 2
         TextPlacement = ktTopLeft
         DowNames.Strings = (
@@ -255,14 +254,14 @@ object FrmCalEdit: TFrmCalEdit
       object Label5: TLabel
         Left = 8
         Top = 8
-        Width = 117
+        Width = 105
         Height = 13
         Caption = 'Day of Week Names'
       end
       object Label6: TLabel
         Left = 184
         Top = 8
-        Width = 86
+        Width = 78
         Height = 13
         Caption = 'Visual Example'
       end
@@ -308,15 +307,16 @@ object FrmCalEdit: TFrmCalEdit
         Top = 24
         Width = 317
         Height = 143
-        Day = 30
+        Day = 25
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
-        Month = 12
+        Month = 3
         ParentFont = False
-        Year = 2018
+        Year = 2026
+        StyleName = ''
         TabOrder = 2
         TextPlacement = ktTopLeft
         DowNames.Strings = (
@@ -466,7 +466,7 @@ object FrmCalEdit: TFrmCalEdit
       object Label7: TLabel
         Left = 8
         Top = 8
-        Width = 86
+        Width = 78
         Height = 13
         Caption = 'Visual Example'
       end
@@ -475,15 +475,16 @@ object FrmCalEdit: TFrmCalEdit
         Top = 24
         Width = 478
         Height = 185
-        Day = 30
+        Day = 25
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
-        Month = 12
+        Month = 3
         ParentFont = False
-        Year = 2018
+        Year = 2026
+        StyleName = ''
         TabOrder = 0
         TextPlacement = ktTopLeft
         DowNames.Strings = (
@@ -518,13 +519,13 @@ object FrmCalEdit: TFrmCalEdit
         ColorCellText = True
         ColorCellDay = False
         RowHeights = (
-          14
-          26
-          26
-          26
-          26
-          26
-          26)
+          21
+          25
+          25
+          25
+          25
+          25
+          25)
       end
       object BitBtn3: TBitBtn
         Left = 8

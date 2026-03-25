@@ -55,31 +55,42 @@ uses
   Vcl.StdCtrls,
   Vcl.Buttons,
   VCL.Samples.Spin,
-  kingpop;
+  kingpop,
+  // LR20260325 - Added KingBase for TKingBaseDateEdit base class
+  KingBase;
 
 type
 
-  TKingDateDialog = class( TCustomEdit )
+  // LR20260325 - Changed base class from TCustomEdit to TKingBaseDateEdit
+  // TKingDateDialog = class( TCustomEdit )
+  TKingDateDialog = class( TKingBaseDateEdit )
     private
       FAbout : String;
-      // hint    FCanvas: TCanvas;
-      FButton : TSpeedButton;
+      // LR20260325 - FButton now inherited from TKingBaseDateEdit as TControl
+      // FButton : TSpeedButton;
       FPopup : TKingPopup;
-      function GetMinHeight : Integer;
-      procedure SetEditRect;
-      procedure WMSize( var Message : TWMSize ); message WM_SIZE;
+      // LR20260325 - GetMinHeight now inherited from TKingBaseDateEdit
+      // function GetMinHeight : Integer;
+      // LR20260325 - SetEditRect now inherited from TKingBaseDateEdit
+      // procedure SetEditRect;
+      // LR20260325 - WMSize now inherited from TKingBaseDateEdit
+      // procedure WMSize( var Message : TWMSize ); message WM_SIZE;
     protected
       procedure BtnClick( Sender : TObject ); virtual;
-      procedure CreateParams( var Params : TCreateParams ); override;
-      procedure CreateWnd; override;
+      // LR20260325 - CreateParams now inherited from TKingBaseDateEdit
+      // procedure CreateParams( var Params : TCreateParams ); override;
+      // LR20260325 - CreateWnd now inherited from TKingBaseDateEdit
+      // procedure CreateWnd; override;
       procedure Notification(
         AComponent : TComponent;
         Operation  : TOperation ); override;
     public
       constructor Create( AOwner : TComponent ); override;
       destructor Destroy; override;
+      // LR20260325 - FButton is now TControl in base; cast to TSpeedButton
+      function GetSpeedButton : TSpeedButton;
       property Button : TSpeedButton
-        read FButton;
+        read GetSpeedButton;
       procedure Loaded; override;
     published
       property About : String
@@ -116,38 +127,45 @@ type
 
 implementation
 
-// uses
-// winprocs;
-
 {$R KDLG32.RES}
+
+// LR20260325 - Typed accessor for FButton (TControl in base)
+function TKingDateDialog.GetSpeedButton : TSpeedButton;
+  begin
+    Result := TSpeedButton( FButton );
+  end;
 
 { *************************************************************************** }
 constructor TKingDateDialog.Create( AOwner : TComponent );
   VAR
     I : Integer;
+    // LR20260325 - Local typed variable for TSpeedButton-specific setup
+    LBtn : TSpeedButton;
   begin
     inherited Create( AOwner );
-    FButton := TSpeedButton.Create( Self );
+    // LR20260325 - Create TSpeedButton and assign to inherited FButton (TControl)
+    LBtn := TSpeedButton.Create( Self );
+    FButton := LBtn;
 
-    FButton.Width := 21;
-    FButton.Height := 17;
-    FButton.Visible := True;
-    FButton.Glyph.Handle := LoadBitmap( HInstance, 'BTN_CALENDAR' );
-    FButton.NumGlyphs := 1;
-    FButton.OnClick := BtnClick;
-    FButton.Parent := Self;
+    LBtn.Width := 21;
+    LBtn.Height := 17;
+    LBtn.Visible := True;
+    LBtn.Glyph.Handle := LoadBitmap( HInstance, 'BTN_CALENDAR' );
+    LBtn.NumGlyphs := 1;
+    LBtn.OnClick := BtnClick;
+    LBtn.Parent := Self;
 
     Text := '';
 
     Width := 113;
     ControlStyle := ControlStyle - [ csSetCaption ];
 
-    for I := 0 to TForm( AOwner ).ComponentCount - 1 do
+    for I := 0 to AOwner.ComponentCount - 1 do
     begin
-      if TForm( AOwner ).Components[ I ] is TKingPopup
+      if AOwner.Components[ I ] is TKingPopup
       then
       begin
-        FPopup := TKingPopup( TForm( AOwner ).Components[ I ] );
+        FPopup := TKingPopup( AOwner.Components[ I ] );
         Break;
       end;
     end;
@@ -183,18 +201,17 @@ procedure TKingDateDialog.Loaded;
     inherited Loaded;
   end;
 
-{ *************************************************************************** }
+// LR20260325 - CreateParams, CreateWnd, SetEditRect, WMSize, GetMinHeight
+// now inherited from TKingBaseDateEdit
+{$IFDEF KINGBASE_LEGACY}
 procedure TKingDateDialog.CreateParams( var Params : TCreateParams );
   begin
     inherited CreateParams( Params );
-    { Params.Style := Params.Style and not WS_BORDER; }
     Params.Style := Params.Style or ES_MULTILINE or WS_CLIPCHILDREN;
   end;
 
 { *************************************************************************** }
 procedure TKingDateDialog.CreateWnd;
-  // hint var
-  // hint  Loc: TRect;
   begin
     inherited CreateWnd;
     SetEditRect;
@@ -254,6 +271,7 @@ function TKingDateDialog.GetMinHeight : Integer;
     Result := Metrics.tmHeight + I div 4 + GetSystemMetrics
       ( SM_CYBORDER ) * 4 + 2;
   end;
+{$ENDIF KINGBASE_LEGACY}
 
 { *************************************************************************** }
 procedure TKingDateDialog.BtnClick( Sender : TObject );

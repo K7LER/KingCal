@@ -1,0 +1,190 @@
+
+● KingCalendar — Technical Audit Report
+
+  ---
+  System Identification
+
+  ┌─────────────────────┬───────────────────────────────────────────────────────┐
+  │        Field        │                         Value                         │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Product             │ KingCalendar                                          │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Type                │ VCL Component Library (calendar controls for Windows) │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Language            │ Object Pascal (Delphi)                                │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Delphi Versions     │ 10.2 through 13                                       │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Database            │ None (pure UI component)                              │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ License             │ MIT                                                   │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Original Author     │ Mark Lussier / AppVision (1995-2000)                  │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Current Maintainer  │ Lance Rasmussen                                       │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Version             │ v2026.0324.0008                                       │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Source Files        │ 16 .pas files, 6 .dfm files                           │
+  ├─────────────────────┼───────────────────────────────────────────────────────┤
+  │ Total LOC (approx.) │ ~7,800 lines                                          │
+  └─────────────────────┴───────────────────────────────────────────────────────┘
+
+  ---
+  Overall Classification
+
+  ┌───────────────────┬───────┬────────┬──────────┐
+  │     Dimension     │ Score │ Weight │ Weighted │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Architecture      │ 3     │ 20%    │ 0.60     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Clean Code        │ 4     │ 10%    │ 0.40     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Code Smells       │ 3     │ 15%    │ 0.45     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ SOLID             │ 3     │ 15%    │ 0.45     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Memory Management │ 4     │ 15%    │ 0.60     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Data Access       │ 3     │ 5%     │ 0.15     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Security          │ 4     │ 5%     │ 0.20     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ Maintainability   │ 3.5   │ 15%    │ 0.53     │
+  ├───────────────────┼───────┼────────┼──────────┤
+  │ TOTAL             │       │ 100%   │ 3.38     │
+  └───────────────────┴───────┴────────┴──────────┘
+
+  Final Score: 3.4 / 5.0 — FAIR
+
+  ---
+  Executive Summary
+
+  KingCalendar is a mature, feature-rich VCL component library that has been responsibly maintained through three
+  decades of Delphi evolution. The recent March 2026 modernization (VCL Styles, High DPI scaling, System.DateUtils
+  adoption) demonstrates disciplined, incremental improvement.
+
+  The primary technical debt comes from the original 1995 architecture: a monolithic core class (TKingCalendar at ~2,488
+   lines), pervasive code duplication across spin/dialog units, and a legacy database component (DBKing.pas) that won't
+  compile in modern Delphi. Several bugs were identified that should be addressed promptly.
+
+  ---
+  Critical Points
+
+  1. [CRITICAL] DBKing.pas will not compile — Uses legacy BDE-era units (WinTypes, WinProcs, DBTables, DBIErrs).
+  Currently excluded from build but remains in source tree.
+  2. [CRITICAL] Memory corruption in Caledit.pas — The design-time editor frees TFont objects that belong to the
+  component's internal state (frees TitleFont reference directly instead of using Assign).
+  3. [WARNING] Hard cast TForm(AOwner) in 12+ constructors will crash if the owner is a TFrame or TDataModule.
+  4. [WARNING] Global FormatSettings mutation in 6+ units silently overwrites the host application's locale settings.
+  5. [WARNING] Massive code duplication — GetMinHeight, SetEditRect, CreateParams, KeyPress/IsValidChar duplicated 4-5
+  times across spin/dialog units.
+  6. [WARNING] Application.ProcessMessages called unnecessarily in TKingNavigator — potential re-entrancy bugs.
+  7. [RECOMMENDATION] TKingCalendar.IsLeapYear method name shadows System.SysUtils.IsLeapYear — fragile name resolution.
+
+  ---
+  Dimension-by-Dimension Analysis
+
+  Architecture (3/5 — Acceptable)
+
+  - Clean runtime/design-time package split across all 6 Delphi versions
+  - Companion controls use proper Notification mechanism for lifetime management
+  - TKingCalendar is a God Class (~50 fields, 60+ methods) handling rendering, date logic, events, cell text, colors,
+  and DPI scaling
+  - KingTool.pas bundles many unrelated control classes (2,768 lines)
+  - Hook mechanism is a fixed-size array (TKingHooks = array[1..20]) with no unsubscribe
+
+  Clean Code (4/5 — Good)
+
+  - Consistent comment style (// LR20260323 - ...) throughout
+  - MIT license headers on every unit
+  - Fully qualified unit names used consistently
+  - Some naming inconsistencies: eDayChange vs TKingColoring, fUseDay vs FDate, nextMonth vs SetMonth
+  - with statement used in Paint methods (discouraged in modern Delphi)
+
+  Code Smells (3/5 — Acceptable)
+
+  - 5 copies of GetMinHeight across spin/dialog units
+  - Paint method ~310 lines with deeply nested local procedures
+  - DoVisualEdit in Kccmpedt.pas — 90 lines of repetitive property copying
+
+  SOLID (3/5 — Acceptable)
+
+  - SRP violated by TKingCalendar and KingTool.pas
+  - OCP violated by ColorSet1..ColorSet9 individual properties
+  - LSP generally respected — appropriate inheritance hierarchy
+  - No interfaces defined (ISP/DIP not applicable for this component type)
+
+  Memory Management (4/5 — Good)
+
+  - TKingCalendar.Destroy properly cleans up all owned objects with FreeAndNil
+  - TKingPopup.Execute uses correct try..finally
+  - Bug: Caledit.pas frees component-owned TFont objects directly
+
+  Security (4/5 — Good)
+
+  - Minimal attack surface (no network, file I/O, or SQL)
+  - Only concern: global FormatSettings mutation affecting host applications
+
+  ---
+  Recommendations
+
+  Immediate (0-2 weeks)
+
+  ┌──────────────────────────────────────────────────────┬─────────┐
+  │                         Item                         │ Effort  │
+  ├──────────────────────────────────────────────────────┼─────────┤
+  │ Fix Caledit.pas TFont memory corruption — use Assign │ 1 hour  │
+  ├──────────────────────────────────────────────────────┼─────────┤
+  │ Replace TForm(AOwner) hard casts with safe iteration │ 3 hours │
+  ├──────────────────────────────────────────────────────┼─────────┤
+  │ Use local TFormatSettings variables throughout       │ 2 hours │
+  ├──────────────────────────────────────────────────────┼─────────┤
+  │ Remove unnecessary Application.ProcessMessages calls │ 30 min  │
+  └──────────────────────────────────────────────────────┴─────────┘
+
+  Short-Term (2-4 weeks)
+
+  ┌────────────────────────────────────────────────────────────┬───────────┐
+  │                            Item                            │  Effort   │
+  ├────────────────────────────────────────────────────────────┼───────────┤
+  │ Extract duplicated code into shared base class/helper unit │ 1 day     │
+  ├────────────────────────────────────────────────────────────┼───────────┤
+  │ Modernize or remove DBKing.pas                             │ 2-4 hours │
+  ├────────────────────────────────────────────────────────────┼───────────┤
+  │ Qualify IsLeapYear call explicitly                         │ 15 min    │
+  └────────────────────────────────────────────────────────────┴───────────┘
+
+  Medium-Term (1-3 months)
+
+  ┌─────────────────────────────────────────────────────────────┬──────────┐
+  │                            Item                             │  Effort  │
+  ├─────────────────────────────────────────────────────────────┼──────────┤
+  │ Split KingTool.pas into separate units per component family │ 2-3 days │
+  ├─────────────────────────────────────────────────────────────┼──────────┤
+  │ Replace fixed-size hook array with TList<TNotifyEvent>      │ 1 day    │
+  ├─────────────────────────────────────────────────────────────┼──────────┤
+  │ Convert ColorSet1..9 to indexed array property              │ 1 day    │
+  ├─────────────────────────────────────────────────────────────┼──────────┤
+  │ Add unit tests for date arithmetic functions                │ 2-3 days │
+  └─────────────────────────────────────────────────────────────┴──────────┘
+
+  Strategic (3-6 months)
+
+  ┌─────────────────────────────────────────────────────────┬──────────┐
+  │                          Item                           │  Effort  │
+  ├─────────────────────────────────────────────────────────┼──────────┤
+  │ Extract rendering logic from Paint into a painter class │ 3-5 days │
+  ├─────────────────────────────────────────────────────────┼──────────┤
+  │ Add TFrame support as component owner                   │ 1 day    │
+  └─────────────────────────────────────────────────────────┴──────────┘
+
+  Total estimated effort: 3-4 weeks of part-time development.
+
+  ---
+  Conclusion
+
+  KingCalendar is well-suited for continued use and incremental modernization. The most urgent items — the TFont memory
+  corruption, unsafe TForm(AOwner) casts, and global FormatSettings mutations — can be addressed quickly and would
+  immediately improve reliability. The recommended short/medium-term actions would bring the codebase to a Good (4.0+)
+  rating with manageable effort.

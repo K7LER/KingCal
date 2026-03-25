@@ -57,7 +57,9 @@ uses
   Vcl.ExtCtrls,
   System.Types,
   TheKing,
-  KingTool,
+  // LR20260325 - Changed to split unit
+  // KingTool,
+  KingToolNav,
   Vcl.Grids;
 
 type
@@ -124,21 +126,20 @@ implementation
 procedure TkcPopup.KingCalendar1Change( Sender : TObject );
   var
     cDate : String;
+    LFormatSettings : TFormatSettings;
   begin
+    // LR20260325 - Use local format settings to avoid mutating global
     // Furnish the locale format settings record
 {$WARN SYMBOL_PLATFORM OFF}
-    formatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
+    LFormatSettings := TFormatSettings.Create( LOCALE_SYSTEM_DEFAULT );
 {$WARN SYMBOL_PLATFORM ON}
     cDate := FormatDateTime( 'mmmm d, yyyy', KingCalendar1.CalendarDate,
-      formatSettings );
-    // cDate := FormatDateTime( 'mmmm d, yyyy', KingCalendar1.CalendarDate );
+      LFormatSettings );
     Caption := cDate;
   end;
 
 { *************************************************************************** }
 procedure TkcPopup.FormActivate( Sender : TObject );
-  // hint var
-  // hint cDate: String;
   begin
     { Execure the KingCalendar1Change procedure. The code is the same so
       why duplicate it }

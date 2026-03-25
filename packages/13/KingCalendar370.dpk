@@ -38,10 +38,14 @@ requires
   vclactnband;
 
 contains
+  KingBase in '..\..\source\KingBase.pas',
   Kingdlg in '..\..\source\Kingdlg.pas',
   Kingspn1 in '..\..\source\Kingspn1.pas',
   Kingspnt in '..\..\source\Kingspnt.pas',
   KingTool in '..\..\source\KingTool.pas',
+  KingToolNav in '..\..\source\KingToolNav.pas',
+  KingToolMonth in '..\..\source\KingToolMonth.pas',
+  KingToolCtrl in '..\..\source\KingToolCtrl.pas',
   Theking in '..\..\source\Theking.pas',
   Kingcore in '..\..\source\Kingcore.pas',
   Attach in '..\..\source\Attach.pas' {FrmAttach},

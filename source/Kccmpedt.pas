@@ -49,7 +49,11 @@ uses
   TheKing,
   CalEdit,
   Attach,
-  KingTool;
+  // LR20260325 - Changed to split units
+  // KingTool;
+  KingToolCtrl,
+  KingToolMonth,
+  KingToolNav;
 
 const
   VerbAttach = 'Attach to Calendar...';
@@ -120,45 +124,45 @@ procedure DoCalendarAttach( Container, Controller : TComponent );
 procedure DoVisualEdit( Container, Controller : TComponent );
   var
     FrmCalEdit : TFrmCalEdit;
+    // LR20260325 - Local variable replaces with statement
+    LCal : TKingCalendar;
   begin
 
     { Create the Attachment Editor Form }
     FrmCalEdit := TFrmCalEdit.Create( Application );
 
-    with TKingCalendar( Controller ) do
-    begin
-      FrmCalEdit.KingCalendar2.BlockWeekends := BlockWeekends;
-      FrmCalEdit.KingCalendar2.HeaderUseFixed := HeaderUseFixed;
-      FrmCalEdit.KingCalendar2.ShowGridLines := ShowGridLines;
-      FrmCalEdit.KingCalendar2.IsActive := IsActive;
-      FrmCalEdit.KingCalendar2.StartingDay := StartingDay;
-      FrmCalEdit.KingCalendar2.TextPlacement := TextPlacement;
-      FrmCalEdit.KingCalendar2.DowNames := DowNames;
+    // LR20260325 - Removed with statement; use explicit LCal reference
+    LCal := TKingCalendar( Controller );
+    FrmCalEdit.KingCalendar2.BlockWeekends := LCal.BlockWeekends;
+    FrmCalEdit.KingCalendar2.HeaderUseFixed := LCal.HeaderUseFixed;
+    FrmCalEdit.KingCalendar2.ShowGridLines := LCal.ShowGridLines;
+    FrmCalEdit.KingCalendar2.IsActive := LCal.IsActive;
+    FrmCalEdit.KingCalendar2.StartingDay := LCal.StartingDay;
+    FrmCalEdit.KingCalendar2.TextPlacement := LCal.TextPlacement;
+    FrmCalEdit.KingCalendar2.DowNames := LCal.DowNames;
 
-      FrmCalEdit.KingCalendar3.TitleFont := TitleFont;
-      FrmCalEdit.KingCalendar3.TextFont := TextFont;
-      FrmCalEdit.KingCalendar3.Font := Font;
+    FrmCalEdit.KingCalendar3.TitleFont := LCal.TitleFont;
+    FrmCalEdit.KingCalendar3.TextFont := LCal.TextFont;
+    FrmCalEdit.KingCalendar3.Font := LCal.Font;
 
-      FrmCalEdit.KingCalendar1.BlockedBkgnd := BlockedBkgnd;
-      FrmCalEdit.KingCalendar1.BlockedFrgnd := BlockedFrgnd;
-      FrmCalEdit.KingCalendar1.CellColor := CellColor;
-      FrmCalEdit.KingCalendar1.Highlight := Highlight;
-      FrmCalEdit.KingCalendar1.HighlightText := HighlightText;
-      FrmCalEdit.KingCalendar1.GridLineColor := GridLineColor;
-      FrmCalEdit.KingCalendar1.TitleColor := TitleColor;
-      FrmCalEdit.KingCalendar1.TitleFont := TitleFont;
-      FrmCalEdit.KingCalendar1.TodayColor := TodayColor;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet1 := ColorSets.ColorSet1;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet2 := ColorSets.ColorSet2;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet3 := ColorSets.ColorSet3;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet4 := ColorSets.ColorSet4;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet5 := ColorSets.ColorSet5;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet6 := ColorSets.ColorSet6;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet7 := ColorSets.ColorSet7;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet8 := ColorSets.ColorSet8;
-      FrmCalEdit.KingCalendar1.ColorSets.ColorSet9 := ColorSets.ColorSet9;
-
-    end;
+    FrmCalEdit.KingCalendar1.BlockedBkgnd := LCal.BlockedBkgnd;
+    FrmCalEdit.KingCalendar1.BlockedFrgnd := LCal.BlockedFrgnd;
+    FrmCalEdit.KingCalendar1.CellColor := LCal.CellColor;
+    FrmCalEdit.KingCalendar1.Highlight := LCal.Highlight;
+    FrmCalEdit.KingCalendar1.HighlightText := LCal.HighlightText;
+    FrmCalEdit.KingCalendar1.GridLineColor := LCal.GridLineColor;
+    FrmCalEdit.KingCalendar1.TitleColor := LCal.TitleColor;
+    FrmCalEdit.KingCalendar1.TitleFont := LCal.TitleFont;
+    FrmCalEdit.KingCalendar1.TodayColor := LCal.TodayColor;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet1 := LCal.ColorSets.ColorSet1;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet2 := LCal.ColorSets.ColorSet2;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet3 := LCal.ColorSets.ColorSet3;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet4 := LCal.ColorSets.ColorSet4;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet5 := LCal.ColorSets.ColorSet5;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet6 := LCal.ColorSets.ColorSet6;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet7 := LCal.ColorSets.ColorSet7;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet8 := LCal.ColorSets.ColorSet8;
+    FrmCalEdit.KingCalendar1.ColorSets.ColorSet9 := LCal.ColorSets.ColorSet9;
 
     try
       { Show the property editor Modal }
@@ -166,40 +170,37 @@ procedure DoVisualEdit( Container, Controller : TComponent );
       then
       begin
 
-        with TKingCalendar( Controller ) do
-        begin
-          BlockedBkgnd := FrmCalEdit.KingCalendar1.BlockedBkgnd;
-          BlockedFrgnd := FrmCalEdit.KingCalendar1.BlockedFrgnd;
-          CellColor := FrmCalEdit.KingCalendar1.CellColor;
-          Highlight := FrmCalEdit.KingCalendar1.Highlight;
-          HighlightText := FrmCalEdit.KingCalendar1.HighlightText;
-          GridLineColor := FrmCalEdit.KingCalendar1.GridLineColor;
-          TitleColor := FrmCalEdit.KingCalendar1.TitleColor;
-          TitleFont := FrmCalEdit.KingCalendar1.TitleFont;
-          TodayColor := FrmCalEdit.KingCalendar1.TodayColor;
-          ColorSets.ColorSet1 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet1;
-          ColorSets.ColorSet2 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet2;
-          ColorSets.ColorSet3 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet3;
-          ColorSets.ColorSet4 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet4;
-          ColorSets.ColorSet5 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet5;
-          ColorSets.ColorSet6 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet6;
-          ColorSets.ColorSet7 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet7;
-          ColorSets.ColorSet8 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet8;
-          ColorSets.ColorSet9 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet9;
+        // LR20260325 - Removed with statement; use explicit LCal reference
+        LCal.BlockedBkgnd := FrmCalEdit.KingCalendar1.BlockedBkgnd;
+        LCal.BlockedFrgnd := FrmCalEdit.KingCalendar1.BlockedFrgnd;
+        LCal.CellColor := FrmCalEdit.KingCalendar1.CellColor;
+        LCal.Highlight := FrmCalEdit.KingCalendar1.Highlight;
+        LCal.HighlightText := FrmCalEdit.KingCalendar1.HighlightText;
+        LCal.GridLineColor := FrmCalEdit.KingCalendar1.GridLineColor;
+        LCal.TitleColor := FrmCalEdit.KingCalendar1.TitleColor;
+        LCal.TitleFont := FrmCalEdit.KingCalendar1.TitleFont;
+        LCal.TodayColor := FrmCalEdit.KingCalendar1.TodayColor;
+        LCal.ColorSets.ColorSet1 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet1;
+        LCal.ColorSets.ColorSet2 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet2;
+        LCal.ColorSets.ColorSet3 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet3;
+        LCal.ColorSets.ColorSet4 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet4;
+        LCal.ColorSets.ColorSet5 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet5;
+        LCal.ColorSets.ColorSet6 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet6;
+        LCal.ColorSets.ColorSet7 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet7;
+        LCal.ColorSets.ColorSet8 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet8;
+        LCal.ColorSets.ColorSet9 := FrmCalEdit.KingCalendar1.ColorSets.ColorSet9;
 
-          BlockWeekends := FrmCalEdit.KingCalendar2.BlockWeekends;
-          HeaderUseFixed := FrmCalEdit.KingCalendar2.HeaderUseFixed;
-          ShowGridLines := FrmCalEdit.KingCalendar2.ShowGridLines;
-          IsActive := FrmCalEdit.KingCalendar2.IsActive;
-          StartingDay := FrmCalEdit.KingCalendar2.StartingDay;
-          TextPlacement := FrmCalEdit.KingCalendar2.TextPlacement;
-          DowNames := FrmCalEdit.KingCalendar2.DowNames;
+        LCal.BlockWeekends := FrmCalEdit.KingCalendar2.BlockWeekends;
+        LCal.HeaderUseFixed := FrmCalEdit.KingCalendar2.HeaderUseFixed;
+        LCal.ShowGridLines := FrmCalEdit.KingCalendar2.ShowGridLines;
+        LCal.IsActive := FrmCalEdit.KingCalendar2.IsActive;
+        LCal.StartingDay := FrmCalEdit.KingCalendar2.StartingDay;
+        LCal.TextPlacement := FrmCalEdit.KingCalendar2.TextPlacement;
+        LCal.DowNames := FrmCalEdit.KingCalendar2.DowNames;
 
-          TitleFont := FrmCalEdit.KingCalendar3.TitleFont;
-          TextFont := FrmCalEdit.KingCalendar3.TextFont;
-          Font := FrmCalEdit.KingCalendar3.Font;
-
-        end;
+        LCal.TitleFont := FrmCalEdit.KingCalendar3.TitleFont;
+        LCal.TextFont := FrmCalEdit.KingCalendar3.TextFont;
+        LCal.Font := FrmCalEdit.KingCalendar3.Font;
 
       end;
     finally

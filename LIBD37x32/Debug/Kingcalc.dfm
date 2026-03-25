@@ -40,12 +40,12 @@ object KcCalc: TKcCalc
     000000000000000000000000000000000000000000000000000000000000}
   Position = poScreenCenter
   OnClose = FormClose
-  TextHeight = 16
+  TextHeight = 17
   object Label1: TLabel
     Left = 200
     Top = 24
     Width = 13
-    Height = 24
+    Height = 25
     Caption = '='
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -124,7 +124,7 @@ object KcCalc: TKcCalc
   object Label4: TLabel
     Left = 8
     Top = 72
-    Width = 48
+    Width = 51
     Height = 13
     Caption = 'Start Date'
     Font.Charset = DEFAULT_CHARSET
@@ -137,7 +137,7 @@ object KcCalc: TKcCalc
   object Label5: TLabel
     Left = 96
     Top = 72
-    Width = 45
+    Width = 47
     Height = 13
     Caption = 'End Date'
     Font.Charset = DEFAULT_CHARSET
@@ -163,7 +163,7 @@ object KcCalc: TKcCalc
   object Label7: TLabel
     Left = 296
     Top = 72
-    Width = 53
+    Width = 55
     Height = 13
     Caption = 'Work Days'
     Font.Charset = DEFAULT_CHARSET
@@ -176,7 +176,7 @@ object KcCalc: TKcCalc
   object Label2: TLabel
     Left = 224
     Top = 8
-    Width = 48
+    Width = 50
     Height = 13
     Caption = 'New Date'
     Font.Charset = DEFAULT_CHARSET
@@ -189,7 +189,7 @@ object KcCalc: TKcCalc
   object Label8: TLabel
     Left = 8
     Top = 8
-    Width = 50
+    Width = 51
     Height = 13
     Caption = 'Base Date'
     Font.Charset = DEFAULT_CHARSET
@@ -202,7 +202,7 @@ object KcCalc: TKcCalc
   object Label9: TLabel
     Left = 120
     Top = 8
-    Width = 58
+    Width = 62
     Height = 13
     Caption = 'Days to Add'
     Font.Charset = DEFAULT_CHARSET
@@ -222,7 +222,7 @@ object KcCalc: TKcCalc
   object Label3: TLabel
     Left = 8
     Top = 136
-    Width = 23
+    Width = 24
     Height = 13
     Caption = 'Date'
     Font.Charset = DEFAULT_CHARSET
@@ -285,7 +285,7 @@ object KcCalc: TKcCalc
   object Label12: TLabel
     Left = 296
     Top = 136
-    Width = 63
+    Width = 65
     Height = 13
     Caption = 'Day of Week'
     Font.Charset = DEFAULT_CHARSET
@@ -315,7 +315,7 @@ object KcCalc: TKcCalc
     Left = 8
     Top = 24
     Width = 81
-    Height = 26
+    Height = 27
     DateFormat = 'M/d/yy'
     StartDate = '12/30/23'
     AutoSelect = False
@@ -325,14 +325,14 @@ object KcCalc: TKcCalc
     Left = 120
     Top = 24
     Width = 73
-    Height = 24
+    Height = 25
     TabOrder = 2
   end
   object dStart: TKingDateSpin
     Left = 8
     Top = 88
     Width = 81
-    Height = 26
+    Height = 27
     DateFormat = 'M/d/yy'
     StartDate = '12/30/23'
     AutoSelect = False
@@ -342,7 +342,7 @@ object KcCalc: TKcCalc
     Left = 96
     Top = 88
     Width = 89
-    Height = 26
+    Height = 27
     DateFormat = 'M/d/yy'
     StartDate = '12/30/23'
     AutoSelect = False
@@ -352,7 +352,7 @@ object KcCalc: TKcCalc
     Left = 224
     Top = 88
     Width = 65
-    Height = 24
+    Height = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
@@ -365,7 +365,7 @@ object KcCalc: TKcCalc
     Left = 296
     Top = 88
     Width = 65
-    Height = 24
+    Height = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
@@ -378,7 +378,7 @@ object KcCalc: TKcCalc
     Left = 224
     Top = 24
     Width = 73
-    Height = 24
+    Height = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
@@ -391,7 +391,7 @@ object KcCalc: TKcCalc
     Left = 8
     Top = 152
     Width = 89
-    Height = 26
+    Height = 27
     DateFormat = 'M/d/yy'
     StartDate = '12/30/23'
     AutoSelect = False
@@ -401,7 +401,7 @@ object KcCalc: TKcCalc
     Left = 136
     Top = 152
     Width = 65
-    Height = 24
+    Height = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
@@ -414,7 +414,7 @@ object KcCalc: TKcCalc
     Left = 216
     Top = 152
     Width = 65
-    Height = 24
+    Height = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
@@ -427,7 +427,7 @@ object KcCalc: TKcCalc
     Left = 296
     Top = 152
     Width = 65
-    Height = 24
+    Height = 25
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
     Font.Height = -13
