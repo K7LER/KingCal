@@ -559,7 +559,9 @@ procedure TMonthBar.SetFocusedButton( nMonth : Integer );
 procedure TMonthBar.SetSource( Value : TKingCalendar );
   begin
     FCalendarSource := Value;
-    SetFocusedButton( Value.Month );
+    // LR20260325 - Guard against nil to prevent AV when CalendarSource is cleared
+    if Assigned( Value ) then
+      SetFocusedButton( Value.Month );
   end;
 
 { *************************************************************************** }

@@ -7,7 +7,7 @@
 ; =============================================================================
 
 #define AppName    "KingCalendar"
-#define AppVersion "2026.0325.0010"
+#define AppVersion "2026.0325.0011"
 #define AppPublisher "Lance Rasmussen"
 
 [Setup]

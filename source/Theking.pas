@@ -1927,14 +1927,18 @@ var
   I, X: Integer;
 begin
 
-  for I := 1 to 31 do
+  // LR20260325 - Use named constants instead of literal 31/10
+  // for I := 1 to 31 do
+  // for X := 1 to 10 do
+  // for X := 1 to 31 do
+  for I := 1 to C_MAX_DAYS do
     FHotSpots[I] := 0;
 
-  for I := 1 to 31 do
-    for X := 1 to 10 do
+  for I := 1 to C_MAX_DAYS do
+    for X := 1 to C_MAX_TEXT_SLOTS do
       FKingText[I][X] := '';
 
-  for X := 1 to 31 do
+  for X := 1 to C_MAX_DAYS do
     FKingTextCount[X] := 0;
 
 end;
