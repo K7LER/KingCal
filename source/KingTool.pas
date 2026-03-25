@@ -231,7 +231,9 @@ begin
 
   if (nStartDow = 1) then
     dStart := kcIncDate(dStart)
-  else if (nDays = 7) then
+  // LR20260325 - Bug fix: was comparing nDays (always 0 here) instead of nStartDow
+  // else if (nDays = 7) then
+  else if (nStartDow = 7) then
   begin
     dStart := kcIncDate(dStart);
     dStart := kcIncDate(dStart);
@@ -287,7 +289,9 @@ function kcDecDateBy(
   dDate: TDateTime;
   nValue: Integer): TDateTime;
 begin
-  Result := IncDay(dDate, nValue);
+  // LR20260325 - Bug fix: was incrementing instead of decrementing (missing negation)
+  // Result := IncDay(dDate, nValue);
+  Result := IncDay(dDate, -nValue);
 
 end;
 

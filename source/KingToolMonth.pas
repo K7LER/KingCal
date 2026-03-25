@@ -171,8 +171,9 @@ const
   TMonthBar
   =========================================================================== }
 constructor TMonthBar.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     ControlStyle := ControlStyle - [ csAcceptsControls, csSetCaption ] +
@@ -192,15 +193,17 @@ constructor TMonthBar.Create( AOwner : TComponent );
     { Enable Hints }
     ShowHint := True;
 
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        CalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     CalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    CalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 

@@ -61,24 +61,41 @@ uses
   System.UITypes,
   Vcl.Themes;
 
+// LR20260325 - Named constants for array bounds (replaces magic numbers)
+const
+  C_MAX_DAYS = 31;
+  C_MAX_TEXT_SLOTS = 10;
+  C_MAX_TEXT_LENGTH = 30;
+  C_KING_COLOR_COUNT = 9;
+
 type
 
-  TDay = 1..31;
+  TDay = 1..C_MAX_DAYS;
   TMonth = 1..12;
   TYear = 1600..2999;
-  TKingFlags = array[1..31] of byte;
-  TKingColors = array[1..9] of TColor;
+  // LR20260325 - Use named constants for array bounds
+  // TKingFlags = array[1..31] of byte;
+  TKingFlags = array[1..C_MAX_DAYS] of byte;
+  TKingColors = array[1..C_KING_COLOR_COUNT] of TColor;
 
-  TCellTextSize = array[1..10] of string[30];
-  TCellTextType = array[1..10] of byte;
-  TBlockedDays = array[1..31] of Boolean;
-  TCellTextCount = array[1..31] of Integer;
-  TKingCellText = array[1..31] of TCellTextSize;
-  TKingCellType = array[1..31] of TCellTextType;
+  // TCellTextSize = array[1..10] of string[30];
+  // TCellTextType = array[1..10] of byte;
+  // TBlockedDays = array[1..31] of Boolean;
+  // TCellTextCount = array[1..31] of Integer;
+  // TKingCellText = array[1..31] of TCellTextSize;
+  // TKingCellType = array[1..31] of TCellTextType;
+  TCellTextSize = array[1..C_MAX_TEXT_SLOTS] of string[C_MAX_TEXT_LENGTH];
+  TCellTextType = array[1..C_MAX_TEXT_SLOTS] of byte;
+  TBlockedDays = array[1..C_MAX_DAYS] of Boolean;
+  TCellTextCount = array[1..C_MAX_DAYS] of Integer;
+  TKingCellText = array[1..C_MAX_DAYS] of TCellTextSize;
+  TKingCellType = array[1..C_MAX_DAYS] of TCellTextType;
 
   { //\\ For 1.2 Test Code }
-  TKingCellForeground = array[1..31] of TColor;
-  TKingCellBackground = array[1..31] of TColor;
+  // TKingCellForeground = array[1..31] of TColor;
+  // TKingCellBackground = array[1..31] of TColor;
+  TKingCellForeground = array[1..C_MAX_DAYS] of TColor;
+  TKingCellBackground = array[1..C_MAX_DAYS] of TColor;
 
   TKingInfoBar = class(TObject)
     Color: TColor;
@@ -126,11 +143,6 @@ type
     Y: Longint;
   end;
 
-// LR20260325 - Number of color sets; change this constant to add more sets
-const
-  C_KING_COLOR_COUNT = 9;
-
-type
   { TKingColoring }
   TKingColoring = class(TPersistent)
   private
@@ -248,6 +260,14 @@ type
       Col, Row: Longint;
       StartX, StartY, StopX, StopY: Integer;
       OnColor, OffColor: TColor);
+    // LR20260325 - Extracted from Paint nested procedure for readability
+    procedure DrawGridCells(
+      const DrawInfo: TGridDrawInfo;
+      const Sel: TGridRect;
+      ACol, ARow: Longint;
+      StartX, StartY, StopX, StopY: Integer;
+      Color: TColor;
+      IncludeDrawState: TGridDrawState);
     procedure CalcDrawInfo(var DrawInfo: TGridDrawInfo);
     procedure CalcDrawInfoXY(
       var DrawInfo: TGridDrawInfo;
@@ -541,26 +561,41 @@ type
     { //\\ }
   end;
 
+// LR20260325 - Utility function to find the first TKingCalendar on an owner;
+//              eliminates repeated constructor scan loops in companion controls
+function FindFirstKingCalendar(AOwner: TComponent): TKingCalendar;
+
 implementation
 
-{ //\\ 1.2 }
 { **************************************************************************** }
-function min(nOne, nTwo: Longint): Longint;
+// LR20260325 - Shared utility to find first TKingCalendar on an owner component
+function FindFirstKingCalendar(AOwner: TComponent): TKingCalendar;
+var
+  I: Integer;
 begin
-  if nOne < nTwo then
-    Result := nOne
-  else
-    Result := nTwo;
+  Result := nil;
+  if AOwner = nil then
+    Exit;
+  for I := 0 to AOwner.ComponentCount - 1 do
+    if AOwner.Components[I] is TKingCalendar then
+    begin
+      Result := TKingCalendar(AOwner.Components[I]);
+      Exit;
+    end;
 end;
 
-{ **************************************************************************** }
-function max(nOne, nTwo: Longint): Longint;
-begin
-  if nOne > nTwo then
-    Result := nOne
-  else
-    Result := nTwo;
-end;
+{ //\\ 1.2 }
+// LR20260325 - Removed local min/max that shadowed System.Math.Min/Max
+// function min(nOne, nTwo: Longint): Longint;
+// begin
+//   if nOne < nTwo then Result := nOne
+//   else Result := nTwo;
+// end;
+// function max(nOne, nTwo: Longint): Longint;
+// begin
+//   if nOne > nTwo then Result := nOne
+//   else Result := nTwo;
+// end;
 { //\\ }
 
 { **************************************************************************** }
@@ -829,7 +864,9 @@ var
   TempColor: TColor;
   { //\\ 1.2 }
   bRect: TRect;
-  aBars: array[1..10] of TColor;
+  // LR20260325 - Use named constant
+  // aBars: array[1..10] of TColor;
+  aBars: array[1..C_MAX_TEXT_SLOTS] of TColor;
   nCounter, nBarSize, nBottom: Integer;
   { //\\ 1.2 }
 begin
@@ -947,7 +984,9 @@ begin
         for X := 0 to (FCalendarObjects.Count - 1) do
           if FCalendarObjects[X] = ('CB' + TheText) then
           begin
-            if nCounter < 10 then
+            // LR20260325 - Use named constant
+            // if nCounter < 10 then
+            if nCounter < C_MAX_TEXT_SLOTS then
             begin
               Inc(nCounter);
               aBars[nCounter] :=
@@ -966,7 +1005,9 @@ begin
           { Calc the size of the bar based on # of bars and Height of Rect }
           nBarSize := trunc((bRect.Bottom - bRect.Top) div nCounter);
           { Make sure we do not exceed the MaxBar size }
-          nBarSize := min(nBarSize, FMaxBarSize);
+          // LR20260325 - Use System.Math.Min instead of removed local function
+          // nBarSize := min(nBarSize, FMaxBarSize);
+          nBarSize := System.Math.Min(nBarSize, FMaxBarSize);
           { Make sure the bar is not to small }
           if nBarSize < FMinBarSize then
             nBarSize := FMinBarSize;
@@ -1284,142 +1325,9 @@ var
   // procedure DrawLines( ... ) with nested DrawHorz/DrawVert removed;
   // see TKingCalendar.DrawGridLines for the extracted implementation
 
-  procedure DrawCells(
-    ACol, ARow: Longint;
-    StartX, StartY, StopX, StopY: Integer;
-    Color: TColor;
-    IncludeDrawState: TGridDrawState);
-  var
-    CurCol, CurRow: Longint;
-    Where: TRect;
-    DrawState: TGridDrawState;
-    Focused: Boolean;
-    TheText: string;
-    nText: Integer;
-  begin
-    CurRow := ARow;
-    Where.Top := StartY;
-    while Where.Top < StopY do
-    begin
-      CurCol := ACol;
-      Where.Left := StartX;
-      Where.Bottom := Where.Top + RowHeights[CurRow];
-      while Where.Left < StopX do
-      begin
-        Where.Right := Where.Left + ColWidths[CurCol];
-        if RectVisible(Canvas.Handle, Where) then
-        begin
-          DrawState := IncludeDrawState;
-          Focused := ValidParentForm(Self).ActiveControl = Self;
-          if Focused and (CurRow = Row) and (CurCol = Col) then
-            Include(DrawState, gdFocused);
-          if PointInGridRect(CurCol, CurRow, Sel) then
-            Include(DrawState, gdSelected);
-          if not (gdFocused in DrawState) or not (goEditing in Options)
-            or not FEditorMode or (csDesigning in ComponentState) then
-          begin
-            if DefaultDrawing or (csDesigning in ComponentState) then
-              // LR20260325 - Removed with statement; use explicit Canvas reference
-              // with Canvas do
-              begin
-                if (ARow = 0) then
-                  Canvas.Font := FTitleFont
-                else
-                  Canvas.Font := Self.Font;
-                // LR20260323 - Map base font color through VCL Styles so text is
-                //              visible on dark themes (e.g. Glow); raw clWindowText
-                //              resolves via GDI to the Windows system color (black),
-                //              not the active VCL Style's color
-                Canvas.Font.Color :=
-                  GetEffectiveStyleServices.GetSystemColor(Canvas.Font.Color);
-                if (gdSelected in DrawState) and
-                  (not (gdFocused in DrawState) or
-                  (goDrawFocusSelected in Options)) then
-                begin
-                  if (not FActive) then
-                  begin
-                    Canvas.Brush.Color := Color;
-                    if (FColorarchy = kcaSetColor) then
-                      // LR20260323 - Map through VCL Styles (same as DrawCell fix)
-                      Canvas.Font.Color :=
-                        GetEffectiveStyleServices.GetSystemColor(
-                        GetKingColor
-                        (FHotSpots[StrToInt(CellText[CurRow,
-                          CurCol])]))
-                    else
-                      Canvas.Font.Color := TodayColor;
-                  end
-                  else
-                  begin
-                    // LR20260323 - Map selection colors through VCL Styles
-                    // Brush.Color := FHighlight;
-                    // Font.Color := FHighlightText;
-                    Canvas.Brush.Color :=
-                      GetEffectiveStyleServices.GetSystemColor(FHighlight);
-                    Canvas.Font.Color :=
-                      GetEffectiveStyleServices.GetSystemColor(FHighlightText);
-                  end
-                end
-                else
-                begin
-                  TheText := CellText[CurRow, CurCol];
-                  if (CurRow > 0) and not (TheText = '') then
-                  begin
-                    nText := StrToInt(TheText);
-
-                    if FBlockedDays[nText] then
-                      // LR20260323 - Map blocked background through VCL Styles
-                      // Brush.Color := FBlockedBkgnd
-                      Canvas.Brush.Color :=
-                        GetEffectiveStyleServices.GetSystemColor(FBlockedBkgnd)
-                    else
-                      { //\ 1.2 Code }
-                      // LR20260323 - Compare against FCellColor (not styled Color)
-                      //              so default cells use the themed background
-                      {// if FCellBackground[ nText ] <> Color} if
-                        FCellBackground[nText] <> FCellColor then
-                        Canvas.Brush.Color :=
-                          GetEffectiveStyleServices.GetSystemColor(FCellBackground[nText])
-                          { //\\ }
-                      else
-                        Canvas.Brush.Color := Color;
-                  end
-                  else
-                    Canvas.Brush.Color := Color;
-
-                end;
-
-                Canvas.FillRect(Where);
-
-              end;
-
-            DrawCell(CurCol, CurRow, Where, DrawState);
-            if DefaultDrawing and (gdFixed in DrawState) and Ctl3D then
-              // LR20260325 - Removed with statement; use explicit Canvas reference
-              // with Canvas do
-              begin
-                // LR20260323 - Use styled highlight color instead of hardcoded white
-                // Pen.Color := clWhite;
-                Canvas.Pen.Color :=
-                  GetEffectiveStyleServices.GetSystemColor(clBtnHighlight);
-                Canvas.Polyline([Point(Where.Left, Where.Bottom),
-                    Where.TopLeft, Point(Where.Right, Where.Top)]);
-              end;
-            if DefaultDrawing and not (csDesigning in ComponentState) and
-              (gdFocused in DrawState) and not (goEditing in Options)
-              and FActive then
-            begin
-              Canvas.DrawFocusRect(Where);
-            end;
-          end;
-        end;
-        Where.Left := Where.Right + DrawInfo.EffectiveHorzLineWidth;
-        Inc(CurCol);
-      end;
-      Where.Top := Where.Bottom + DrawInfo.EffectiveVertLineWidth;
-      Inc(CurRow);
-    end;
-  end;
+  // LR20260325 - DrawCells nested procedure extracted to private method DrawGridCells
+  // procedure DrawCells( ... ) removed;
+  // see TKingCalendar.DrawGridCells for the extracted implementation
 
 var
   // LR20260323 - Styled color variables for VCL Styles support
@@ -1471,13 +1379,13 @@ begin
   // LR20260323 - Pass styled colors so cells paint with theme-aware backgrounds
   // DrawCells( ..., FixedColor, [gdFixed] );
   // DrawCells( ..., CellColor, [] );
-  DrawCells(0, 0, 0, 0, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, SFixedColor,
+  DrawGridCells(DrawInfo, Sel, 0, 0, 0, 0, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, SFixedColor,
     [gdFixed]);
-  DrawCells(LeftCol, 0, DrawInfo.FixedBoundaryX, 0, DrawInfo.GridBoundaryX, DrawInfo.FixedBoundaryY,
+  DrawGridCells(DrawInfo, Sel, LeftCol, 0, DrawInfo.FixedBoundaryX, 0, DrawInfo.GridBoundaryX, DrawInfo.FixedBoundaryY,
     SFixedColor, [gdFixed]);
-  DrawCells(0, TopRow, 0, DrawInfo.FixedBoundaryY, DrawInfo.FixedBoundaryX, DrawInfo.GridBoundaryY,
+  DrawGridCells(DrawInfo, Sel, 0, TopRow, 0, DrawInfo.FixedBoundaryY, DrawInfo.FixedBoundaryX, DrawInfo.GridBoundaryY,
     SFixedColor, [gdFixed]);
-  DrawCells(LeftCol, TopRow, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, DrawInfo.GridBoundaryX,
+  DrawGridCells(DrawInfo, Sel, LeftCol, TopRow, DrawInfo.FixedBoundaryX, DrawInfo.FixedBoundaryY, DrawInfo.GridBoundaryX,
     DrawInfo.GridBoundaryY, SCellColor, []);
 
   if not (csDesigning in ComponentState) and (goRowSelect in Options)
@@ -1578,6 +1486,126 @@ begin
   begin
     DrawVert;
     DrawHorz;
+  end;
+end;
+
+{ **************************************************************************** }
+// LR20260325 - Extracted from Paint nested procedure for readability
+procedure TKingCalendar.DrawGridCells(
+  const DrawInfo: TGridDrawInfo;
+  const Sel: TGridRect;
+  ACol, ARow: Longint;
+  StartX, StartY, StopX, StopY: Integer;
+  Color: TColor;
+  IncludeDrawState: TGridDrawState);
+var
+  CurCol, CurRow: Longint;
+  Where: TRect;
+  DrawState: TGridDrawState;
+  Focused: Boolean;
+  TheText: string;
+  nText: Integer;
+begin
+  CurRow := ARow;
+  Where.Top := StartY;
+  while Where.Top < StopY do
+  begin
+    CurCol := ACol;
+    Where.Left := StartX;
+    Where.Bottom := Where.Top + RowHeights[CurRow];
+    while Where.Left < StopX do
+    begin
+      Where.Right := Where.Left + ColWidths[CurCol];
+      if RectVisible(Canvas.Handle, Where) then
+      begin
+        DrawState := IncludeDrawState;
+        Focused := ValidParentForm(Self).ActiveControl = Self;
+        if Focused and (CurRow = Row) and (CurCol = Col) then
+          Include(DrawState, gdFocused);
+        if PointInGridRect(CurCol, CurRow, Sel) then
+          Include(DrawState, gdSelected);
+        if not (gdFocused in DrawState) or not (goEditing in Options)
+          or not FEditorMode or (csDesigning in ComponentState) then
+        begin
+          if DefaultDrawing or (csDesigning in ComponentState) then
+            begin
+              if (ARow = 0) then
+                Canvas.Font := FTitleFont
+              else
+                Canvas.Font := Self.Font;
+              Canvas.Font.Color :=
+                GetEffectiveStyleServices.GetSystemColor(Canvas.Font.Color);
+              if (gdSelected in DrawState) and
+                (not (gdFocused in DrawState) or
+                (goDrawFocusSelected in Options)) then
+              begin
+                if (not FActive) then
+                begin
+                  Canvas.Brush.Color := Color;
+                  if (FColorarchy = kcaSetColor) then
+                    Canvas.Font.Color :=
+                      GetEffectiveStyleServices.GetSystemColor(
+                      GetKingColor
+                      (FHotSpots[StrToInt(CellText[CurRow,
+                        CurCol])]))
+                  else
+                    Canvas.Font.Color := TodayColor;
+                end
+                else
+                begin
+                  Canvas.Brush.Color :=
+                    GetEffectiveStyleServices.GetSystemColor(FHighlight);
+                  Canvas.Font.Color :=
+                    GetEffectiveStyleServices.GetSystemColor(FHighlightText);
+                end
+              end
+              else
+              begin
+                TheText := CellText[CurRow, CurCol];
+                if (CurRow > 0) and not (TheText = '') then
+                begin
+                  nText := StrToInt(TheText);
+
+                  if FBlockedDays[nText] then
+                    Canvas.Brush.Color :=
+                      GetEffectiveStyleServices.GetSystemColor(FBlockedBkgnd)
+                  else
+                    if FCellBackground[nText] <> FCellColor then
+                      Canvas.Brush.Color :=
+                        GetEffectiveStyleServices.GetSystemColor(FCellBackground[nText])
+                    else
+                      Canvas.Brush.Color := Color;
+                end
+                else
+                  Canvas.Brush.Color := Color;
+
+              end;
+
+              Canvas.FillRect(Where);
+
+            end;
+
+          DrawCell(CurCol, CurRow, Where, DrawState);
+          if DefaultDrawing and (gdFixed in DrawState) and Ctl3D then
+            begin
+              Canvas.Pen.Color :=
+                GetEffectiveStyleServices.GetSystemColor(clBtnHighlight);
+              Canvas.Polyline([Point(Where.Left, Where.Bottom),
+                  Where.TopLeft, Point(Where.Right, Where.Top)]);
+            end;
+          if DefaultDrawing and not (csDesigning in ComponentState) and
+            (gdFocused in DrawState) and not (goEditing in Options)
+            and FActive then
+          begin
+            Canvas.DrawFocusRect(Where);
+          end;
+        end;
+      end;
+      Where.Left := Where.Right + DrawInfo.EffectiveHorzLineWidth;
+      Inc(CurCol);
+    end;
+    Where.Top := Where.Bottom + DrawInfo.EffectiveVertLineWidth;
+    Inc(CurRow);
   end;
 end;
 

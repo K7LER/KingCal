@@ -244,19 +244,20 @@ procedure TKingHMSpin.GetDivOffset;
         tText := Copy( tText, 1, fOffset2 - 1 );
       end
       else
-        try;
-          // tChk := StrToInt( tText[i] );
-        except
-          on E : EConvertError do
-            if ( uppercase( tText[ i ] ) <> 'A' ) and
-              ( uppercase( tText[ i ] ) <> 'P' ) and
-              ( uppercase( tText[ i ] ) <> 'M' )
-            then
-            begin
-              fOffset2 := i - 1;
-              tText := Copy( tText, 1, fOffset2 - 1 );
-            end;
-        end;
+      // LR20260325 - Replaced dead try/except with direct character check
+      // try;
+      //   // tChk := StrToInt( tText[i] );
+      // except
+      //   on E : EConvertError do
+      //     if not A/P/M then set fOffset2
+      // end;
+      if not CharInSet( tText[ i ], ['0'..'9'] ) and
+        not CharInSet( UpCase( tText[ i ] ), ['A', 'P', 'M'] )
+      then
+      begin
+        fOffset2 := i - 1;
+        tText := Copy( tText, 1, fOffset2 - 1 );
+      end;
       Dec( i );
     until ( fOffset2 <> 0 ) or ( i = 0 );
 
@@ -270,17 +271,18 @@ procedure TKingHMSpin.GetDivOffset;
         tText := Copy( tText, 1, fOffset1 - 1 );
       end
       else
-        try
-          // tChk := StrToInt( tText[i] );
-            ;
-        except
-          on E : EConvertError do
-            if ( uppercase( tText[ i ] ) <> 'A' ) and
-              ( uppercase( tText[ i ] ) <> 'P' ) and
-              ( uppercase( tText[ i ] ) <> 'M' )
-            then
-              fOffset1 := i - 1;
-        end;
+      // LR20260325 - Replaced dead try/except with direct character check
+      // try
+      //   // tChk := StrToInt( tText[i] );
+      //     ;
+      // except
+      //   on E : EConvertError do
+      //     if not A/P/M then set fOffset1
+      // end;
+      if not CharInSet( tText[ i ], ['0'..'9'] ) and
+        not CharInSet( UpCase( tText[ i ] ), ['A', 'P', 'M'] )
+      then
+        fOffset1 := i - 1;
       Dec( i );
     until ( fOffset1 <> 0 ) or ( i = 0 );
 

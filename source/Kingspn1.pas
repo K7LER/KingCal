@@ -185,8 +185,10 @@ implementation
 
 function kcIsLeapYear( nYear : Integer ) : boolean;
   begin
-    Result := ( nYear mod 4 = 0 ) and
-      ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    // LR20260325 - Use System.SysUtils.IsLeapYear for consistency
+    // Result := ( nYear mod 4 = 0 ) and
+    //   ( ( nYear mod 100 <> 0 ) or ( nYear mod 400 = 0 ) );
+    Result := System.SysUtils.IsLeapYear( nYear );
   end;
 
 function kcMonthDays( nMonth, nYear : Integer ) : Integer;
@@ -258,14 +260,20 @@ procedure TKingMDYSpin.GetDivOffset;
     { looks for the 2nd Offset }
     i := Length( tText );
     repeat
-      try;
-        // tChk := StrToInt( tText[i] );
-      except
-        on E : EConvertError do
-        begin
-          fOffset2 := i - 1;
-          tText := Copy( tText, 1, fOffset2 - 1 );
-        end;
+      // LR20260325 - Replaced dead try/except with direct character check
+      // try;
+      //   // tChk := StrToInt( tText[i] );
+      // except
+      //   on E : EConvertError do
+      //   begin
+      //     fOffset2 := i - 1;
+      //     tText := Copy( tText, 1, fOffset2 - 1 );
+      //   end;
+      // end;
+      if not CharInSet( tText[i], ['0'..'9'] ) then
+      begin
+        fOffset2 := i - 1;
+        tText := Copy( tText, 1, fOffset2 - 1 );
       end;
       Dec( i );
     until ( fOffset2 <> 0 ) or ( i = 0 );
@@ -273,12 +281,15 @@ procedure TKingMDYSpin.GetDivOffset;
     { looks for the 1st Offset }
     i := Length( tText );
     repeat
-      try;
-        // tChk := StrToInt( tText[i] );
-      except
-        on E : EConvertError do
-          fOffset1 := i - 1;
-      end;
+      // LR20260325 - Replaced dead try/except with direct character check
+      // try;
+      //   // tChk := StrToInt( tText[i] );
+      // except
+      //   on E : EConvertError do
+      //     fOffset1 := i - 1;
+      // end;
+      if not CharInSet( tText[i], ['0'..'9'] ) then
+        fOffset1 := i - 1;
       Dec( i );
     until ( fOffset1 <> 0 ) or ( i = 0 );
   end;

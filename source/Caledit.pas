@@ -407,8 +407,12 @@ procedure TFrmCalEdit.Button2Click( Sender : TObject );
     FrmColor.sB.Position := GetBValue( nColor );
 
     try
+      // LR20260325 - Fixed stray semicolon that made block execute regardless of OK/Cancel
+      // if ( FrmColor.ShowModal = mrOk )
+      // then;
+      // begin
       if ( FrmColor.ShowModal = mrOk )
-      then;
+      then
       begin
 
         nColor := RGB( FrmColor.sR.Position, FrmColor.sG.Position,

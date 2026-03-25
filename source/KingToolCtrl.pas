@@ -149,6 +149,8 @@ type
       FCalendarSource : TKingCalendar;
     protected
       procedure SetSource( Value : TKingCalendar ); virtual;
+      // LR20260325 - Base Notification handles nilling CalendarSource on removal
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     public
     published
       property CalendarSource : TKingCalendar
@@ -164,9 +166,10 @@ type
       // hint    FOnUpClick: TNotifyEvent;
       // hint    FOnDownClick: TNotifyEvent;
     protected
-      procedure Notification(
-        AComponent : TComponent;
-        Operation  : TOperation ); override;
+      // LR20260325 - Notification now handled by TKingBaseSpin
+      // procedure Notification(
+      //   AComponent : TComponent;
+      //   Operation  : TOperation ); override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure Loaded; override;
@@ -197,9 +200,10 @@ type
       FMinYear : Integer;
       FMaxYear : Integer;
     protected
-      procedure Notification(
-        AComponent : TComponent;
-        Operation  : TOperation ); override;
+      // LR20260325 - Notification now handled by TKingBaseSpin
+      // procedure Notification(
+      //   AComponent : TComponent;
+      //   Operation  : TOperation ); override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure Loaded; override;
@@ -237,9 +241,10 @@ type
       // hint    FOnUpClick: TNotifyEvent;
       // hint    FOnDownClick: TNotifyEvent;
     protected
-      procedure Notification(
-        AComponent : TComponent;
-        Operation  : TOperation ); override;
+      // LR20260325 - Notification now handled by TKingBaseSpin
+      // procedure Notification(
+      //   AComponent : TComponent;
+      //   Operation  : TOperation ); override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure Loaded; override;
@@ -269,6 +274,9 @@ type
       FCalendarSource : TKingCalendar;
     protected
       procedure SetSource( Value : TKingCalendar ); virtual;
+      // LR20260325 - Base Notification handles unhook + nil on removal
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+      procedure DoUnhook; virtual;
     public
     published
       property CalendarSource : TKingCalendar
@@ -283,9 +291,12 @@ type
       { FCalendarSource: TKingCalendar; }
     protected
       procedure SetSource( Value : TKingCalendar ); override;
-      procedure Notification(
-        AComponent : TComponent;
-        Operation  : TOperation ); override;
+      // LR20260325 - Notification now handled by TKingBaseCombo
+      // procedure Notification(
+      //   AComponent : TComponent;
+      //   Operation  : TOperation ); override;
+      // LR20260325 - Override DoUnhook to unhook Hooked event
+      procedure DoUnhook; override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure Loaded; override;
@@ -313,9 +324,12 @@ type
       FMaxYear : Integer;
     protected
       procedure SetSource( Value : TKingCalendar ); override;
-      procedure Notification(
-        AComponent : TComponent;
-        Operation  : TOperation ); override;
+      // LR20260325 - Notification now handled by TKingBaseCombo
+      // procedure Notification(
+      //   AComponent : TComponent;
+      //   Operation  : TOperation ); override;
+      // LR20260325 - Override DoUnhook to unhook Hooked event
+      procedure DoUnhook; override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure Loaded; override;
@@ -349,9 +363,12 @@ type
       FMaxDay : Integer;
     protected
       procedure SetSource( Value : TKingCalendar ); override;
-      procedure Notification(
-        AComponent : TComponent;
-        Operation  : TOperation ); override;
+      // LR20260325 - Notification now handled by TKingBaseCombo
+      // procedure Notification(
+      //   AComponent : TComponent;
+      //   Operation  : TOperation ); override;
+      // LR20260325 - Override DoUnhook to unhook TheDateChanged event
+      procedure DoUnhook; override;
     public
       constructor Create( AOwner : TComponent ); override;
       procedure Loaded; override;
@@ -388,20 +405,23 @@ const
     TMonthSpin
     =========================================================================== }
 constructor TMonthSpin.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
 
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        CalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     CalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    CalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 
@@ -437,23 +457,25 @@ procedure TMonthSpin.prevMonth( Sender : TObject );
   end;
 
 { *************************************************************************** }
-procedure TMonthSpin.Notification(
-  AComponent : TComponent;
-  Operation  : TOperation );
-  begin
-    inherited Notification( AComponent, Operation );
-    { If the wired TKingCalendar has been deleted, NIL the connection }
-    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
-    then
-      FCalendarSource := nil;
-  end;
+// LR20260325 - Notification now handled by TKingBaseSpin
+// procedure TMonthSpin.Notification(
+//   AComponent : TComponent;
+//   Operation  : TOperation );
+//   begin
+//     inherited Notification( AComponent, Operation );
+//     { If the wired TKingCalendar has been deleted, NIL the connection }
+//     if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+//     then
+//       FCalendarSource := nil;
+//   end;
 
 { ===========================================================================
   TYearSpin
   =========================================================================== }
 constructor TYearSpin.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     { Set the Base Ranges of selectable years }
@@ -461,15 +483,17 @@ constructor TYearSpin.Create( AOwner : TComponent );
     FMaxYear := 2040;
     // FMaxYear := 2020;
 
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        CalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     CalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    CalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 
@@ -502,35 +526,39 @@ procedure TYearSpin.prevYear( Sender : TObject );
   end;
 
 { *************************************************************************** }
-procedure TYearSpin.Notification(
-  AComponent : TComponent;
-  Operation  : TOperation );
-  begin
-    inherited Notification( AComponent, Operation );
-    { If the wired TKingCalendar has been deleted, NIL the connection }
-    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
-    then
-      FCalendarSource := nil;
-  end;
+// LR20260325 - Notification now handled by TKingBaseSpin
+// procedure TYearSpin.Notification(
+//   AComponent : TComponent;
+//   Operation  : TOperation );
+//   begin
+//     inherited Notification( AComponent, Operation );
+//     { If the wired TKingCalendar has been deleted, NIL the connection }
+//     if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+//     then
+//       FCalendarSource := nil;
+//   end;
 
 { ===========================================================================
   TDaySpin
   =========================================================================== }
 constructor TDaySpin.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
 
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        CalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     CalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    CalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 
@@ -561,18 +589,19 @@ procedure TDaySpin.prevDay( Sender : TObject );
   end;
 
 { *************************************************************************** }
-procedure TDaySpin.Notification(
-  AComponent : TComponent;
-  Operation  : TOperation );
-  begin
-    inherited Notification( AComponent, Operation );
-
-    { If the wired TKingCalendar has been deleted, NIL the connection }
-    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
-    then
-      FCalendarSource := nil;
-
-  end;
+// LR20260325 - Notification now handled by TKingBaseSpin
+// procedure TDaySpin.Notification(
+//   AComponent : TComponent;
+//   Operation  : TOperation );
+//   begin
+//     inherited Notification( AComponent, Operation );
+//
+//     { If the wired TKingCalendar has been deleted, NIL the connection }
+//     if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+//     then
+//       FCalendarSource := nil;
+//
+//   end;
 { ===========================================================================
   TKingBaseSpin
   =========================================================================== }
@@ -582,6 +611,15 @@ procedure TKingBaseSpin.SetSource( Value : TKingCalendar );
   begin
     FCalendarSource := Value;
   end;
+
+{ *************************************************************************** }
+// LR20260325 - Base Notification handles nilling CalendarSource on removal
+procedure TKingBaseSpin.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FCalendarSource) then
+    FCalendarSource := nil;
+end;
 
 { ===========================================================================
   TKingBaseCombo
@@ -593,26 +631,47 @@ procedure TKingBaseCombo.SetSource( Value : TKingCalendar );
     FCalendarSource := Value;
   end;
 
+{ *************************************************************************** }
+// LR20260325 - Base Notification handles unhook + nil on removal
+procedure TKingBaseCombo.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FCalendarSource) then
+  begin
+    DoUnhook;
+    FCalendarSource := nil;
+  end;
+end;
+
+{ *************************************************************************** }
+// LR20260325 - Empty virtual; subclasses override to call UnhookEvent
+procedure TKingBaseCombo.DoUnhook;
+begin
+end;
+
 { ===========================================================================
   TMonthCombo
   =========================================================================== }
 constructor TMonthCombo.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     Width := 124;
     Style := csDropDownList;
 
-    for I := 0 to Owner.ComponentCount - 1 do
-    begin
-      if Owner.Components[ I ] is TKingCalendar
-      then
-      begin
-        FCalendarSource := TKingCalendar( Owner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to Owner.ComponentCount - 1 do
+    // begin
+    //   if Owner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     FCalendarSource := TKingCalendar( Owner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    FCalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 
@@ -667,29 +726,38 @@ procedure TMonthCombo.SetSource( Value : TKingCalendar );
   end;
 
 { *************************************************************************** }
-procedure TMonthCombo.Notification(
-  AComponent : TComponent;
-  Operation  : TOperation );
-  begin
-    inherited Notification( AComponent, Operation );
+// LR20260325 - Notification now handled by TKingBaseCombo
+// procedure TMonthCombo.Notification(
+//   AComponent : TComponent;
+//   Operation  : TOperation );
+//   begin
+//     inherited Notification( AComponent, Operation );
+//
+//     { If the wired TKingCalendar has been deleted, NIL the connection }
+//     if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+//     then
+//     begin
+//       // LR20260325 - Unhook before nilling to prevent dangling pointer
+//       FCalendarSource.UnhookEvent( Hooked );
+//       FCalendarSource := nil;
+//     end;
+//
+//   end;
 
-    { If the wired TKingCalendar has been deleted, NIL the connection }
-    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
-    then
-    begin
-      // LR20260325 - Unhook before nilling to prevent dangling pointer
-      FCalendarSource.UnhookEvent( Hooked );
-      FCalendarSource := nil;
-    end;
-
-  end;
+{ *************************************************************************** }
+// LR20260325 - Override DoUnhook to unhook Hooked event
+procedure TMonthCombo.DoUnhook;
+begin
+  FCalendarSource.UnhookEvent(Hooked);
+end;
 
 { ===========================================================================
   TYearCombo
   =========================================================================== }
 constructor TYearCombo.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     FMinYear := 1980;
@@ -697,15 +765,17 @@ constructor TYearCombo.Create( AOwner : TComponent );
     Width := 75;
     Style := csDropDownList;
 
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        FCalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     FCalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    FCalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 
@@ -760,44 +830,55 @@ procedure TYearCombo.Hooked( Sender : TObject );
   end;
 
 { *************************************************************************** }
-procedure TYearCombo.Notification(
-  AComponent : TComponent;
-  Operation  : TOperation );
-  begin
-    inherited Notification( AComponent, Operation );
+// LR20260325 - Notification now handled by TKingBaseCombo
+// procedure TYearCombo.Notification(
+//   AComponent : TComponent;
+//   Operation  : TOperation );
+//   begin
+//     inherited Notification( AComponent, Operation );
+//
+//     { If the wired TKingCalendar has been deleted, NIL the connection }
+//     if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+//     then
+//     begin
+//       // LR20260325 - Unhook before nilling to prevent dangling pointer
+//       FCalendarSource.UnhookEvent( Hooked );
+//       FCalendarSource := nil;
+//     end;
+//
+//   end;
 
-    { If the wired TKingCalendar has been deleted, NIL the connection }
-    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
-    then
-    begin
-      // LR20260325 - Unhook before nilling to prevent dangling pointer
-      FCalendarSource.UnhookEvent( Hooked );
-      FCalendarSource := nil;
-    end;
-
-  end;
+{ *************************************************************************** }
+// LR20260325 - Override DoUnhook to unhook Hooked event
+procedure TYearCombo.DoUnhook;
+begin
+  FCalendarSource.UnhookEvent(Hooked);
+end;
 
 { ===========================================================================
   TDayCombo
   =========================================================================== }
 constructor TDayCombo.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     FMinDay := 1;
     FMaxDay := 31;
     Width := 75;
     Style := csDropDownList;
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        FCalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     FCalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    FCalendarSource := FindFirstKingCalendar(AOwner);
 
   end;
 
@@ -846,22 +927,30 @@ procedure TDayCombo.SetSource( Value : TKingCalendar );
   end;
 
 { *************************************************************************** }
-procedure TDayCombo.Notification(
-  AComponent : TComponent;
-  Operation  : TOperation );
-  begin
-    inherited Notification( AComponent, Operation );
+// LR20260325 - Notification now handled by TKingBaseCombo
+// procedure TDayCombo.Notification(
+//   AComponent : TComponent;
+//   Operation  : TOperation );
+//   begin
+//     inherited Notification( AComponent, Operation );
+//
+//     { If the wired TKingCalendar has been deleted, NIL the connection }
+//     if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
+//     then
+//     begin
+//       // LR20260325 - Unhook before nilling to prevent dangling pointer
+//       FCalendarSource.UnhookEvent( TheDateChanged );
+//       FCalendarSource := nil;
+//     end;
+//
+//   end;
 
-    { If the wired TKingCalendar has been deleted, NIL the connection }
-    if ( Operation = opRemove ) and ( AComponent = FCalendarSource )
-    then
-    begin
-      // LR20260325 - Unhook before nilling to prevent dangling pointer
-      FCalendarSource.UnhookEvent( TheDateChanged );
-      FCalendarSource := nil;
-    end;
-
-  end;
+{ *************************************************************************** }
+// LR20260325 - Override DoUnhook to unhook TheDateChanged event
+procedure TDayCombo.DoUnhook;
+begin
+  FCalendarSource.UnhookEvent(TheDateChanged);
+end;
 
 { *************************************************************************** }
 procedure TDayCombo.TheDateChanged( Sender : TObject );
@@ -886,20 +975,23 @@ procedure TDayCombo.TheDateChanged( Sender : TObject );
   TKingLabel
   =========================================================================== }
 constructor TKingLabel.Create( AOwner : TComponent );
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     FFormat := 'MMMM DD, YYYY';
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        CalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     CalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    CalendarSource := FindFirstKingCalendar(AOwner);
     FIncludeWeekNum := False;
     self.AutoSize := True;
 
@@ -1018,20 +1110,23 @@ procedure TKingWeekLabel.Change;
 end;
 
 constructor TKingWeekLabel.Create(AOwner: TComponent);
-  var
-    I : Integer;
+  // LR20260325 - Removed I: Integer; no longer needed after scan loop removal
+  // var
+  //   I : Integer;
   begin
     inherited Create( AOwner );
     FIncludeCaption := True;
-    for I := 0 to AOwner.ComponentCount - 1 do
-    begin
-      if AOwner.Components[ I ] is TKingCalendar
-      then
-      begin
-        CalendarSource := TKingCalendar( AOwner.Components[ I ] );
-        Break;
-      end;
-    end;
+    // LR20260325 - Use shared FindFirstKingCalendar utility
+    // for I := 0 to AOwner.ComponentCount - 1 do
+    // begin
+    //   if AOwner.Components[ I ] is TKingCalendar
+    //   then
+    //   begin
+    //     CalendarSource := TKingCalendar( AOwner.Components[ I ] );
+    //     Break;
+    //   end;
+    // end;
+    CalendarSource := FindFirstKingCalendar(AOwner);
     self.AutoSize := True;
 
 end;
