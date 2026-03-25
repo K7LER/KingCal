@@ -38,6 +38,9 @@ requires
   vclactnband,
   vclx,
   designide,
+  // LR20260325 - DB design-time moved to dclKingCalendarDB
+  // kINGCALENDAR250,
+  // KingCalendarDB250;
   kINGCALENDAR250;
 
 contains

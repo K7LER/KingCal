@@ -665,6 +665,9 @@ procedure TKingMDYSpin.SetValue( NewValue : TDateTime );
     SelStart := FSelStart;
     SelLength := FSelLength;
     Modified := True;
+    // LR20260325 - Notify LiveBindings observers of value change
+    if Observers.IsObserving(TObserverMapping.ControlValueID) then
+      TLinkObservers.ControlChanged(Self);
   end;
 
 function TKingMDYSpin.GetSelected : boolean;

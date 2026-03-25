@@ -225,7 +225,8 @@ var
   nStartDow, nEndDow: Integer;
 begin
 
-  nDays := 0;
+  // LR20260325 - Removed unnecessary initialization (nDays is assigned at line 250)
+  // nDays := 0;
 
   nStartDow := kcDayOfWeek(dStart);
 

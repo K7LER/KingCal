@@ -283,7 +283,12 @@ procedure TKingDateDialog.BtnClick( Sender : TObject );
 
       if FPopup.execute
       then
+      begin
         Text := DateToStr( FPopup.Popupdate );
+        // LR20260325 - Notify LiveBindings observers of value change
+        if Observers.IsObserving(TObserverMapping.ControlValueID) then
+          TLinkObservers.ControlChanged(Self);
+      end;
     end;
 
   end;

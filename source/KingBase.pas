@@ -59,6 +59,9 @@ type
     procedure SetEditRect; virtual;
     procedure UpClick(Sender: TObject); virtual;
     procedure DownClick(Sender: TObject); virtual;
+    // LR20260325 - LiveBindings observer support for all spin/dialog editors
+    function CanObserve(const ID: Integer): Boolean; override;
+    procedure ObserverAdded(const ID: Integer; const Observer: IObserver); override;
   end;
 
 implementation
@@ -168,5 +171,25 @@ procedure TKingBaseDateEdit.DownClick( Sender : TObject );
   begin
     // LR20260325 - Empty virtual stub; subclasses override
   end;
+
+{ **************************************************************************** }
+// LR20260325 - LiveBindings support: accept edit and control-value observers
+function TKingBaseDateEdit.CanObserve(const ID: Integer): Boolean;
+begin
+  Result := (ID = TObserverMapping.EditLinkID) or
+    (ID = TObserverMapping.ControlValueID);
+  if not Result then
+    Result := inherited CanObserve(ID);
+end;
+
+{ **************************************************************************** }
+// LR20260325 - LiveBindings support: configure observer on attachment
+procedure TKingBaseDateEdit.ObserverAdded(const ID: Integer;
+  const Observer: IObserver);
+begin
+  if ID = TObserverMapping.EditLinkID then
+    Observer.OnObserverToggle := ObserverToggle;
+  inherited ObserverAdded(ID, Observer);
+end;
 
 end.

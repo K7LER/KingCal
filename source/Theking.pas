@@ -301,6 +301,9 @@ type
   protected
     procedure Change;
     procedure Click; override;
+    // LR20260325 - LiveBindings observer support
+    function CanObserve(const ID: Integer): Boolean; override;
+    procedure ObserverAdded(const ID: Integer; const Observer: IObserver); override;
     function IsLeapYear(nYear: Integer): Boolean;
     function LeapYear: Boolean;
     function GetDateElement(Index: Integer): Integer;
@@ -801,6 +804,10 @@ begin
   //   end;
   for X := 0 to FHooks.Count - 1 do
     FHooks[X](Self);
+
+  // LR20260325 - Notify LiveBindings observers of value change
+  if Observers.IsObserving(TObserverMapping.ControlValueID) then
+    TLinkObservers.ControlChanged(Self);
 end;
 
 { **************************************************************************** }
@@ -2548,6 +2555,26 @@ begin
     FStyleName := Value;
     Invalidate;
   end;
+end;
+
+{ **************************************************************************** }
+// LR20260325 - LiveBindings support: accept edit and control-value observers
+function TKingCalendar.CanObserve(const ID: Integer): Boolean;
+begin
+  Result := (ID = TObserverMapping.EditLinkID) or
+    (ID = TObserverMapping.ControlValueID);
+  if not Result then
+    Result := inherited CanObserve(ID);
+end;
+
+{ **************************************************************************** }
+// LR20260325 - LiveBindings support: configure observer on attachment
+procedure TKingCalendar.ObserverAdded(const ID: Integer;
+  const Observer: IObserver);
+begin
+  if ID = TObserverMapping.EditLinkID then
+    Observer.OnObserverToggle := ObserverToggle;
+  inherited ObserverAdded(ID, Observer);
 end;
 
 end.

@@ -7,7 +7,7 @@
 ; =============================================================================
 
 #define AppName    "KingCalendar"
-#define AppVersion "2026.0324.0008"
+#define AppVersion "2026.0325.0010"
 #define AppPublisher "Lance Rasmussen"
 
 [Setup]
@@ -715,6 +715,8 @@ var
   BatchPath   : String;
   MsbuildLog  : String;
   RuntimeDpr  : String;
+  DBRuntimeDpr: String;  // LR20260325 - DB runtime package
+  DBDesignDpr : String;  // LR20260325 - DB design-time package
   DesignDpr   : String;
   Lines       : TStringList;
   LogLines    : TStringList;
@@ -736,6 +738,10 @@ begin
   end;
 
   RuntimeDpr := AppDir + '\packages\' + PkgFolder + '\KingCalendar'    + PkgSuffix + '.dproj';
+  // LR20260325 - Added DB runtime package compilation
+  DBRuntimeDpr := AppDir + '\packages\' + PkgFolder + '\KingCalendarDB' + PkgSuffix + '.dproj';
+  // LR20260325 - DB design-time package (separate from main design-time)
+  DBDesignDpr  := AppDir + '\packages\' + PkgFolder + '\dclKingCalendarDB' + PkgSuffix + '.dproj';
   DesignDpr  := AppDir + '\packages\' + PkgFolder + '\dclKingCalendar' + PkgSuffix + '.dproj';
 
   if not FileExists(RuntimeDpr) then
@@ -783,6 +789,20 @@ begin
               DcuArg(DcuPathR) +
               ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
 
+    // --- DB Runtime: Debug + Release ---
+    // LR20260325 - Compile KingCalendarDB package (database-aware components)
+    if FileExists(DBRuntimeDpr) then
+    begin
+      Lines.Add('msbuild "' + DBRuntimeDpr + '"' +
+                ' /t:Build /p:Config=Debug /p:Platform=' + PlatformName +
+                DcuArg(DcuPathD) +
+                ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+      Lines.Add('msbuild "' + DBRuntimeDpr + '"' +
+                ' /t:Build /p:Config=Release /p:Platform=' + PlatformName +
+                DcuArg(DcuPathR) +
+                ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+    end;
+
     // --- Design-time (Win32 pass only) ---
     // Win32 dcl is always compiled.
     // Win64 dcl is compiled here too when HasBin64 so the 64-bit IDE can load it.
@@ -810,6 +830,32 @@ begin
                   ' /t:Build /p:Config=Release /p:Platform=Win64' +
                   DcuArg(Dcu64PathR) +
                   ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+      end;
+
+      // LR20260325 - Compile DB design-time package (dclKingCalendarDB)
+      if FileExists(DBDesignDpr) then
+      begin
+        // Win32 DB dcl
+        Lines.Add('msbuild "' + DBDesignDpr + '"' +
+                  ' /t:Build /p:Config=Debug /p:Platform=Win32' +
+                  DcuArg(DcuPathD) +
+                  ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+        Lines.Add('msbuild "' + DBDesignDpr + '"' +
+                  ' /t:Build /p:Config=Release /p:Platform=Win32' +
+                  DcuArg(DcuPathR) +
+                  ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+        // Win64 DB dcl for 64-bit IDE
+        if HasBin64 then
+        begin
+          Lines.Add('msbuild "' + DBDesignDpr + '"' +
+                    ' /t:Build /p:Config=Debug /p:Platform=Win64' +
+                    DcuArg(Dcu64PathD) +
+                    ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+          Lines.Add('msbuild "' + DBDesignDpr + '"' +
+                    ' /t:Build /p:Config=Release /p:Platform=Win64' +
+                    DcuArg(Dcu64PathR) +
+                    ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
+        end;
       end;
     end;
 
@@ -961,6 +1007,50 @@ begin
         'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages x64',
         Bpl64Path, 'KingCalendar');
       LogLine('Registered Win64 dcl in Known Packages x64: ' + Bpl64Path);
+    end;
+  end;
+
+  // -------------------------------------------------------------------------
+  // LR20260325 - Register DB design-time BPL (dclKingCalendarDB)
+  // -------------------------------------------------------------------------
+  BplPath := BplDir + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
+  if not FileExists(BplPath) then
+  begin
+    FallbackBpl := PkgBase + '\Win32\' + Config + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
+    if FileExists(FallbackBpl) then
+    begin
+      ForceDirectories(BplDir);
+      CopyFile(FallbackBpl, BplPath, False);
+    end;
+  end;
+
+  if FileExists(BplPath) then
+  begin
+    RegWriteStringValue(HKCU,
+      'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages',
+      BplPath, 'KingCalendar DB');
+    LogLine('Registered Win32 DB dcl in Known Packages: ' + BplPath);
+  end;
+
+  if HasBin64 then
+  begin
+    Bpl64Path := Bpl64Dir + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
+    if not FileExists(Bpl64Path) then
+    begin
+      FallbackBpl := PkgBase + '\Win64\' + Config + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
+      if FileExists(FallbackBpl) then
+      begin
+        ForceDirectories(Bpl64Dir);
+        CopyFile(FallbackBpl, Bpl64Path, False);
+      end;
+    end;
+
+    if FileExists(Bpl64Path) then
+    begin
+      RegWriteStringValue(HKCU,
+        'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages x64',
+        Bpl64Path, 'KingCalendar DB');
+      LogLine('Registered Win64 DB dcl in Known Packages x64: ' + Bpl64Path);
     end;
   end;
 end;
@@ -1173,6 +1263,18 @@ begin
   DelKC(Dir + '\dclKingCalendar' + Suffix + '.dcp');
   DelKC(Dir + '\dclKingCalendar' + Suffix + '.bpi');
   DelKC(Dir + '\dclKingCalendar' + Suffix + '.lib');
+  // LR20260325 - Clean up DB runtime package artifacts
+  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.bpl');
+  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.rsm');
+  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.dcp');
+  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.bpi');
+  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.lib');
+  // LR20260325 - Clean up DB design-time package artifacts
+  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.bpl');
+  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.rsm');
+  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.dcp');
+  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.bpi');
+  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.lib');
 end;
 
 

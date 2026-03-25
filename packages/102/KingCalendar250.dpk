@@ -35,7 +35,9 @@ requires
   vclsmp,
   rtl,
   xmlrtl,
-  vclactnband;
+  vclactnband,
+  bindengine,
+  bindcomp;
 
 contains
   KingBase in '..\..\source\KingBase.pas',
@@ -55,6 +57,7 @@ contains
   Kingcalc in '..\..\source\Kingcalc.pas' {KcCalc},
   Kingpop in '..\..\source\Kingpop.pas' {KcPopup},
   Kingprop in '..\..\source\Kingprop.pas' {VcdAboutBox},
-  Kingspin in '..\..\source\Kingspin.pas';
+  Kingspin in '..\..\source\Kingspin.pas',
+  KingBindEditors in '..\..\source\KingBindEditors.pas';
 
 end.

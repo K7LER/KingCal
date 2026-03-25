@@ -33,6 +33,9 @@ package dclKingCalendar370;
 requires
   rtl,
   designide,
+  // LR20260325 - DB design-time moved to dclKingCalendarDB
+  // kINGCALENDAR370,
+  // KingCalendarDB370;
   kINGCALENDAR370;
 
 contains

@@ -1,7 +1,7 @@
 { *                                                                                * }
-{ *  unit KingCore                                                                 * }
-{ *  Fixed Information Unit                                                        * }
-{ *  KingCalendar Components v3.0 for Delphi                                       * }
+{ *  unit KingBindEditors                                                         * }
+{ *  LiveBindings Registration for KingCalendar Components                        * }
+{ *  KingCalendar Components v2.0 for Delphi                                       * }
 { *                                                                                * }
 { * ***** BEGIN LICENSE BLOCK *****                                                * }
 { * MIT License                                                                    * }
@@ -36,17 +36,46 @@
 { *                                                                                * }
 { * ***** END LICENSE BLOCK *****                                                  * }
 
-unit KingCore;
+// LR20260325 - LiveBindings observable member registration for KingCalendar components
+
+unit KingBindEditors;
 
 interface
 
-const
-  // LR20260325 - Version bump for DB-aware components and LiveBindings support
-  // vcdVersion = 'v2026.0325.0009';
-  // vcdBuildDate = '03/25/26';
-  vcdVersion = 'v2026.0325.0010'; { * KingCalendar Version Number   * }
-  vcdBuildDate = '03/25/26'; { * KingCalendar Build Date       * }
-
 implementation
+
+uses
+  System.Classes,
+  Data.Bind.Components,
+  Data.Bind.ObjectScope,
+  TheKing,
+  KingSpin,
+  KingSpn1,
+  KingSpnt,
+  KingDlg;
+
+procedure RegisterKingBindEditors;
+begin
+  // LR20260325 - Register CalendarDate as observable for TKingCalendar
+  Data.Bind.Components.RegisterObservableMember(
+    TArray<TClass>.Create(TKingCalendar), 'CalendarDate', 'KingCalendar');
+
+  // LR20260325 - Register Value as observable for all spin editors
+  Data.Bind.Components.RegisterObservableMember(
+    TArray<TClass>.Create(TKingDateSpin), 'Value', 'KingCalendar');
+  Data.Bind.Components.RegisterObservableMember(
+    TArray<TClass>.Create(TKingTimeSpin), 'Value', 'KingCalendar');
+  Data.Bind.Components.RegisterObservableMember(
+    TArray<TClass>.Create(TKingMDYSpin), 'Value', 'KingCalendar');
+  Data.Bind.Components.RegisterObservableMember(
+    TArray<TClass>.Create(TKingHMSpin), 'Value', 'KingCalendar');
+
+  // LR20260325 - Register Text as observable for TKingDateDialog
+  Data.Bind.Components.RegisterObservableMember(
+    TArray<TClass>.Create(TKingDateDialog), 'Text', 'KingCalendar');
+end;
+
+initialization
+  RegisterKingBindEditors;
 
 end.

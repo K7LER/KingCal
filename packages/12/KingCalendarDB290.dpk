@@ -1,7 +1,7 @@
-package dclKingCalendar290;
+package KingCalendarDB290;
 
-{$R *.res}
-{$R '..\..\Source\Kcal32.dcr'}
+// LR20260325 - No resources needed for DB package
+// {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -26,19 +26,23 @@ package dclKingCalendar290;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'King Calendar - Delphi 12.0'}
-{$DESIGNONLY}
+{$DESCRIPTION 'King Calendar DB Components for Delphi 12'}
+{$RUNONLY}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
-  designide,
-  // LR20260325 - DB design-time moved to dclKingCalendarDB
-  // kINGCALENDAR290,
-  // KingCalendarDB290;
-  kINGCALENDAR290;
+  vcl,
+  vclx,
+  vcldb,
+  vclwinx,
+  dbrtl,
+  bindengine,
+  bindcomp,
+  KingCalendar290;
 
 contains
-  Kcal32 in '..\..\source\Kcal32.pas';
+  DBKingSpin in '..\..\source\DBKingSpin.pas';
+
 
 end.

@@ -456,6 +456,9 @@ procedure TKingTimeSpin.SetValue( NewValue : TDateTime );
 {$WARN SYMBOL_PLATFORM ON}
     DateTimeToString( NewTime, TimeFormat, NewValue, LFormatSettings );
     Text := NewTime;
+    // LR20260325 - Notify LiveBindings observers of value change
+    if Observers.IsObserving(TObserverMapping.ControlValueID) then
+      TLinkObservers.ControlChanged(Self);
   end;
 
 procedure TKingTimeSpin.CMEnter( var Message : TCMGotFocus );
@@ -767,6 +770,9 @@ procedure TKingDateSpin.SetValue( NewValue : TDateTime );
     DateTimeToString( NewDate, LFormatSettings.ShortDateFormat, NewValue,
       LFormatSettings );
     Text := NewDate;
+    // LR20260325 - Notify LiveBindings observers of value change
+    if Observers.IsObserving(TObserverMapping.ControlValueID) then
+      TLinkObservers.ControlChanged(Self);
   end;
 
 procedure TKingDateSpin.CMEnter( var Message : TCMGotFocus );

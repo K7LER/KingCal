@@ -12,7 +12,15 @@
       "Bash(find Demos -type d -not -path */.*)",
       "Bash(curl -s https://raw.githubusercontent.com/pages-themes/modernist/master/_layouts/default.html)",
       "Bash(ls:*)",
-      "Bash(grep -c \"begin$\\\\|end;\" \"C:/_c/KC/source/Theking.pas\")"
+      "Bash(grep -c \"begin$\\\\|end;\" \"C:/_c/KC/source/Theking.pas\")",
+      "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source' -name *.pas -type f)",
+      "Bash(xargs grep:*)",
+      "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source/vcl' -name *.pas -type f)",
+      "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source' -name *.pas)",
+      "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source/vcl' -name *.pas)",
+      "Bash(find C:_cKCsource -name *.pas)",
+      "Bash(find 'C:/Program Files \\(x86\\)/Embarcadero/Studio/37.0/source/databinding' -name *.pas)",
+      "Bash(find C:_cKC -type f \\\\\\(-name *.iss -o -name *setup* -o -name *install* -o -name *.inno* \\\\\\) -iname *)"
     ]
   }
 }

@@ -75,6 +75,9 @@ uses
   KingSpn1,
   KingSpnt,
   KingCore;
+  // LR20260325 - DB registration moved to Kcal32DB.pas (separate design-time package)
+  // DBKingSpin,
+  // KingBindEditors;
 
 type
   TAboutProperty = class( TStringProperty )
@@ -129,6 +132,10 @@ procedure Register;
       // TDBKingDlg,
       TKingTimeSpin, TKingDateSpin, TKingMDYSpin, TKingHMSpin, TKingCalc ] );
 
+    // LR20260325 - DB component registration moved to Kcal32DB.pas
+    // RegisterComponents( 'KingCalendar', [ TDBKingCalendar, TDBKingDateSpin,
+    //   TDBKingTimeSpin, TDBKingMDYSpin, TDBKingHMSpin, TDBKingDateDialog ] );
+
     RegisterPropertyEditor( TypeInfo( string ), TKingCalendar, 'About', TKingCalendarProperty );
     RegisterPropertyEditor( TypeInfo( string ), TKingNavigator, 'About', TKingCalendarProperty );
     RegisterPropertyEditor( TypeInfo( string ), TMonthBar, 'About', TKingCalendarProperty );
@@ -149,6 +156,10 @@ procedure Register;
     RegisterPropertyEditor( TypeInfo( string ), TKingHMSpin, 'About', TKingCalendarProperty );
     // RegisterPropertyEditor( TypeInfo( String ), TDBKingDlg,
     // 'About', TKingCalendarProperty );
+    // LR20260325 - DB About editors moved to Kcal32DB.pas
+    // RegisterPropertyEditor( TypeInfo( string ), TDBKingCalendar, 'About', TKingCalendarProperty );
+    // ...
+    // RegisterPropertyEditor( TypeInfo( string ), TDBKingDateDialog, 'About', TKingCalendarProperty );
     RegisterComponentEditor( TKingNavigator, TKingAttachEditor );
     RegisterComponentEditor( TMonthBar, TKingAttachEditor );
     RegisterComponentEditor( TKingLabel, TKingAttachEditor );

@@ -1,6 +1,6 @@
 { *                                                                                * }
-{ *  unit KingCore                                                                 * }
-{ *  Fixed Information Unit                                                        * }
+{ *  unit Kcal32DB                                                                * }
+{ *  Design-time registration for database-aware KingCalendar components          * }
 { *  KingCalendar Components v3.0 for Delphi                                       * }
 { *                                                                                * }
 { * ***** BEGIN LICENSE BLOCK *****                                                * }
@@ -36,17 +36,65 @@
 { *                                                                                * }
 { * ***** END LICENSE BLOCK *****                                                  * }
 
-unit KingCore;
+// LR20260325 - Separate design-time registration for DB-aware components
+
+unit Kcal32DB;
 
 interface
 
-const
-  // LR20260325 - Version bump for DB-aware components and LiveBindings support
-  // vcdVersion = 'v2026.0325.0009';
-  // vcdBuildDate = '03/25/26';
-  vcdVersion = 'v2026.0325.0010'; { * KingCalendar Version Number   * }
-  vcdBuildDate = '03/25/26'; { * KingCalendar Build Date       * }
+procedure Register;
 
 implementation
+
+uses
+  System.Classes,
+  DesignIntf,
+  DesignEditors,
+  DBKingSpin,
+  KingCore;
+
+type
+  // LR20260325 - Reuse the same About property editor pattern as Kcal32.pas
+  TDBKingAboutProperty = class(TStringProperty)
+    function GetAttributes: TPropertyAttributes; override;
+    function GetValue: string; override;
+    procedure SetValue(const Value: string); override;
+  end;
+
+function TDBKingAboutProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := [paDialog, paReadOnly];
+end;
+
+function TDBKingAboutProperty.GetValue: string;
+begin
+  Result := 'v' + vcdVersion;
+end;
+
+procedure TDBKingAboutProperty.SetValue(const Value: string);
+begin
+  // Read-only; intentionally empty
+end;
+
+procedure Register;
+begin
+  // LR20260325 - Register database-aware components into KingCalendar palette
+  RegisterComponents('KingCalendar', [
+    TDBKingCalendar,
+    TDBKingDateSpin,
+    TDBKingTimeSpin,
+    TDBKingMDYSpin,
+    TDBKingHMSpin,
+    TDBKingDateDialog
+  ]);
+
+  // About property editors
+  RegisterPropertyEditor(TypeInfo(string), TDBKingCalendar, 'About', TDBKingAboutProperty);
+  RegisterPropertyEditor(TypeInfo(string), TDBKingDateSpin, 'About', TDBKingAboutProperty);
+  RegisterPropertyEditor(TypeInfo(string), TDBKingTimeSpin, 'About', TDBKingAboutProperty);
+  RegisterPropertyEditor(TypeInfo(string), TDBKingMDYSpin, 'About', TDBKingAboutProperty);
+  RegisterPropertyEditor(TypeInfo(string), TDBKingHMSpin, 'About', TDBKingAboutProperty);
+  RegisterPropertyEditor(TypeInfo(string), TDBKingDateDialog, 'About', TDBKingAboutProperty);
+end;
 
 end.
