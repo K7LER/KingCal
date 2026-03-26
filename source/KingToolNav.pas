@@ -257,7 +257,8 @@ procedure TKingNavigator.InitButtons;
     I : TCalcBtn;
     Btn : TKingButton;
     X : Integer;
-    ResName : array [ 0 .. 40 ] of Char;
+    // LR20260325 - ResName no longer needed; bitmap glyphs replaced with procedural drawing
+    // ResName : array [ 0 .. 40 ] of Char;
   begin
     MinBtnSize := Point( 20, 18 );
     X := 0;

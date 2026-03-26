@@ -33,7 +33,8 @@
       "Bash(do sed:*)",
       "Bash(echo \"Fixed $f\")",
       "Bash(done)",
-      "Bash(grep -l \"RcItem\" C:/_c/KC/packages/*/*.dproj)"
+      "Bash(grep -l \"RcItem\" C:/_c/KC/packages/*/*.dproj)",
+      "Bash(cd:*)"
     ]
   }
 }

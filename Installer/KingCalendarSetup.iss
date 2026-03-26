@@ -7,7 +7,7 @@
 ; =============================================================================
 
 #define AppName    "KingCalendar"
-#define AppVersion "2026.0325.1613"
+#define AppVersion "2026.0325.2003"
 #define AppPublisher "Lance Rasmussen"
 
 [Setup]
@@ -44,26 +44,9 @@ Source: "..\packages\dsydney\*"; DestDir: "{app}\packages\dsydney"; Flags: ignor
 Source: "..\packages\d11\*";     DestDir: "{app}\packages\d11";     Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\packages\d12\*";     DestDir: "{app}\packages\d12";     Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\packages\d13\*";     DestDir: "{app}\packages\d13";     Flags: ignoreversion recursesubdirs createallsubdirs
-; --- Library support files — DCUs excluded (compiled from source post-install) ---
-; --- Delphi 10.2 / BDS 19 ---
-Source: "..\LIBD25x32\*";     DestDir: "{app}\LIBD25x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD25x64\*";     DestDir: "{app}\LIBD25x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-; --- Delphi 10.3 / BDS 20 ---
-Source: "..\LIBD26x32\*";     DestDir: "{app}\LIBD26x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD26x64\*";     DestDir: "{app}\LIBD26x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-; --- Delphi 10.4 / BDS 21 ---
-Source: "..\LIBD27x32\*";     DestDir: "{app}\LIBD27x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD27x64\*";     DestDir: "{app}\LIBD27x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-; --- Delphi 11 / BDS 22 ---
-Source: "..\LIBD28x32\*";     DestDir: "{app}\LIBD28x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD28x64\*";     DestDir: "{app}\LIBD28x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-; --- Delphi 12 / BDS 23 ---
-Source: "..\LIBD29x32\*";     DestDir: "{app}\LIBD29x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD29x64\*";     DestDir: "{app}\LIBD29x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-; --- Delphi 13 / BDS 24 ---
-Source: "..\LIBD37x32\*";     DestDir: "{app}\LIBD37x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD37x64\*";     DestDir: "{app}\LIBD37x64";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
-Source: "..\LIBD37x64x\*";    DestDir: "{app}\LIBD37x64x";    Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
+; --- Pre-compiled binaries (BinPackages) ---
+; LR20260325 - Replaced LIBD* folders with BinPackages directory structure
+Source: "..\BinPackages\*";   DestDir: "{app}\BinPackages";   Flags: ignoreversion recursesubdirs createallsubdirs
 ; --- Documentation ---
 Source: "..\Documentation\*"; DestDir: "{app}\Documentation"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; --- Demos ---
@@ -685,30 +668,19 @@ end;
 // Compiles runtime package (all selected platforms) and design-time package (Win32 only).
 // Returns True if the build completed without error.
 // Maps a platform name to its LIBD folder suffix (e.g. 'Win32' -> 'x32').
-// Returns '' for platforms with no dedicated LIB folder (ARM64EC).
-function GetPlatLibSuffix(const PlatformName: String): String;
+// LR20260325 - Returns MSBuild /p: arguments to override all output paths
+function OutputArgs(const OutDir: String): String;
 begin
-  if      PlatformName = 'Win32'      then Result := 'x32'
-  else if PlatformName = 'Win64'      then Result := 'x64'
-  else if PlatformName = 'Win64x'     then Result := 'x64x'
-  else                                     Result := '';
+  Result := ' "/p:DCC_DcuOutput=' + OutDir + '"' +
+            ' "/p:DCC_DcpOutput=' + OutDir + '"' +
+            ' "/p:DCC_BplOutput=' + OutDir + '"';
 end;
 
 
-// Returns a quoted /p:DCC_DcuOutput=... argument safe for cmd.exe
-function DcuArg(const Path: String): String;
-begin
-  Result := ' "/p:DCC_DcuOutput=' + Path + '"';
-end;
-
-
-// Compile runtime package for both Debug and Release.
-// For Win32, also compiles the design-time (dcl) package for Win32.
-// When HasBin64 is True (64-bit IDE, D12+), also compiles dcl for Win64 during
-// the Win32 pass so the 64-bit IDE can load the design-time package.
-// DCC_DcuOutput is overridden on the MSBuild command line so DCUs always land
-// in the correct LIBD subfolder, regardless of what the dproj contains.
-// MSBuild stdout/stderr is captured to a per-build log and appended to InstallLog.
+// LR20260325 - Rewritten to output all compiled files to BinPackages directory.
+// All 4 packages are compiled for the given platform in both Debug and Release.
+// Output: {app}\BinPackages\{PkgFolder}\{Platform}\{Config}\
+// Design-time packages are compiled during the Win32 pass (and Win64 when HasBin64).
 function CompilePackages(const AppDir, BDSRoot, BDSVer,
                          PkgFolder, PkgSuffix, PlatformName,
                          LibPrefix: String; HasBin64: Boolean): Boolean;
@@ -717,17 +689,17 @@ var
   BatchPath   : String;
   MsbuildLog  : String;
   RuntimeDpr  : String;
-  DBRuntimeDpr: String;  // LR20260325 - DB runtime package
-  DBDesignDpr : String;  // LR20260325 - DB design-time package
+  DBRuntimeDpr: String;
   DesignDpr   : String;
+  DBDesignDpr : String;
   Lines       : TStringList;
   LogLines    : TStringList;
   ExitCode    : Integer;
-  PlatSuffix  : String;
-  DcuPathD    : String;
-  DcuPathR    : String;
-  Dcu64PathD  : String;
-  Dcu64PathR  : String;
+  OutPathD    : String;
+  OutPathR    : String;
+  Out64PathD  : String;
+  Out64PathR  : String;
+  BinBase     : String;
   I           : Integer;
 
 begin
@@ -739,12 +711,10 @@ begin
     Exit;
   end;
 
-  RuntimeDpr := AppDir + '\packages\' + PkgFolder + '\KingCalendar'    + PkgSuffix + '.dproj';
-  // LR20260325 - Added DB runtime package compilation
-  DBRuntimeDpr := AppDir + '\packages\' + PkgFolder + '\KingCalendarDB' + PkgSuffix + '.dproj';
-  // LR20260325 - DB design-time package (separate from main design-time)
+  RuntimeDpr   := AppDir + '\packages\' + PkgFolder + '\KingCalendar'      + PkgSuffix + '.dproj';
+  DBRuntimeDpr := AppDir + '\packages\' + PkgFolder + '\KingCalendarDB'    + PkgSuffix + '.dproj';
+  DesignDpr    := AppDir + '\packages\' + PkgFolder + '\dclKingCalendar'   + PkgSuffix + '.dproj';
   DBDesignDpr  := AppDir + '\packages\' + PkgFolder + '\dclKingCalendarDB' + PkgSuffix + '.dproj';
-  DesignDpr  := AppDir + '\packages\' + PkgFolder + '\dclKingCalendar' + PkgSuffix + '.dproj';
 
   if not FileExists(RuntimeDpr) then
   begin
@@ -752,23 +722,12 @@ begin
     Exit;
   end;
 
-  // Compute DCU output paths for this platform
-  PlatSuffix := GetPlatLibSuffix(PlatformName);
-  if PlatSuffix <> '' then
-  begin
-    DcuPathD := AppDir + '\' + LibPrefix + PlatSuffix + '\Debug';
-    DcuPathR := AppDir + '\' + LibPrefix + PlatSuffix + '\Release';
-  end
-  else
-  begin
-    // ARM64EC: no dedicated LIB folder — output within packages tree
-    DcuPathD := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\Debug';
-    DcuPathR := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\Release';
-  end;
-
-  // Win64 dcl DCU paths — used when compiling Win64 dcl during Win32 pass
-  Dcu64PathD := AppDir + '\' + LibPrefix + 'x64\Debug';
-  Dcu64PathR := AppDir + '\' + LibPrefix + 'x64\Release';
+  // Output paths: BinPackages\<PkgFolder>\<Platform>\<Config>
+  BinBase    := AppDir + '\BinPackages\' + PkgFolder;
+  OutPathD   := BinBase + '\' + PlatformName + '\Debug';
+  OutPathR   := BinBase + '\' + PlatformName + '\Release';
+  Out64PathD := BinBase + '\Win64\Debug';
+  Out64PathR := BinBase + '\Win64\Release';
 
   BatchPath  := ExpandConstant('{tmp}') + '\KCBuild_' + PkgSuffix + '_' + PlatformName + '.bat';
   MsbuildLog := ExpandConstant('{tmp}') + '\KCBuild_' + PkgSuffix + '_' + PlatformName + '.log';
@@ -779,87 +738,91 @@ begin
     Lines.Add('call "' + RsVars + '"');
     Lines.Add('if errorlevel 1 exit /b %errorlevel%');
 
-    // --- Runtime: Debug ---
+    // Create output directories
+    Lines.Add('if not exist "' + OutPathD + '" mkdir "' + OutPathD + '"');
+    Lines.Add('if not exist "' + OutPathR + '" mkdir "' + OutPathR + '"');
+
+    // --- Runtime: Debug + Release ---
     Lines.Add('msbuild "' + RuntimeDpr + '"' +
               ' /t:Build /p:Config=Debug /p:Platform=' + PlatformName +
-              DcuArg(DcuPathD) +
+              OutputArgs(OutPathD) +
               ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
-
-    // --- Runtime: Release ---
     Lines.Add('msbuild "' + RuntimeDpr + '"' +
               ' /t:Build /p:Config=Release /p:Platform=' + PlatformName +
-              DcuArg(DcuPathR) +
+              OutputArgs(OutPathR) +
               ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
 
     // --- DB Runtime: Debug + Release ---
-    // LR20260325 - Compile KingCalendarDB package (database-aware components)
     if FileExists(DBRuntimeDpr) then
     begin
       Lines.Add('msbuild "' + DBRuntimeDpr + '"' +
                 ' /t:Build /p:Config=Debug /p:Platform=' + PlatformName +
-                DcuArg(DcuPathD) +
+                OutputArgs(OutPathD) +
                 ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
       Lines.Add('msbuild "' + DBRuntimeDpr + '"' +
                 ' /t:Build /p:Config=Release /p:Platform=' + PlatformName +
-                DcuArg(DcuPathR) +
+                OutputArgs(OutPathR) +
                 ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
     end;
 
-    // --- Design-time (Win32 pass only) ---
-    // Win32 dcl is always compiled.
-    // Win64 dcl is compiled here too when HasBin64 so the 64-bit IDE can load it.
-    // LR20260324 - Added Win64 dcl compile for 64-bit IDE (D12+) support
+    // --- Design-time packages (Win32 pass only) ---
     if (PlatformName = 'Win32') and FileExists(DesignDpr) then
     begin
-      // Win32 dcl: Debug + Release
+      // Win32 dcl
       Lines.Add('msbuild "' + DesignDpr + '"' +
                 ' /t:Build /p:Config=Debug /p:Platform=Win32' +
-                DcuArg(DcuPathD) +
+                OutputArgs(OutPathD) +
                 ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
       Lines.Add('msbuild "' + DesignDpr + '"' +
                 ' /t:Build /p:Config=Release /p:Platform=Win32' +
-                DcuArg(DcuPathR) +
+                OutputArgs(OutPathR) +
                 ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
 
-      // Win64 dcl: compile during Win32 pass when IDE is 64-bit (D12+)
+      // Win64 dcl for 64-bit IDE
       if HasBin64 then
       begin
+        Lines.Add('if not exist "' + Out64PathD + '" mkdir "' + Out64PathD + '"');
+        Lines.Add('if not exist "' + Out64PathR + '" mkdir "' + Out64PathR + '"');
         Lines.Add('msbuild "' + DesignDpr + '"' +
                   ' /t:Build /p:Config=Debug /p:Platform=Win64' +
-                  DcuArg(Dcu64PathD) +
+                  OutputArgs(Out64PathD) +
                   ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
         Lines.Add('msbuild "' + DesignDpr + '"' +
                   ' /t:Build /p:Config=Release /p:Platform=Win64' +
-                  DcuArg(Dcu64PathR) +
+                  OutputArgs(Out64PathR) +
                   ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
       end;
 
-      // LR20260325 - Compile DB design-time package (dclKingCalendarDB)
+      // DB design-time
       if FileExists(DBDesignDpr) then
       begin
-        // Win32 DB dcl
         Lines.Add('msbuild "' + DBDesignDpr + '"' +
                   ' /t:Build /p:Config=Debug /p:Platform=Win32' +
-                  DcuArg(DcuPathD) +
+                  OutputArgs(OutPathD) +
                   ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
         Lines.Add('msbuild "' + DBDesignDpr + '"' +
                   ' /t:Build /p:Config=Release /p:Platform=Win32' +
-                  DcuArg(DcuPathR) +
+                  OutputArgs(OutPathR) +
                   ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
-        // Win64 DB dcl for 64-bit IDE
         if HasBin64 then
         begin
           Lines.Add('msbuild "' + DBDesignDpr + '"' +
                     ' /t:Build /p:Config=Debug /p:Platform=Win64' +
-                    DcuArg(Dcu64PathD) +
+                    OutputArgs(Out64PathD) +
                     ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
           Lines.Add('msbuild "' + DBDesignDpr + '"' +
                     ' /t:Build /p:Config=Release /p:Platform=Win64' +
-                    DcuArg(Dcu64PathR) +
+                    OutputArgs(Out64PathR) +
                     ' /nologo /v:minimal >> "' + MsbuildLog + '" 2>&1');
         end;
       end;
     end;
+
+    // Copy .RES and .DFM from source to output directories
+    Lines.Add('copy /Y "' + AppDir + '\source\*.res" "' + OutPathD + '\" >nul 2>&1');
+    Lines.Add('copy /Y "' + AppDir + '\source\*.dfm" "' + OutPathD + '\" >nul 2>&1');
+    Lines.Add('copy /Y "' + AppDir + '\source\*.res" "' + OutPathR + '\" >nul 2>&1');
+    Lines.Add('copy /Y "' + AppDir + '\source\*.dfm" "' + OutPathR + '\" >nul 2>&1');
 
     Lines.SaveToFile(BatchPath);
   finally
@@ -893,205 +856,121 @@ begin
 end;
 
 
-// Register the compiled design-time BPLs in the Delphi IDE registry.
-//
-// Delphi's MSBuild targets write BPLs directly to BDSCOMMONDIR\Bpl (Win32)
-// and BDSCOMMONDIR\Bpl\WIN64 (Win64) — those are the paths we register.
-// If a BPL is not found there (unusual), we fall back to the packages output
-// folder and copy it to the Bpl directory before registering.
-//
-// Registry:
-//   32-bit IDE: HKCU\Software\Embarcadero\BDS\{ver}\Known Packages
-//   64-bit IDE: HKCU\Software\Embarcadero\BDS\{ver}\Known Packages x64
-//   Value name = full BPL path,  Value data = 'KingCalendar'
-//
-// LR20260324 - Rewritten: check BDSCOMMONDIR\Bpl first (Delphi MSBuild puts BPLs there);
-//              WIN64 subfolder name matches what Delphi creates on disk
+// LR20260325 - Rewritten: BPLs are now in BinPackages, registered directly from there.
+// No copying to BDSCOMMONDIR — the IDE loads BPLs from the registered path.
 procedure CopyAndRegisterBPLs(const AppDir, BDSRoot, BDSVer,
                                PkgFolder, PkgSuffix, Config: String;
                                HasBin64: Boolean);
 var
-  PkgBase     : String;
+  BinBase     : String;
+  BplPath     : String;
+  Bpl64Path   : String;
+  RegKey32    : String;
+  RegKey64    : String;
   CommonDir32 : String;
   CommonDir64 : String;
-  BplDir      : String;    // BDSCOMMONDIR\Bpl          (Win32 IDE)
-  Bpl64Dir    : String;    // BDSCOMMONDIR\Bpl\WIN64    (Win64 IDE)
-  BplPath     : String;    // final registered path for Win32 dcl
-  Bpl64Path   : String;    // final registered path for Win64 dcl
-  FallbackBpl : String;
+  BplDir      : String;
+  Bpl64Dir    : String;
 begin
-  PkgBase := AppDir + '\packages\' + PkgFolder;
+  BinBase  := AppDir + '\BinPackages\' + PkgFolder;
+  RegKey32 := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages';
+  RegKey64 := 'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages x64';
 
-  // Derive BDSCOMMONDIR from rsvars.bat / rsvars64.bat; fall back to default.
+  LogLine('Registering BPLs for BDS ' + BDSVer + '  Config=' + Config +
+          '  HasBin64=' + BoolStr(HasBin64));
+
+  // --- Copy runtime BPLs to BDSCOMMONDIR so the IDE can find them ---
+  // LR20260325 - Runtime BPLs ({$RUNONLY}) can't go in Known Packages.
+  // They must be in a directory the IDE searches for DLL dependencies.
+  // BDSCOMMONDIR\Bpl (Win32) and BDSCOMMONDIR\Bpl\Win64 (64-bit IDE)
+  // are the standard locations Delphi uses.
   CommonDir32 := ReadBDSCommonDir(BDSRoot + '\bin\rsvars.bat');
   if CommonDir32 = '' then
     CommonDir32 := ExpandConstant('{%PUBLIC}\Documents') +
                    '\Embarcadero\Studio\' + BDSVer;
 
+  BplDir := CommonDir32 + '\Bpl';
+  ForceDirectories(BplDir);
+
+  // Copy all Win32 BPLs (runtime + design-time) to BDSCOMMONDIR\Bpl
+  BplPath := BinBase + '\Win32\' + Config;
+  if DirExists(BplPath) then
+  begin
+    CopyFile(BplPath + '\KingCalendar'      + PkgSuffix + '.bpl', BplDir + '\KingCalendar'      + PkgSuffix + '.bpl', False);
+    CopyFile(BplPath + '\KingCalendarDB'    + PkgSuffix + '.bpl', BplDir + '\KingCalendarDB'    + PkgSuffix + '.bpl', False);
+    CopyFile(BplPath + '\dclKingCalendar'   + PkgSuffix + '.bpl', BplDir + '\dclKingCalendar'   + PkgSuffix + '.bpl', False);
+    CopyFile(BplPath + '\dclKingCalendarDB' + PkgSuffix + '.bpl', BplDir + '\dclKingCalendarDB' + PkgSuffix + '.bpl', False);
+    LogLine('Copied Win32 BPLs to: ' + BplDir);
+  end;
+
+  // Register Win32 design-time BPLs from BDSCOMMONDIR\Bpl
+  BplPath := BplDir + '\dclKingCalendar' + PkgSuffix + '.bpl';
+  if FileExists(BplPath) then
+  begin
+    RegWriteStringValue(HKCU, RegKey32, BplPath, 'KingCalendar');
+    LogLine('Registered Win32 dcl: ' + BplPath);
+  end;
+  BplPath := BplDir + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
+  if FileExists(BplPath) then
+  begin
+    RegWriteStringValue(HKCU, RegKey32, BplPath, 'KingCalendar DB');
+    LogLine('Registered Win32 DB dcl: ' + BplPath);
+  end;
+
+  // Copy all Win64 BPLs and register design-time for 64-bit IDE
   if HasBin64 then
   begin
     CommonDir64 := ReadBDSCommonDir(BDSRoot + '\bin64\rsvars64.bat');
-    if CommonDir64 = '' then
-      CommonDir64 := CommonDir32;
-  end
-  else
-    CommonDir64 := CommonDir32;
+    if CommonDir64 = '' then CommonDir64 := CommonDir32;
+    Bpl64Dir := CommonDir64 + '\Bpl\Win64';
+    ForceDirectories(Bpl64Dir);
 
-  // WIN64 matches the subfolder name Delphi creates on disk (uppercase)
-  BplDir   := CommonDir32 + '\Bpl';
-  Bpl64Dir := CommonDir64 + '\Bpl\WIN64';
-
-  LogLine('Registering BPLs for BDS ' + BDSVer + '  Config=' + Config +
-          '  HasBin64=' + BoolStr(HasBin64));
-  LogLine('BplDir=' + BplDir + '  Bpl64Dir=' + Bpl64Dir);
-
-  // -------------------------------------------------------------------------
-  // Win32 dcl — 32-bit IDE  (Known Packages)
-  // Delphi MSBuild writes the BPL to BplDir directly during compilation.
-  // If not found there, fall back to the packages output folder and copy it.
-  // -------------------------------------------------------------------------
-  BplPath := BplDir + '\dclKingCalendar' + PkgSuffix + '.bpl';
-  if not FileExists(BplPath) then
-  begin
-    LogLine('Win32 dcl not in BplDir — trying packages output folder');
-    FallbackBpl := PkgBase + '\Win32\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
-    if FileExists(FallbackBpl) then
+    Bpl64Path := BinBase + '\Win64\' + Config;
+    if DirExists(Bpl64Path) then
     begin
-      ForceDirectories(BplDir);
-      if CopyFile(FallbackBpl, BplPath, False) then
-        LogLine('Copied Win32 dcl to BplDir: ' + BplPath)
-      else
-      begin
-        BplPath := FallbackBpl;
-        LogLine('Copy failed; will register from source: ' + BplPath);
-      end;
-    end
-    else
-      LogLine('Win32 dcl BPL not found in BplDir or packages output — skipping');
-  end;
+      CopyFile(Bpl64Path + '\KingCalendar'      + PkgSuffix + '.bpl', Bpl64Dir + '\KingCalendar'      + PkgSuffix + '.bpl', False);
+      CopyFile(Bpl64Path + '\KingCalendarDB'    + PkgSuffix + '.bpl', Bpl64Dir + '\KingCalendarDB'    + PkgSuffix + '.bpl', False);
+      CopyFile(Bpl64Path + '\dclKingCalendar'   + PkgSuffix + '.bpl', Bpl64Dir + '\dclKingCalendar'   + PkgSuffix + '.bpl', False);
+      CopyFile(Bpl64Path + '\dclKingCalendarDB' + PkgSuffix + '.bpl', Bpl64Dir + '\dclKingCalendarDB' + PkgSuffix + '.bpl', False);
+      LogLine('Copied Win64 BPLs to: ' + Bpl64Dir);
+    end;
 
-  if FileExists(BplPath) then
-  begin
-    RegWriteStringValue(HKCU,
-      'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages',
-      BplPath, 'KingCalendar');
-    LogLine('Registered Win32 dcl in Known Packages: ' + BplPath);
-  end;
-
-  // -------------------------------------------------------------------------
-  // Win64 dcl — 64-bit IDE  (Known Packages x64)
-  // -------------------------------------------------------------------------
-  if HasBin64 then
-  begin
     Bpl64Path := Bpl64Dir + '\dclKingCalendar' + PkgSuffix + '.bpl';
-    if not FileExists(Bpl64Path) then
-    begin
-      LogLine('Win64 dcl not in Bpl64Dir — trying packages output folder');
-      FallbackBpl := PkgBase + '\Win64\' + Config + '\dclKingCalendar' + PkgSuffix + '.bpl';
-      if FileExists(FallbackBpl) then
-      begin
-        ForceDirectories(Bpl64Dir);
-        if CopyFile(FallbackBpl, Bpl64Path, False) then
-          LogLine('Copied Win64 dcl to Bpl64Dir: ' + Bpl64Path)
-        else
-        begin
-          Bpl64Path := FallbackBpl;
-          LogLine('Copy failed; will register from source: ' + Bpl64Path);
-        end;
-      end
-      else
-        LogLine('Win64 dcl BPL not found in Bpl64Dir or packages output — skipping');
-    end;
-
     if FileExists(Bpl64Path) then
     begin
-      RegWriteStringValue(HKCU,
-        'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages x64',
-        Bpl64Path, 'KingCalendar');
-      LogLine('Registered Win64 dcl in Known Packages x64: ' + Bpl64Path);
+      RegWriteStringValue(HKCU, RegKey64, Bpl64Path, 'KingCalendar');
+      LogLine('Registered Win64 dcl: ' + Bpl64Path);
     end;
-  end;
-
-  // -------------------------------------------------------------------------
-  // LR20260325 - Register DB design-time BPL (dclKingCalendarDB)
-  // -------------------------------------------------------------------------
-  BplPath := BplDir + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
-  if not FileExists(BplPath) then
-  begin
-    FallbackBpl := PkgBase + '\Win32\' + Config + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
-    if FileExists(FallbackBpl) then
-    begin
-      ForceDirectories(BplDir);
-      CopyFile(FallbackBpl, BplPath, False);
-    end;
-  end;
-
-  if FileExists(BplPath) then
-  begin
-    RegWriteStringValue(HKCU,
-      'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages',
-      BplPath, 'KingCalendar DB');
-    LogLine('Registered Win32 DB dcl in Known Packages: ' + BplPath);
-  end;
-
-  if HasBin64 then
-  begin
     Bpl64Path := Bpl64Dir + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
-    if not FileExists(Bpl64Path) then
-    begin
-      FallbackBpl := PkgBase + '\Win64\' + Config + '\dclKingCalendarDB' + PkgSuffix + '.bpl';
-      if FileExists(FallbackBpl) then
-      begin
-        ForceDirectories(Bpl64Dir);
-        CopyFile(FallbackBpl, Bpl64Path, False);
-      end;
-    end;
-
     if FileExists(Bpl64Path) then
     begin
-      RegWriteStringValue(HKCU,
-        'Software\Embarcadero\BDS\' + BDSVer + '\Known Packages x64',
-        Bpl64Path, 'KingCalendar DB');
-      LogLine('Registered Win64 DB dcl in Known Packages x64: ' + Bpl64Path);
+      RegWriteStringValue(HKCU, RegKey64, Bpl64Path, 'KingCalendar DB');
+      LogLine('Registered Win64 DB dcl: ' + Bpl64Path);
     end;
   end;
 end;
 
 
-// Add the compiled DCU folder (selected config only) and the source folder to
-// the Delphi library and browsing paths for the given BDS version + platform.
+// LR20260325 - Rewritten: library paths now point to BinPackages.
 procedure UpdatePaths(const AppDir, BDSVer, LibPrefix,
                       PlatformName, Config, PkgFolder: String);
 var
-  LibDir    : String;
-  SrcDir    : String;
-  LibKey    : String;
-  PlatSuffix: String;
+  LibDir : String;
+  SrcDir : String;
+  LibKey : String;
 begin
-  PlatSuffix := GetPlatLibSuffix(PlatformName);
-  SrcDir     := AppDir + '\source';
-  LibKey     := 'Software\Embarcadero\BDS\' + BDSVer + '\Library\' + PlatformName;
+  SrcDir := AppDir + '\source';
+  LibKey := 'Software\Embarcadero\BDS\' + BDSVer + '\Library\' + PlatformName;
 
-  // Source browsing path is platform-neutral
+  // Source browsing path
   AppendRegPath(LibKey, 'Browsing Path', SrcDir);
 
-  if PlatSuffix <> '' then
-  begin
-    LibDir := AppDir + '\' + LibPrefix + PlatSuffix + '\' + Config;
-    if DirExists(LibDir) then
-      AppendRegPath(LibKey, 'Search Path', LibDir)
-    else
-      Log('LIB folder not found after compile, path not updated: ' + LibDir);
-  end
+  // Compiled output path: BinPackages\<PkgFolder>\<Platform>\<Config>
+  LibDir := AppDir + '\BinPackages\' + PkgFolder + '\' + PlatformName + '\' + Config;
+  if DirExists(LibDir) then
+    AppendRegPath(LibKey, 'Search Path', LibDir)
   else
-  begin
-    // ARM64EC — use the MSBuild output folder inside packages as the search path
-    LibDir := AppDir + '\packages\' + PkgFolder + '\' + PlatformName + '\' + Config;
-    if DirExists(LibDir) then
-      AppendRegPath(LibKey, 'Search Path', LibDir)
-    else
-      Log('ARM64EC output folder not found: ' + LibDir);
-  end;
+    Log('BinPackages folder not found: ' + LibDir);
 end;
 
 
@@ -1241,43 +1120,8 @@ end;
 
 
 // =============================================================================
-// Uninstall helpers — clean BDSCOMMONDIR artifacts for each Delphi version
+// LR20260325 - Uninstall helpers — BPLs are in BinPackages, not BDSCOMMONDIR
 // =============================================================================
-
-// Delete a single file silently; no error if absent.
-procedure DelKC(const Path: String);
-begin
-  DeleteFile(Path);
-end;
-
-
-// Delete all KingCalendar and dclKingCalendar compiled artifacts (BPL, RSM,
-// DCP, BPI, LIB) for the given package suffix from the specified directory.
-procedure DeleteKCFilesFromDir(const Dir, Suffix: String);
-begin
-  DelKC(Dir + '\KingCalendar'    + Suffix + '.bpl');
-  DelKC(Dir + '\KingCalendar'    + Suffix + '.rsm');
-  DelKC(Dir + '\KingCalendar'    + Suffix + '.dcp');
-  DelKC(Dir + '\KingCalendar'    + Suffix + '.bpi');
-  DelKC(Dir + '\KingCalendar'    + Suffix + '.lib');
-  DelKC(Dir + '\dclKingCalendar' + Suffix + '.bpl');
-  DelKC(Dir + '\dclKingCalendar' + Suffix + '.rsm');
-  DelKC(Dir + '\dclKingCalendar' + Suffix + '.dcp');
-  DelKC(Dir + '\dclKingCalendar' + Suffix + '.bpi');
-  DelKC(Dir + '\dclKingCalendar' + Suffix + '.lib');
-  // LR20260325 - Clean up DB runtime package artifacts
-  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.bpl');
-  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.rsm');
-  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.dcp');
-  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.bpi');
-  DelKC(Dir + '\KingCalendarDB'  + Suffix + '.lib');
-  // LR20260325 - Clean up DB design-time package artifacts
-  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.bpl');
-  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.rsm');
-  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.dcp');
-  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.bpi');
-  DelKC(Dir + '\dclKingCalendarDB' + Suffix + '.lib');
-end;
 
 
 // Remove every Known Packages registry value whose name contains 'KingCalendar'.
@@ -1300,86 +1144,65 @@ end;
 // Uninstall cleanup — remove compiled artifacts left by the post-install build
 // =============================================================================
 
+// LR20260325 - Rewritten: BPLs are in BinPackages, not BDSCOMMONDIR.
+// Only need to remove registry entries and delete BinPackages + packages build output.
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
   AppDir      : String;
-  CommonDir32 : String;
-  CommonDir64 : String;
-  BplDir      : String;
-  Bpl64Dir    : String;
-  DcpDir      : String;
-  Dcp64Dir    : String;
   BatchPath   : String;
   Lines       : TStringList;
   ExitCode    : Integer;
   I           : Integer;
+  CommonDir32 : String;
+  CommonDir64 : String;
 begin
   if CurUninstallStep <> usPostUninstall then Exit;
 
   AppDir := ExpandConstant('{app}');
 
-  // Remove the installation log written by the post-install phase
+  // Remove the installation log
   DeleteFile(AppDir + '\installation.log');
 
-  // --- Clean BDSCOMMONDIR BPL / DCP artifacts for every detected Delphi ---
-  // Re-detect installs here because the wizard was not run during uninstall.
+  // --- Remove registry entries and copied runtime BPLs for every detected Delphi ---
   DetectDelphiInstalls;
   for I := 0 to VersionCount - 1 do
   begin
-    // Read BDSCOMMONDIR from rsvars.bat for each version so we respect
-    // any non-default install paths the user may have configured.
+    CleanKnownPackages(Versions[I].BDSVer, '');      // 32-bit IDE
+    CleanKnownPackages(Versions[I].BDSVer, ' x64');  // 64-bit IDE
+
+    // Remove runtime BPLs copied to BDSCOMMONDIR during install
     CommonDir32 := ReadBDSCommonDir(Versions[I].BDSRoot + '\bin\rsvars.bat');
     if CommonDir32 = '' then
       CommonDir32 := ExpandConstant('{%PUBLIC}\Documents') +
                      '\Embarcadero\Studio\' + Versions[I].BDSVer;
+    // Remove all KingCalendar BPLs from BDSCOMMONDIR\Bpl
+    DeleteFile(CommonDir32 + '\Bpl\KingCalendar'      + Versions[I].PkgSuffix + '.bpl');
+    DeleteFile(CommonDir32 + '\Bpl\KingCalendarDB'    + Versions[I].PkgSuffix + '.bpl');
+    DeleteFile(CommonDir32 + '\Bpl\dclKingCalendar'   + Versions[I].PkgSuffix + '.bpl');
+    DeleteFile(CommonDir32 + '\Bpl\dclKingCalendarDB' + Versions[I].PkgSuffix + '.bpl');
 
-    CommonDir64 := ReadBDSCommonDir(Versions[I].BDSRoot + '\bin64\rsvars64.bat');
-    if CommonDir64 = '' then
-      CommonDir64 := CommonDir32;
-
-    BplDir   := CommonDir32 + '\Bpl';
-    Bpl64Dir := CommonDir64 + '\Bpl\WIN64';
-    DcpDir   := CommonDir32 + '\Dcp';
-    Dcp64Dir := CommonDir64 + '\Dcp\WIN64';
-
-    // Remove BPL and RSM files from the standard BPL output folders
-    DeleteKCFilesFromDir(BplDir,   Versions[I].PkgSuffix);
-    DeleteKCFilesFromDir(Bpl64Dir, Versions[I].PkgSuffix);
-
-    // Remove DCP, BPI and LIB files from the standard DCP output folders
-    DeleteKCFilesFromDir(DcpDir,   Versions[I].PkgSuffix);
-    DeleteKCFilesFromDir(Dcp64Dir, Versions[I].PkgSuffix);
-
-    // Remove Known Packages registry entries (any path containing 'KingCalendar')
-    CleanKnownPackages(Versions[I].BDSVer, '');      // 32-bit IDE
-    CleanKnownPackages(Versions[I].BDSVer, ' x64');  // 64-bit IDE
+    if Versions[I].HasBin64 then
+    begin
+      CommonDir64 := ReadBDSCommonDir(Versions[I].BDSRoot + '\bin64\rsvars64.bat');
+      if CommonDir64 = '' then CommonDir64 := CommonDir32;
+      DeleteFile(CommonDir64 + '\Bpl\Win64\KingCalendar'      + Versions[I].PkgSuffix + '.bpl');
+      DeleteFile(CommonDir64 + '\Bpl\Win64\KingCalendarDB'    + Versions[I].PkgSuffix + '.bpl');
+      DeleteFile(CommonDir64 + '\Bpl\Win64\dclKingCalendar'   + Versions[I].PkgSuffix + '.bpl');
+      DeleteFile(CommonDir64 + '\Bpl\Win64\dclKingCalendarDB' + Versions[I].PkgSuffix + '.bpl');
+    end;
   end;
 
-  // --- Remove compiled artifacts from within the installation folder ---
-
-  // Delete all *.dcu files recursively (compiled units)
+  // --- Remove BinPackages directory (all compiled output) ---
   Exec(ExpandConstant('{cmd}'),
-       '/C del /s /f /q "' + AppDir + '\*.dcu"',
+       '/C rd /s /q "' + AppDir + '\BinPackages"',
        '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
 
-  // Delete all *.o files recursively (linker object files, e.g. dpk.o)
+  // --- Remove compiled artifacts from packages build output ---
   Exec(ExpandConstant('{cmd}'),
-       '/C del /s /f /q "' + AppDir + '\*.o"',
-       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
-
-  // Delete all *.bpl files from the packages output subfolders
-  Exec(ExpandConstant('{cmd}'),
-       '/C del /s /f /q "' + AppDir + '\packages\*.bpl"',
-       '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
-
-  // Delete all *.dcp files (Delphi compiled package descriptors)
-  Exec(ExpandConstant('{cmd}'),
-       '/C del /s /f /q "' + AppDir + '\*.dcp"',
+       '/C del /s /f /q "' + AppDir + '\packages\*.dcu" "' + AppDir + '\packages\*.bpl" "' + AppDir + '\packages\*.dcp" "' + AppDir + '\packages\*.o"',
        '', SW_HIDE, ewWaitUntilTerminated, ExitCode);
 
   // --- Remove all empty directories recursively ---
-  // The batch loops until a full pass finds nothing left to remove,
-  // so any depth of nested empty folders is handled correctly.
   BatchPath := ExpandConstant('{tmp}') + '\KCRmDirs.bat';
   Lines := TStringList.Create;
   try

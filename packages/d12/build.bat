@@ -4,6 +4,7 @@ REM KingCalendar Build Script - Delphi 29.0
 
 set BASEDIR=%~dp0
 set OUTBASE=%BASEDIR%29.0
+set BINBASE=%BASEDIR%..\..\BinPackages\d12
 
 call rsvars.bat
 if errorlevel 1 (
@@ -317,6 +318,29 @@ copy /Y "%SRCDIR%\*.res" "%OUTBASE%\Win64x\Release\" >nul 2>&1
 copy /Y "%SRCDIR%\*.dfm" "%OUTBASE%\Win64x\Release\" >nul 2>&1
 copy /Y "%SRCDIR%\*.res" "%OUTBASE%\Win64x\Debug\" >nul 2>&1
 copy /Y "%SRCDIR%\*.dfm" "%OUTBASE%\Win64x\Debug\" >nul 2>&1
+
+REM === Copy output to BinPackages ===
+echo.
+echo Copying to BinPackages...
+if exist "%BINBASE%\Win32\Release" rd /s /q "%BINBASE%\Win32\Release"
+mkdir "%BINBASE%\Win32\Release"
+xcopy /Y /Q "%OUTBASE%\Win32\Release\*.*" "%BINBASE%\Win32\Release\" >nul 2>&1
+if exist "%BINBASE%\Win32\Debug" rd /s /q "%BINBASE%\Win32\Debug"
+mkdir "%BINBASE%\Win32\Debug"
+xcopy /Y /Q "%OUTBASE%\Win32\Debug\*.*" "%BINBASE%\Win32\Debug\" >nul 2>&1
+if exist "%BINBASE%\Win64\Release" rd /s /q "%BINBASE%\Win64\Release"
+mkdir "%BINBASE%\Win64\Release"
+xcopy /Y /Q "%OUTBASE%\Win64\Release\*.*" "%BINBASE%\Win64\Release\" >nul 2>&1
+if exist "%BINBASE%\Win64\Debug" rd /s /q "%BINBASE%\Win64\Debug"
+mkdir "%BINBASE%\Win64\Debug"
+xcopy /Y /Q "%OUTBASE%\Win64\Debug\*.*" "%BINBASE%\Win64\Debug\" >nul 2>&1
+if exist "%BINBASE%\Win64x\Release" rd /s /q "%BINBASE%\Win64x\Release"
+mkdir "%BINBASE%\Win64x\Release"
+xcopy /Y /Q "%OUTBASE%\Win64x\Release\*.*" "%BINBASE%\Win64x\Release\" >nul 2>&1
+if exist "%BINBASE%\Win64x\Debug" rd /s /q "%BINBASE%\Win64x\Debug"
+mkdir "%BINBASE%\Win64x\Debug"
+xcopy /Y /Q "%OUTBASE%\Win64x\Debug\*.*" "%BINBASE%\Win64x\Debug\" >nul 2>&1
+echo Done.
 
 echo.
 if %ERRORCOUNT% EQU 0 (
