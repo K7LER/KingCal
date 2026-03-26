@@ -10,7 +10,7 @@ KingCalendar is a Delphi VCL component library providing calendar controls for W
 
 There is no CLI build system. Builds are done inside the Delphi IDE:
 
-1. Open the group project for the target Delphi version, e.g. `packages/13/D13All.groupproj`
+1. Open the group project for the target Delphi version, e.g. `packages/d13/D13All.groupproj`
 2. Compile the runtime package first (e.g. `KingCalendar370.dpk`)
 3. Compile the DB runtime package (e.g. `KingCalendarDB370.dpk`)
 4. Compile the design-time package (e.g. `dclKingCalendar370.dpk`) → **Install** to register base components
@@ -20,14 +20,14 @@ Pre-compiled binaries live in `LIB<ver>x32/RELEASE` and `LIB<ver>x64/RELEASE` (e
 
 ## Package Naming Convention
 
-| Delphi Version | BDS Key | Package suffix | Folders |
-|---|---|---|---|
-| 10.2 | 25.0 | 250 | packages/102, LIBD25x64 |
-| 10.3 | 26.0 | 260 | packages/103, LIBD26x64 |
-| 10.4 | 27.0 | 270 | packages/104, LIBD27x64 |
-| 11 | 28.0 | 280 | packages/110, LIBD28x32, LIBD28x64 |
-| 12 | 29.0 | 290 | packages/12, LIBD29x32, LIBD29x64 |
-| 13 | 37.0 | 370 | packages/13, LIBD37x32, LIBD37x64 |
+| Delphi Version | BDS Key | Package suffix | Folder | Platforms |
+|---|---|---|---|---|
+| 10.2 Tokyo | 25.0 | 250 | packages/dtokyo | Win32, Win64 |
+| 10.3 Rio | 26.0 | 260 | packages/drio | Win32, Win64 |
+| 10.4 Sydney | 27.0 | 270 | packages/dsydney | Win32, Win64 |
+| 11 Alexandria | 28.0 | 280 | packages/d11 | Win32, Win64 |
+| 12 Athens | 29.0 | 290 | packages/d12 | Win32, Win64, Win64x |
+| 13 Florence | 37.0 | 370 | packages/d13 | Win32, Win64, Win64x |
 
 Each version has four packages:
 - **Runtime** (`KingCalendar<ver>.dpk`) — `{$RUNONLY}`, contains all base implementation units + LiveBindings registration

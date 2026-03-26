@@ -28,7 +28,12 @@
       "Bash(grep -r \"CNV_PREV\\\\|BTN_CALENDAR\\\\|KINGSPLASH\" C:/_c/KC --include=*.pas --include=*.rc)",
       "Bash(grep -r \"NumGlyphs\\\\|Glyph\\\\|LoadBitmap\" C:/_c/KC/source --include=*.pas)",
       "Bash(grep -n \"PNG\\\\|SVG\\\\|ImageList\\\\|HighDPI\" C:/_c/KC/source/*.pas)",
-      "Bash(grep -E \"\\\\.\\(pas|res\\)$\")"
+      "Bash(grep -E \"\\\\.\\(pas|res\\)$\")",
+      "Bash(for f:*)",
+      "Bash(do sed:*)",
+      "Bash(echo \"Fixed $f\")",
+      "Bash(done)",
+      "Bash(grep -l \"RcItem\" C:/_c/KC/packages/*/*.dproj)"
     ]
   }
 }

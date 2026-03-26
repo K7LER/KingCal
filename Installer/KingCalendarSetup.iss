@@ -37,12 +37,13 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 ; --- Source files ---
 Source: "..\source\*";        DestDir: "{app}\source";        Flags: ignoreversion recursesubdirs createallsubdirs
 ; --- Package projects (all Delphi versions) ---
-Source: "..\packages\102\*";  DestDir: "{app}\packages\102";  Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\packages\103\*";  DestDir: "{app}\packages\103";  Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\packages\104\*";  DestDir: "{app}\packages\104";  Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\packages\110\*";  DestDir: "{app}\packages\110";  Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\packages\12\*";   DestDir: "{app}\packages\12";   Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\packages\13\*";   DestDir: "{app}\packages\13";   Flags: ignoreversion recursesubdirs createallsubdirs
+; LR20260325 - Updated folder names to match renamed package directories
+Source: "..\packages\dtokyo\*";  DestDir: "{app}\packages\dtokyo";  Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\packages\drio\*";    DestDir: "{app}\packages\drio";    Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\packages\dsydney\*"; DestDir: "{app}\packages\dsydney"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\packages\d11\*";     DestDir: "{app}\packages\d11";     Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\packages\d12\*";     DestDir: "{app}\packages\d12";     Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\packages\d13\*";     DestDir: "{app}\packages\d13";     Flags: ignoreversion recursesubdirs createallsubdirs
 ; --- Library support files — DCUs excluded (compiled from source post-install) ---
 ; --- Delphi 10.2 / BDS 19 ---
 Source: "..\LIBD25x32\*";     DestDir: "{app}\LIBD25x32";     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.dcu"
@@ -188,12 +189,13 @@ function GetPkgInfoByCompilerMajor(CompMajor: Cardinal;
 begin
   Result := True;
   case CompMajor of
-    25: begin PkgSuffix := '250'; PkgFolder := '102'; LibPrefix := 'LIBD25'; DisplayName := 'Delphi 10.2 Tokyo';    end;
-    26: begin PkgSuffix := '260'; PkgFolder := '103'; LibPrefix := 'LIBD26'; DisplayName := 'Delphi 10.3 Rio';      end;
-    27: begin PkgSuffix := '270'; PkgFolder := '104'; LibPrefix := 'LIBD27'; DisplayName := 'Delphi 10.4 Sydney';   end;
-    28: begin PkgSuffix := '280'; PkgFolder := '110'; LibPrefix := 'LIBD28'; DisplayName := 'Delphi 11 Alexandria'; end;
-    29: begin PkgSuffix := '290'; PkgFolder := '12';  LibPrefix := 'LIBD29'; DisplayName := 'Delphi 12 Athens';     end;
-    37: begin PkgSuffix := '370'; PkgFolder := '13';  LibPrefix := 'LIBD37'; DisplayName := 'Delphi 13 Florence';   end;
+    // LR20260325 - Updated PkgFolder to match renamed package directories
+    25: begin PkgSuffix := '250'; PkgFolder := 'dtokyo';  LibPrefix := 'LIBD25'; DisplayName := 'Delphi 10.2 Tokyo';    end;
+    26: begin PkgSuffix := '260'; PkgFolder := 'drio';    LibPrefix := 'LIBD26'; DisplayName := 'Delphi 10.3 Rio';      end;
+    27: begin PkgSuffix := '270'; PkgFolder := 'dsydney'; LibPrefix := 'LIBD27'; DisplayName := 'Delphi 10.4 Sydney';   end;
+    28: begin PkgSuffix := '280'; PkgFolder := 'd11';     LibPrefix := 'LIBD28'; DisplayName := 'Delphi 11 Alexandria'; end;
+    29: begin PkgSuffix := '290'; PkgFolder := 'd12';     LibPrefix := 'LIBD29'; DisplayName := 'Delphi 12 Athens';     end;
+    37: begin PkgSuffix := '370'; PkgFolder := 'd13';     LibPrefix := 'LIBD37'; DisplayName := 'Delphi 13 Florence';   end;
   else
     Result := False; // Unknown / unsupported compiler version
   end;
