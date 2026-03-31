@@ -9,6 +9,12 @@
         <Projects Include="dclKingCalendar370.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="KingCalendarDB370.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclKingCalendarDB370.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,28 +41,58 @@
     <Target Name="dclKingCalendar370:Make">
         <MSBuild Projects="dclKingCalendar370.dproj" Targets="Make"/>
     </Target>
+    <Target Name="KingCalendarDB370">
+        <MSBuild Projects="KingCalendarDB370.dproj"/>
+    </Target>
+    <Target Name="KingCalendarDB370:Clean">
+        <MSBuild Projects="KingCalendarDB370.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="KingCalendarDB370:Make">
+        <MSBuild Projects="KingCalendarDB370.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclKingCalendarDB370">
+        <MSBuild Projects="dclKingCalendarDB370.dproj"/>
+    </Target>
+    <Target Name="dclKingCalendarDB370:Clean">
+        <MSBuild Projects="dclKingCalendarDB370.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclKingCalendarDB370:Make">
+        <MSBuild Projects="dclKingCalendarDB370.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="KingCalendar370;dclKingCalendar370"/>
+        <CallTarget Targets="KingCalendar370;dclKingCalendar370;KingCalendarDB370;dclKingCalendarDB370"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="KingCalendar370:Clean;dclKingCalendar370:Clean"/>
+        <CallTarget Targets="KingCalendar370:Clean;dclKingCalendar370:Clean;KingCalendarDB370:Clean;dclKingCalendarDB370:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="KingCalendar370:Make;dclKingCalendar370:Make"/>
+        <CallTarget Targets="KingCalendar370:Make;dclKingCalendar370:Make;KingCalendarDB370:Make;dclKingCalendarDB370:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='ALL'">
         <BuildGroupProject Include="KingCalendar370.dproj">
-            <ProjectGuid>{8233ED76-E689-4A3D-9757-4EF287E2D3AF}</ProjectGuid>
-            <Configurations>Debug;Release</Configurations>
-            <Platforms>Win32;Win64</Platforms>
-            <Enabled>True</Enabled>
+            <ProjectGuid>{C07E2E15-6332-43C8-8620-32AB26D5F148}</ProjectGuid>
+            <Configurations/>
+            <Platforms/>
+            <Enabled>False</Enabled>
         </BuildGroupProject>
         <BuildGroupProject Include="dclKingCalendar370.dproj">
-            <ProjectGuid>{D7901D48-CF7B-4CDC-972E-A68D1C6CC27E}</ProjectGuid>
-            <Configurations>Debug;Release</Configurations>
+            <ProjectGuid>{1A55EF97-3D4A-4F78-BF7A-BC9032F0D668}</ProjectGuid>
+            <Configurations/>
+            <Platforms/>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="KingCalendarDB370.dproj">
+            <ProjectGuid>{166043C7-3844-497C-9EDC-D5F230765E35}</ProjectGuid>
+            <Configurations>Release</Configurations>
             <Platforms>Win32</Platforms>
-            <Enabled>True</Enabled>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclKingCalendarDB370.dproj">
+            <ProjectGuid>{9BA39251-52AB-44B3-BAA7-BC5A414B9952}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>False</Enabled>
         </BuildGroupProject>
     </ItemGroup>
 </Project>
